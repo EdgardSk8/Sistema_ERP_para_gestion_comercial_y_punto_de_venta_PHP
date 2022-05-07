@@ -88,31 +88,31 @@ export default function initCompras() {
         ]
     });
 
-$('#crear_medida_producto').select2({
-    ajax: {
-        url: '/medidas-compra/mostrar',
-        dataType: 'json',
-        delay: 250,
+    $('#crear_medida_producto').select2({
+        ajax: {
+            url: '/medidas-compra/mostrar',
+            dataType: 'json',
+            delay: 250,
 
-        processResults: function (res) {
+            processResults: function (res) {
 
-            return {
-                results: res.data.map(med => ({
-                    id: med.id_medida,
-                    text: `${med.orden_medida}. ${med.nombre_medida} (${med.abreviatura_medida})`
-                }))
-            };
+                return {
+                    results: res.data.map(med => ({
+                        id: med.id_medida,
+                        text: `${med.orden_medida}. ${med.nombre_medida} (${med.abreviatura_medida})`
+                    }))
+                };
 
+            },
+
+            cache: true
         },
 
-        cache: true
-    },
-
-    width: '100%',
-    dropdownParent: $('#modalCrearProducto'),
-    placeholder: 'Seleccione medida',
-    allowClear: false
-});
+        width: '100%',
+        dropdownParent: $('#modalCrearProducto'),
+        placeholder: 'Seleccione medida',
+        allowClear: false
+    });
 
     $('#cajacuentaselect').on('change', function () {
 
@@ -168,51 +168,51 @@ $('#crear_medida_producto').select2({
 
 /* ═════════════ ( SELECTOR CAJAS ABIERTAS ) ═══════════════ */
 
-function cargarCajasAbiertas(total = 0) {
+    function cargarCajasAbiertas(total = 0) {
 
-    $('#caja_select').select2({
-        ajax: {
-            url: '/caja-compra/mostrar',
-            dataType: 'json',
-            processResults: function (res) {
+        $('#caja_select').select2({
+            ajax: {
+                url: '/caja-compra/mostrar',
+                dataType: 'json',
+                processResults: function (res) {
 
-                const data = res.data || [];
+                    const data = res.data || [];
 
-                if (!data.length) {
+                    if (!data.length) {
+                        return {
+                            results: [{
+                                id: '',
+                                text: 'No hay cajas abiertas',
+                                disabled: true
+                            }]
+                        };
+                    }
+
                     return {
-                        results: [{
-                            id: '',
-                            text: 'No hay cajas abiertas',
-                            disabled: true
-                        }]
+                        results: data.map(c => {
+                            const saldoSuficiente = c.saldo_actual >= total;
+
+                            return {
+                                id: c.id,
+                                text: saldoSuficiente
+                                    ? c.text
+                                    : `${c.text} (Saldo insuficiente)`,
+                                disabled: !saldoSuficiente
+                            };
+                        })
                     };
                 }
+            },
 
-                return {
-                    results: data.map(c => {
-                        const saldoSuficiente = c.saldo_actual >= total;
+            templateResult: function (data) {
+                if (data.disabled) {
+                    return $('<span style="color:red;">' + data.text + '</span>');
+                }
 
-                        return {
-                            id: c.id,
-                            text: saldoSuficiente
-                                ? c.text
-                                : `${c.text} (Saldo insuficiente)`,
-                            disabled: !saldoSuficiente
-                        };
-                    })
-                };
+                return $('<span style="color:white;font-weight:bold;">' + data.text + '</span>');
             }
-        },
-
-        templateResult: function (data) {
-            if (data.disabled) {
-                return $('<span style="color:red;">' + data.text + '</span>');
-            }
-
-            return $('<span style="color:white;font-weight:bold;">' + data.text + '</span>');
-        }
-    });
-}
+        });
+    }
 
 /* --------------------------------------------------------------------------------------------- */
 
@@ -524,25 +524,20 @@ function cargarCajasAbiertas(total = 0) {
 
         });
 
-function calcularGananciaProducto() {
+    function calcularGananciaProducto() {
 
-    const precioCompra = parseFloat($('#crear_precio_compra').val()) || 0;
-    const precioVenta = parseFloat($('#crear_precio_venta').val()) || 0;
+        const precioCompra = parseFloat($('#crear_precio_compra').val()) || 0;
+        const precioVenta = parseFloat($('#crear_precio_venta').val()) || 0;
 
-    $('#crear_ganancia_producto').val(
-        (precioVenta - precioCompra).toFixed(2)
-    );
+        $('#crear_ganancia_producto').val(
+            (precioVenta - precioCompra).toFixed(2)
+        );
 
-}
+    }
 
 
-// Escuchar cambios
-$('#crear_precio_compra, #crear_precio_venta, #crear_porcentaje_venta')
-.on('input change', function(){
-
-    calcularGananciaProducto();
-
-});
+    // Escuchar cambios
+    $('#crear_precio_compra, #crear_precio_venta, #crear_porcentaje_venta').on('input change', function(){ calcularGananciaProducto(); });
 
 
     /* ---------------------------------------------------------------------------------------------------- */

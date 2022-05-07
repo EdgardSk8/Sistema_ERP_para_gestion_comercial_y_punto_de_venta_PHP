@@ -159,14 +159,15 @@ body{
 
 .sidebar-link,
 .submenu a{
-    display:flex;
-    align-items:center;
+    display: flex;
+    align-items: center;
     flex-direction: column;
     padding: 4px 12px;
     border-radius:var(--radius);
     font-size:var(--fs-sm);
     text-decoration:none;
     color:var(--text-soft);
+    text-align: center;
     /* background: #e6e8ff; */
     transition:background .15s ease, color .15s ease;
 }
@@ -592,23 +593,13 @@ table.dataTable tfoot select{
 .btn-agregar:active{ transform:scale(.9); box-shadow: 0 8px 20px rgba(0,0,0,.08); background: var(--celeste); border: 1px solid var(--celeste-soft); }
 .btn-agregar:focus{ border: 1px solid var(--celeste-soft-border); }
 
-.togglecheck:checked + .toggle-btn {
-    background: var(--verde);
-    color: var(--surface);
-    justify-content: center;
-}
+/* TOGGLE BOTONES*/
 
-.togglecheck:not(:checked) + .toggle-btn {
-    background: var(--rojo);
-    border-color:var(--rojo-hover);
-    color: var(--surface);
-    justify-content: center;
-}
-
-.toggle-btn:hover{
-    background:#334155;
-    border-color:#475569;
-}
+.togglecheck + .toggle-btn { color: var(--surface); justify-content: center; }
+.togglecheck:checked + .toggle-btn { background: var(--verde); }
+.togglecheck:not(:checked) + .toggle-btn { background: var(--rojo); border-color: var(--rojo-hover); }
+.togglecheck:checked + .toggle-btn:hover { background: var(--verde-hover); border-color: var(--verde-hover); }
+.togglecheck:not(:checked) + .toggle-btn:hover { background: var(--rojo-hover); border-color: var(--rojo-hover); }
 
 /* ################################################################################################################################# *//* ################################################################################################################################# */
 /* ################################################################################################################################# */
@@ -625,11 +616,8 @@ table.dataTable tfoot select{
     padding: 0 6px;
 }
 
-button i{
-    pointer-events:none;
-}
+button i{ pointer-events:none; }
 
-/* .btn i { font-size: 14px; pointer-events: none;} */
 
 /* COLORES DE BTN */
 
@@ -656,9 +644,6 @@ button i{
 .pagar-gasto:hover
     { transform: scale(1.6); }
 
-
-    .agregarProducto:hover{ color: var(--azul); }
-
 /* AL PRESIONAR  */
 
 .btn-detalle:active,
@@ -672,8 +657,10 @@ button i{
 .agregarProducto:active
     { transform: scale(0.95); }
 
-.agregarProducto:active{ transform: scale(0.85); color: var(--azul);}
 
+
+.agregarProducto:active{ transform: scale(0.85); color: var(--azul);}
+.agregarProducto:hover{ color: var(--azul); }
 
 
 .estado{ display: flex; justify-content: center; transition: all 0.15s ease; cursor: pointer; }

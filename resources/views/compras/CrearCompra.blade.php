@@ -44,7 +44,7 @@
                 </select>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-4">
 
                 <label class="form-label small">Tipo de Pago</label>
 
@@ -56,7 +56,7 @@
 
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-4">
 
                 <label class="form-label small">Caja</label>
                 <select class="form-select form-select-sm" disabled id="caja_select">
@@ -76,10 +76,6 @@
 
             <!-- <div class="mb-2"></div> -->
 
-        </div>
-
-        <div class="Contenedor-Productos">
-
             <div class="col-md-8">
                 <label class="small">Producto</label>
                 <select id="producto_select" data-placeholder="Seleccione un Producto" class="form-select form-select-sm"></select>
@@ -90,24 +86,38 @@
                 <input type="number" id="cantidad" class="form-control form-control-sm" min="1">
             </div>
 
-            <div class="col-md-3 d-flex gap-2">
+            <div class="col-md-3">
 
-                <button class="btn btn-primary btn-sm" id="btnAgregar"> Agregar </button>
+                <label class="small text-center">Acciones</label>
 
-                <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalCrearProducto">
-                    Agregar Nuevo Producto
-                </button>
+                <div class="Contenedor-Productos">
+                    <button class="btn btn-primary btn-sm" id="btnAgregar">
+                        Agregar
+                    </button>
+
+                    <button class="btn btn-success btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalCrearProducto">
+                        Agregar Nuevo Producto
+                    </button>
+                </div>
 
             </div>
 
         </div>
 
-        <div class="Contenedor-CarritoTotales m-0">
+        <div class="row">
+
+           
+
+        </div>
+
+        <div class="Contenedor-CarritoTotales">
 
             <!-- ═════════════ ( CARRITO ) ═══════════════ -->
             <div class="a col-md m-0">
 
-                <table id="tabla_carrito" class="table table-sm table-bordered mb-0">
+                <table id="tabla_carrito" class="table table-bordered">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -127,7 +137,6 @@
 
             <!-- ═════════════ ( TOTALES ) ═══════════════ -->
             <div class="b col-md-2 d-flex">
-
 
                 <div class="card-body flex-column p-2">
 
