@@ -189,7 +189,7 @@ export default function initCuentas() {
         /* ═════════════ ( CONFIGURACIÓN ) ═════════════ */
 
         let titulo = tipo === 'AGREGAR' ? 'Agregar Saldo' : 'Retirar Saldo';
-        let colorBtn = tipo === 'AGREGAR' ? 'success' : 'danger';
+        let colorBtn = tipo === 'AGREGAR' ? 'success' : 'success';
         let saldoActual = parseFloat(cuenta.saldo_actual);
         let opcionesConcepto = tipo === 'AGREGAR'
             ? `
@@ -266,7 +266,7 @@ export default function initCuentas() {
                                 <div class="form-check form-switch">
 
                                     <input
-                                        id="usar_input_descripcion"
+                                        id="checkbox_agregar_retirar"
                                         class="form-check-input"
                                         type="checkbox">
 
@@ -297,7 +297,7 @@ export default function initCuentas() {
                                 <label class="form-label">Concepto manual</label>
 
                                 <textarea
-                                    id="input_concepto"
+                                    id="input_concepto_acciones"
                                     class="form-control form-control-sm"
                                     rows="1"></textarea>
 
@@ -354,7 +354,7 @@ export default function initCuentas() {
 
     $(document).on('input', '#monto_movimiento', actualizarResultado);
 
-    $(document).on('change', '#usar_input_descripcion', function(){
+    $(document).on('change', '#checkbox_agregar_retirar', function(){
         $('#grupo_selector').toggleClass('d-none', this.checked);
         $('#grupo_input').toggleClass('d-none', !this.checked);
     });
@@ -428,7 +428,7 @@ export default function initCuentas() {
 /* ═════════════════════════════════════════ */
 
     function obtenerDescripcion(){
-        if($('#usar_input_descripcion').is(':checked')){ return $('#input_concepto').val().trim(); }
+        if($('#checkbox_agregar_retirar').is(':checked')){ return $('#input_concepto_acciones').val().trim(); }
         return $('#selector_concepto').val();
     }
 
@@ -715,7 +715,7 @@ export default function initCuentas() {
         /* ═════════ Evento de cambio UI ═════════ */
 
         $('#check_concepto').on('change', function () {
-            $('#grupo_selector_concepto').toggleClass('d-none', this.checked);
+            $('#grupo_selector_concepto').toggleClass('d-none', this.checked); //NO
             $('#grupo_input_concepto').toggleClass('d-none', !this.checked);
         });
 
@@ -731,8 +731,8 @@ export default function initCuentas() {
                 cuenta_origen: $('#cuenta_origen').val(), 
                 cuenta_destino: $('#cuenta_destino').val(),
                 monto: obtenerMontoLimpio(), 
-                descripcion: $('#check_concepto').is(':checked')
-                    ? $('#input_concepto').val()
+                descripcion: $('#check_concepto').is(':checked') //No
+                    ? $('#input_concepto').val().trim()
                     : $('#selector_concepto').val()
             };
 
@@ -787,7 +787,7 @@ export default function initCuentas() {
             $('#saldo_origen_resultante').val('');
             $('#saldo_destino_resultante').val('');
             $('#cuenta_origen').prop('selectedIndex', 0);
-            $('#check_concepto').prop('checked', false);
+            $('#check_concepto').prop('checked', false); //NO
             $('#grupo_input_concepto').addClass('d-none');
             $('#grupo_selector_concepto').removeClass('d-none');
 

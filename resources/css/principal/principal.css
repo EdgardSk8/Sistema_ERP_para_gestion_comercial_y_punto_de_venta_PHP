@@ -440,7 +440,7 @@ table.dataTable tfoot select{
 
 /* [BtnToggle.CSS] */
 
-.dropdown-toggle, .btn-agregar, .toggle-btn{
+.dropdown-toggle, .btn-agregar, .btn-cuenta-transferir, .toggle-btn{
     min-width: 160px;
     height: 30px;
 
@@ -577,7 +577,7 @@ table.dataTable tfoot select{
 } */
 
 
-.btn-agregar {
+.btn-agregar, .btn-cuenta-transferir {
     transition:
         background .2s ease,
         border-color .2s ease,
@@ -585,13 +585,16 @@ table.dataTable tfoot select{
         transform .3s ease;
 }
 
-.btn-agregar:hover{
+.btn-agregar:hover, .btn-cuenta-transferir:hover{
     background: var(--celeste-soft);
     border: 1px solid var(--celeste-soft-border); 
 }
 
 .btn-agregar:active{ transform:scale(.9); box-shadow: 0 8px 20px rgba(0,0,0,.08); background: var(--celeste); border: 1px solid var(--celeste-soft); }
 .btn-agregar:focus{ border: 1px solid var(--celeste-soft-border); }
+
+.btn-cuenta-transferir:active{ transform:scale(.9); box-shadow: 0 8px 20px rgba(0,0,0,.08); background: var(--celeste); border: 1px solid var(--celeste-soft); }
+.btn-cuenta-transferir:focus{ border: 1px solid var(--celeste-soft-border); }
 
 /* TOGGLE BOTONES*/
 
@@ -609,7 +612,8 @@ table.dataTable tfoot select{
 
 /* CONFIGURACION GENERAL DEL BTN */
 
-.btn-detalle, .btn-editar, .btn-baja, .btn-alta, .btn-transferir, .agregar-saldo, .retirar-saldo, .pagar-gasto, .agregarProducto{
+.btn-detalle, .btn-editar, .btn-baja, .btn-alta, .btn-transferir, .agregar-saldo, .retirar-saldo, 
+.pagar-gasto, .agregarProducto, .cuentatransferir{
     transition: all 0.15s ease;
     background: transparent;
     border: none;

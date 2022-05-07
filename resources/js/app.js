@@ -323,7 +323,7 @@ function cargarInicial(primero) {
     if (!url) {console.warn("No hay ruta para:", primero); return; }
 
     // document.getElementById('contenido-dinamico').setAttribute('src', url);
-    document.getElementById('contenido-dinamico').setAttribute('src', '/compras/crear');
+    document.getElementById('contenido-dinamico').setAttribute('src', '/cuentas');
 }
 
 fetch('/cargar-permisos').then(r => r.json())

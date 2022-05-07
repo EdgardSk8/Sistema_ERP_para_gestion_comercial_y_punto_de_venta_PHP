@@ -51,7 +51,7 @@
         </button>
 
         <!-- Botón transferir -->
-        <button type="button" class="cuentatransferir" data-bs-toggle="modal" data-bs-target="#ModalTransferirCuenta">
+        <button type="button" class="btn-cuenta-transferir" data-bs-toggle="modal" data-bs-target="#ModalTransferirCuenta">
             Transferir entre cuentas
         </button>
 
