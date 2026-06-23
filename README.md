@@ -15,10 +15,9 @@ Sistema ERP orientado a la administración integral de negocios, diseñado para 
 ![jQuery](https://img.shields.io/badge/jQuery-0769AD?logo=jquery&logoColor=white)
 ![DataTables](https://img.shields.io/badge/DataTables-003B57?logo=datatables&logoColor=white)
 ![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?logo=chartdotjs&logoColor=white)
-[![YouTube](https://img.shields.io/badge/YouTube-Video-red?logo=youtube)](https://youtu.be/hpCVmuRQi2Y)
 </div>
 
-[![YouTube](https://img.shields.io/badge/YouTube-Video-red?logo=youtube)](https://youtu.be/hpCVmuRQi2Y)
+Video Demostración: [![YouTube](https://img.shields.io/badge/YouTube-Video-red?logo=youtube)](https://youtu.be/hpCVmuRQi2Y)
 
 ### 📊 Dashboard Analítico
 - Gráficas e indicadores en tiempo real.
