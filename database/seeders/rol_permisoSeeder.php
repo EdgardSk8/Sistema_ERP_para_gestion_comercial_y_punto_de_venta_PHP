@@ -1,0 +1,206 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class rol_permisoSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $rolesPermisos = [];
+
+        $permisos = DB::table('permisos')->get();
+
+        /* ═════════════ ADMIN (ROL 1) ═════════════ */
+        foreach ($permisos as $permiso) {
+            $rolesPermisos[] = [
+                'id_rol' => 1,
+                'id_permiso' => $permiso->id_permiso,
+                'fecha_asignacion_rol_permiso' => now()
+            ];
+        }
+
+        /* ═════════════ CAJERO (ROL 2) ═════════════ */
+        $permisosCajero = [
+
+            /* VENTAS */
+            'vista_ventas',
+            'mostrar_ventas',
+            'mostrar_detalle_ventas',
+            'anular_ventas',
+
+            /* MOVIMIENTO CAJAS*/ 
+            'vista_movimiento_cajas',
+            'mostrar_movimiento_cajas',
+
+            /* FACTURACION */
+            'vista_facturacion',
+            'usar_facturacion',
+            'abrir_caja',
+            'cerrar_caja',
+            //'verificar_caja',
+
+            /* CLIENTES */
+            'vista_clientes',
+            'mostrar_clientes',
+
+            /* PRODUCTOS */
+            'vista_productos',
+            'mostrar_productos',
+
+            /* CAJAS */
+            'vista_cajas',
+            'mostrar_cajas',
+        ];
+
+        foreach ($permisosCajero as $nombrePermiso) {
+
+            $permiso = DB::table('permisos')
+                ->where('nombre_permiso', $nombrePermiso)
+                ->first();
+
+            if ($permiso) {
+                $rolesPermisos[] = [
+                    'id_rol' => 2,
+                    'id_permiso' => $permiso->id_permiso,
+                    'fecha_asignacion_rol_permiso' => now()
+                ];
+            }
+        }
+
+        /* ═════════════ BODEGUERO (ROL 3) ═════════════ */
+        $permisosBodeguero = [
+
+            /* PRODUCTOS */
+            'vista_productos',
+            'mostrar_productos',
+            'crear_productos',
+            'editar_productos',
+            'actualizar_productos',
+
+            /* MOVIMIENTO INVENTARIO */
+            'vista_movimientos_inventario',
+            'mostrar_movimiento_inventario',
+
+            /* COMPRAS */
+            'vista_compras',
+            'mostrar_compras',
+
+            /* PROVEEDORES */
+            'vista_proveedores',
+            'mostrar_proveedores',
+        ];
+
+        foreach ($permisosBodeguero as $nombrePermiso) {
+
+            $permiso = DB::table('permisos')
+                ->where('nombre_permiso', $nombrePermiso)
+                ->first();
+
+            if ($permiso) {
+                $rolesPermisos[] = [
+                    'id_rol' => 3,
+                    'id_permiso' => $permiso->id_permiso,
+                    'fecha_asignacion_rol_permiso' => now()
+                ];
+            }
+        }
+
+        /* ═════════════ SUPERVISOR (ROL 4) ═════════════ */
+        $permisosSupervisor = [
+
+            'vista_dashboard',
+            'mostrar_dashboard_ventas',
+            'mostrar_dashboard_movimiento_inventario',
+
+            'vista_ventas',
+            'mostrar_ventas',
+            'mostrar_detalle_ventas',
+
+            'vista_cajas',
+            'mostrar_cajas',
+            'vista_movimientos_cajas',
+
+            'vista_movimientos_inventario',
+            'mostrar_movimiento_inventario',
+
+            'vista_reportes',
+            'mostrar_reportes',
+        ];
+
+        foreach ($permisosSupervisor as $nombrePermiso) {
+
+            $permiso = DB::table('permisos')
+                ->where('nombre_permiso', $nombrePermiso)
+                ->first();
+
+            if ($permiso) {
+                $rolesPermisos[] = [
+                    'id_rol' => 4,
+                    'id_permiso' => $permiso->id_permiso,
+                    'fecha_asignacion_rol_permiso' => now()
+                ];
+            }
+        }
+
+        /* ═════════════ CONTADOR (ROL 5) ═════════════ */
+        $permisosContador = [
+
+            /* DASHBOARD */
+            'vista_dashboard',
+            'mostrar_dashboard_ventas',
+            'mostrar_dashboard_movimiento_inventario',
+
+            /* REPORTES */
+            'vista_reportes',
+            'mostrar_reportes',
+
+
+            /* GASTOS */
+            'vista_gastos',
+            'mostrar_gastos',
+            'crear_gastos',
+            'editar_gastos',
+            'actualizar_gastos',
+            'pagar_gastos',
+
+            /* CUENTAS */
+            'vista_cuentas',
+            'mostrar_cuentas',
+            'crear_cuentas',
+            'transferir_cuentas',
+            'editar_cuentas',
+            'actualizar_cuentas',
+            'cambiar_estado_cuentas',
+
+            /* MOVIMIENTO CUENTAS */
+            'vista_movimientos_cuentas',
+            'mostrar_movimiento_cuentas',
+
+            /* TRANSFERENCIA CAJA CUENTA */
+            'vista_transferenciacajacuenta',
+            'mostrar_transferencias_caja_cuenta',
+            'transferir_caja_cuentas',
+            'mostrar_detalle_transferencias_caja_cuenta'
+        ];
+
+        foreach ($permisosContador as $nombrePermiso) {
+
+            $permiso = DB::table('permisos')
+                ->where('nombre_permiso', $nombrePermiso)
+                ->first();
+
+            if ($permiso) {
+                $rolesPermisos[] = [
+                    'id_rol' => 5,
+                    'id_permiso' => $permiso->id_permiso,
+                    'fecha_asignacion_rol_permiso' => now()
+                ];
+            }
+        }
+
+        DB::table('rol_permiso')->insert($rolesPermisos);
+    }
+}
