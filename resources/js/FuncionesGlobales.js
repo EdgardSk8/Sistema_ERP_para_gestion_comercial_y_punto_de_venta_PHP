@@ -315,11 +315,15 @@ window.FechaSimple = function(fechaSQL) {
 /* -------------------------------------------------------------------------------- */
 
 window.configurarToggleColumnas = function(idTabla) {
-    $('.toggle-col').off('change.toggleCol').on('change.toggleCol', function () {
-        let tabla = $(`#${idTabla}`).DataTable();
-        let column = tabla.column($(this).data('column'));
-        column.visible(this.checked);
-    });
+
+    let tabla = $(`#${idTabla}`).DataTable();
+
+    $('.toggle-col').each(function () { tabla.column($(this).data('column')).visible(this.checked); });
+
+    $('.toggle-col').off('change.toggleCol')
+        .on('change.toggleCol', function () {
+            tabla.column($(this).data('column')).visible(this.checked);
+        });
 }
 
 /* -------------------------------------------------------------------------------- */

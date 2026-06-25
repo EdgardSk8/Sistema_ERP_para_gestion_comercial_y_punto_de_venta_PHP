@@ -7,13 +7,13 @@
         <div class="dashboard-filtros">
 
             <!-- 🔹 filtro principal -->
-            <select class="select" id="Filtro-Ganancias">
+            <select class="select p-0" id="Filtro-Ganancias">
 
                 <option value="dia">Ganancias por día</option>
                 <option value="mes">Ganancias por mes</option>
                 <option value="anio">Ganancias por año</option>
                 <option value="hora">Ganancias por hora</option>
-<!-- 
+                <!-- 
                 <option value="top_productos">Top productos rentables</option>
                 <option value="categorias">Ganancia por categoría</option>
                 <option value="usuarios">Ganancia por usuario</option>

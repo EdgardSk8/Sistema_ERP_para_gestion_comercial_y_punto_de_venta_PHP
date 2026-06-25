@@ -36,17 +36,21 @@ export default function initMostrarProductos() {
             { data: 'precio_compra', render: data => moneda(data) }, /*  ══════ P.Compra ══════ */
 
             { data: 'precio_venta', render: data => moneda(data) }, /*  ══════ P.Venta ══════ */
-            
+
+            { data: 'precio_venta_final', render: data => moneda(data) }, /*  ══════ P.Venta Final ══════ */
+
+            { data: 'ganancia', render: data => `<strong class="text-success">${moneda(data)}</strong>`},
+
+            { data: 'porcentaje_ganancia', render: data => `<span class="text-success fw-bold">${data}%</span>` },
+
             { data: 'impuesto', /*  ══════ Impuesto  ══════ */
                 render: function(data){
                     if(!data) return 'Sin impuesto';
                     let porcentaje = parseFloat(data.porcentaje_impuesto).toFixed(0);
-                    return `${data.nombre_impuesto} (${porcentaje}%)`;
+                    return `<!-- ${data.nombre_impuesto} --> ${porcentaje}%`;
                 }
             },
-
-            {data: 'ganancia', render: data => moneda(data) },
-
+            
             { data: 'stock_actual', /*  ══════ Cantidad  ══════ */
                 render: function(data) { 
                     if (parseFloat(data) === 0) { return `<strong class="text-danger">${data}</strong>`; } 
@@ -67,19 +71,19 @@ export default function initMostrarProductos() {
 
                         ? `<button class="btn btn-baja bajaProducto" data-id="${data}">
                         
-                            <i class="bi bi-person-x"></i> Dar Baja
+                            <i class="bi bi-person-x"></i> <!-- Dar Baja -->
                         
                         </button>` 
 
                         : `<button class="btn btn-baja bajaProducto" data-id="${data}">
                         
-                            <i class="bi bi-check-circle"></i> Activar
+                            <i class="bi bi-check-circle"></i> <!-- Activar -->
                         
                         </button>`;
                     
                         let botonDetalles = `<button class="btn btn-detalle detallesProducto" data-id="${data}">
                         
-                            <i class="bi bi-eye"></i> Detalle
+                            <i class="bi bi-eye"></i> <!-- Detalle -->
                         
                         </button>`;
                     
@@ -87,7 +91,7 @@ export default function initMostrarProductos() {
 
                         <button class="btn btn-editar editarProducto" data-id="${data}">
                         
-                            <i class="bi bi-pencil-square me-1"></i> Editar
+                            <i class="bi bi-pencil-square me-1"></i> <!-- Editar -->
                         
                         </button>
 
@@ -98,22 +102,9 @@ export default function initMostrarProductos() {
                 }
             }
         ],
-
-        columnDefs: [ /* ════ CHECKBOX DE VISIBILIDAD ════ */
-            { targets: 0, visible: $('.toggle-col[data-column="0"]').is(':checked') },
-            { targets: 1, visible: $('.toggle-col[data-column="1"]').is(':checked') },
-            { targets: 2, visible: $('.toggle-col[data-column="2"]').is(':checked') },
-            { targets: 3, visible: $('.toggle-col[data-column="3"]').is(':checked') },
-            { targets: 4, visible: $('.toggle-col[data-column="4"]').is(':checked') },
-            { targets: 5, visible: $('.toggle-col[data-column="5"]').is(':checked') },
-            { targets: 6, visible: $('.toggle-col[data-column="6"]').is(':checked') },
-            { targets: 7, visible: $('.toggle-col[data-column="7"]').is(':checked') },
-            { targets: 8, visible: $('.toggle-col[data-column="8"]').is(':checked') },
-            { targets: 9, visible: $('.toggle-col[data-column="9"]').is(':checked') }
-        ],
         order: [[1, 'asc']],
         initComplete: function () {
-            ConfigurarFiltrosDataTable(this, { columnasSelect: [3], columnasIgnorar: [1, 10] });
+            ConfigurarFiltrosDataTable(this, { columnasSelect: [3, 9], columnasIgnorar: [1, 12] });
         }
 
     }); // Fin de Funcion de inicializacion de tabla
@@ -129,7 +120,7 @@ export default function initMostrarProductos() {
             const ocultar = $('#toggleInactivosProductos').is(':checked');
             if (!ocultar) return true;
 
-            const estado = data[9]; // columna estado (IMPORTANTE)
+            const estado = data[11]; // columna estado (IMPORTANTE)
             return estado.includes('Activo');
         }
 

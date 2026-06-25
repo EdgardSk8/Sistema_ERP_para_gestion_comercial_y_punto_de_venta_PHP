@@ -10,6 +10,7 @@
                     <th>Factura</th>
                     <th>Cliente</th>
                     <th>Usuario</th>
+                    <th>Nº Caja</th>
                     <th>Fecha</th>
                     <th>Subtotal</th>
                     <th>Impuesto</th>
@@ -24,6 +25,7 @@
 
             <tfoot>
                 <tr>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>

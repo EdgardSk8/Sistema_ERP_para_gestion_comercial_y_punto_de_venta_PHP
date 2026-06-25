@@ -2,16 +2,16 @@
 
     <div class="dashboard-header">
 
-        <h2 class="dashboard-title">Inventario</h2>
+        <h2 class="dashboard-title">Movimientos de Inventario</h2>
 
         <div class="dashboard-filtros">
 
             <!-- 🔹 filtro principal (movimientos) -->
-            <select class="select" id="Filtro-Inventario">
+            <select class="select p-0" id="Filtro-Inventario">
 
-                <option value="dia">Movimientos por día</option>
-                <option value="mes">Movimientos por mes</option>
-                <option value="anio">Movimientos por año</option>
+                <option value="dia">Movimiento por día</option>
+                <option value="mes">Movimiento por mes</option>
+                <option value="anio">Movimiento por año</option>
 
             </select>
 
@@ -53,38 +53,38 @@
 
         </div>
 
-        <div class="dashboard-kpis">
+    </div>
 
-            <div class="kpi-card">
-                <span class="kpi-title">Movimientos:</span>
-                <span id="kpi-total-movimientos" class="dato">0</span>
-            </div>
+    <div class="dashboard-kpis">
 
-            <div class="kpi-card">
-                <span class="kpi-title">Entradas: </span>
-                <span id="kpi-entradas" class="dato">0</span>
-            </div>
+        <div class="kpi-card">
+            <span class="kpi-title">Movimientos:</span>
+            <span id="kpi-total-movimientos" class="dato">0</span>
+        </div>
 
-            <div class="kpi-card">
-                <span class="kpi-title">Salidas: </span>
-                <span id="kpi-salidas" class="dato">0</span>
-            </div>
+        <div class="kpi-card">
+            <span class="kpi-title">Entradas: </span>
+            <span id="kpi-entradas" class="dato">0</span>
+        </div>
 
-            <div class="kpi-card">
-                <span class="kpi-title">Ajuste: </span>
-                <span id="kpi-ajustes" class="dato">0</span>
-            </div>
+        <div class="kpi-card">
+            <span class="kpi-title">Salidas: </span>
+            <span id="kpi-salidas" class="dato">0</span>
+        </div>
 
-            <div class="kpi-card">
-                <span class="kpi-title">Balance:</span>
-                <span id="kpi-balance" class="dato">0</span>
-            </div>
+        <div class="kpi-card">
+            <span class="kpi-title">Ajuste: </span>
+            <span id="kpi-ajustes" class="dato">0</span>
+        </div>
 
-            <div class="kpi-card">
-                <span class="kpi-title">Promedio:</span>
-                <span id="kpi-promedio" class="dato">0</span>
-            </div>
+        <div class="kpi-card">
+            <span class="kpi-title">Balance:</span>
+            <span id="kpi-balance" class="dato">0</span>
+        </div>
 
+        <div class="kpi-card">
+            <span class="kpi-title">Promedio:</span>
+            <span id="kpi-promedio" class="dato">0</span>
         </div>
 
     </div>

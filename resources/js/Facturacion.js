@@ -169,6 +169,7 @@ export default function initFacturacion() {
                 $('#vueltoCordobas').prop('disabled', false);
                 $('#vueltoDolares').prop('disabled', false);
                 $('#btnFacturar').css('background', '#198754');
+                $('#btnFacturar').css('border', '1px solid #198754');
                 $('#btnFacturar').text('Facturar');
             }
             calcularVueltos();
@@ -178,24 +179,23 @@ export default function initFacturacion() {
 
     $('#toggleProformaFactura').on('change', function () {
 
-    imprimirProformaActivo = $(this).is(':checked');
+        imprimirProformaActivo = $(this).is(':checked');
 
-    if (imprimirProformaActivo) {
+        if (imprimirProformaActivo) {
 
-        $('#toggleFactura').prop('checked', false);
-        imprimirFacturaActivo = false;
-        $('#pagoCordobas, #pagoDolares, #vueltoCordobas, #vueltoDolares').prop('disabled', true);
-        $('#btnFacturar').css({ background: '#0d6efd', border: '1px solid #0d6efd' }).text('Imprimir Proforma');
+            $('#toggleFactura').prop('checked', false);
+            imprimirFacturaActivo = false;
+            $('#pagoCordobas, #pagoDolares, #vueltoCordobas, #vueltoDolares').prop('disabled', true);
+            $('#btnFacturar').css({ background: '#0d6efd', border: '1px solid #0d6efd' }).text('Imprimir Proforma');
 
-    } else {
+        } else {
 
-        let metodo = parseInt($('#metodo_pago').val()) || 0;
+            let metodo = parseInt($('#metodo_pago').val()) || 0;
 
-        $('#btnFacturar').css({ background: '#198754', border: '1px solid #198754' }).text('Facturar');
-        $('#vueltoCordobas, #vueltoDolares').prop('disabled', false);
-        if (metodo === 1) { $('#pagoCordobas, #pagoDolares').prop('disabled', false); }
-
-    }
+            $('#vueltoCordobas, #vueltoDolares').prop('disabled', false);
+            if (metodo === 1) { $('#pagoCordobas, #pagoDolares').prop('disabled', false); }
+            $('#btnFacturar').css({ background: '#198754', border: '1px solid #198754' }).text('Facturar');
+        }
 
     });
 
@@ -1143,7 +1143,7 @@ $(document).on('click', '#btnCerrarCaja', function () {
             if (res.success) {
 
                 TASA = parseFloat(res.tasa) || 0;
-                $('#tasaImpuesto').text( 'Cambio: 1 Dolar = ' + TASA + ' Cordobas' );
+                $('#tasaImpuesto').html( 'Cambio: 1 Dolar = ' + TASA + ' Córdobas' );
 
             }
 

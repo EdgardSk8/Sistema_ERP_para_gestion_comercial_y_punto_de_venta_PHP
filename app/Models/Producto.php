@@ -26,10 +26,33 @@ class Producto extends Model
 
     // 🔗 Relaciones
 
-    protected $appends = ['ganancia'];
-    public function getgananciaAttribute()
+    protected $appends = ['ganancia', 'porcentaje_ganancia', 'precio_venta_final'];
+
+    public function getGananciaAttribute()
     {
         return $this->precio_venta - $this->precio_compra;
+    }
+
+    public function getPorcentajeGananciaAttribute()
+    {
+        if ($this->precio_compra <= 0) {
+            return 0;
+        }
+
+        return round(
+            (($this->precio_venta - $this->precio_compra) / $this->precio_compra) * 100,
+            2
+        );
+    }
+
+    public function getPrecioVentaFinalAttribute()
+    {
+        $porcentaje = $this->impuesto?->porcentaje_impuesto ?? 0;
+
+        return round(
+            $this->precio_venta * (1 + ($porcentaje / 100)),
+            2
+        );
     }
 
     public function categoria()

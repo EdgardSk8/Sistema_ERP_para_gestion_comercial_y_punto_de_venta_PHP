@@ -8,6 +8,7 @@ use App\Models\MovimientoInventario;
 use App\Models\Producto;
 use App\Models\Cuenta;
 use App\Models\MovimientoCaja;
+use App\Models\Caja;
 use App\Models\MovimientoCuenta;
 use Illuminate\Support\Facades\DB;
 
@@ -26,7 +27,8 @@ class VentaController extends Controller
                 'cliente',
                 'usuario',
                 'metodoPago',
-                'detalles'
+                'detalles',
+                // 'caja'
             ])->get();
 
             return response()->json([

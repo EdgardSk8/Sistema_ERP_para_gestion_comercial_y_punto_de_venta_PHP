@@ -65,6 +65,8 @@
             </button>
 
         </div>
+    
+    </div>
 
         <div class="dashboard-kpis">
 

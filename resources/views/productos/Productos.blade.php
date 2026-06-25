@@ -14,8 +14,10 @@
                 <th>Categoría</th>
                 <th>P. Compra</th>
                 <th>P. Venta</th>
-                <th>Impuesto</th>
+                <th>P.V.Final</th>
                 <th>Ganancia</th>
+                <th>Ganancia %</th>
+                <th>Impuesto</th>
                 <th>Stock</th>
                 <th>Estado</th>
                 <th>Acciones</th>
@@ -26,6 +28,8 @@
 
             <tfoot>
                 <tr>
+                    <th></th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>

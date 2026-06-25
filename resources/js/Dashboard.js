@@ -932,7 +932,7 @@ function initVentas() {
     FlatPickr(Fecha_Fin_Ventas);
 
     Chart.register(PluginSinDatos);document.addEventListener("turbo:before-fetch-response", (e) => {
-    console.log("SERVER RESPONSE URL:", e.detail.fetchResponse.response.url);
+    // console.log("SERVER RESPONSE URL:", e.detail.fetchResponse.response.url);
 });
 
 };
