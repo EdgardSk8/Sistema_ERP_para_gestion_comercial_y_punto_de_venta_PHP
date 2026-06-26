@@ -27,7 +27,7 @@
 
           <div class="col-md-2">
             <label class="form-label">Nombre de Usuario</label>
-            <input type="text" id="crear_nombre_usuario" placeholder="Usuario Login" class="form-control form-control-sm" required>
+            <input type="text" autocomplete="username" id="crear_nombre_usuario" placeholder="Usuario Login" class="form-control form-control-sm" required>
           </div>
 
           <div class="col-md-2">
@@ -37,7 +37,7 @@
 
           <div class="col-md-2">
             <label class="form-label">Contraseña</label>
-            <input type="password" id="crear_password_usuario" minlength="6" placeholder="Mínimo 6 caracteres" class="form-control form-control-sm" required>
+            <input type="password" autocomplete="new-password" id="crear_password_usuario" minlength="6" placeholder="Mínimo 6 caracteres" class="form-control form-control-sm" required>
           </div>
 
         </form>

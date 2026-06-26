@@ -42,6 +42,7 @@
             <input type="text"
               id="editar_nombre_usuario"
               class="form-control form-control-sm"
+              autocomplete="username"
               required>
           </div>
 
@@ -68,6 +69,7 @@
             <input type="password"
               id="editar_password_usuario"
               minlength="6"
+              autocomplete="new-password"
               placeholder="Opcional"
               class="form-control form-control-sm">
           </div>

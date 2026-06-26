@@ -1,6 +1,4 @@
 
-
-
 /* ══════════════════════════════════════════════════════════════════════════════════════ */
 
 /* PADRE */
@@ -26,8 +24,6 @@
     flex: 1;
     min-height: 0;
     overflow-y: auto !important;
-     scrollbar-color:#c8d1dc transparent;
-     scrollbar-width:thin;
 }
 
 /* elimina micro gaps por subpixel rendering */
@@ -40,21 +36,16 @@
 .table{
     margin: 0 auto;
     white-space: nowrap;
-    
 }
 
 /* Columna th (Titulo )*/ 
 .table thead th{ 
-    /* background:#1f2937 !important; */
-     background:#273445 !important;
+    background:#1f2937 !important;
     color:white !important;
     text-align: center !important; /* Horizontal */
     vertical-align: middle !important; /* Vertical */
-    letter-spacing:.3px;
-    font-size: 13px;
-    /* padding: 3px !important; */
-     padding: 8px 2px !important;
-    
+    font-size: 15px;
+    padding: 3px !important;
 }
 
 /* Columna th (Contenido)*/ 
@@ -63,17 +54,9 @@
     overflow-wrap: break-word !important;
     text-align: center !important; /* Horizontal */
     vertical-align: middle !important; /* Vertical */
-    font-size: 13px !important;
-    padding: 8px 2px !important;
-    color:#1c2129;
+    font-size: 14px !important;
+    padding: 2px !important;
     
-}
-
-.dataTables_scrollBody thead th{
-    padding:0 !important;
-    border:none !important;
-    height:0 !important;
-    line-height:0 !important;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════════════ */
@@ -93,19 +76,9 @@ td:last-child{  white-space: nowrap; }/* Btn horizontales */
 
 /* ══════════════════════════════════════════════════════════════════════════════════════ */
 
-tbody tr:hover td{/*background:#f4f6f9;*/ background:#eef5ff;transition:.10s;}/* FILA HOVER */
-/*
-tbody tr:nth-child(even) td{background:#f4f6f9;} FILAS ALTERNADAS 
-tbody tr:nth-child(even):hover td{background:#e5e7eb;} FILAS ALTERNADAS HOVER 
-*/
-
-/* tbody tr:nth-child(even) td{
-    background:#fbfcfd;
-}
-
-tbody tr:nth-child(even):hover td{
-    background:#eef5ff;
-} */
+tbody tr:hover td{background:#f4f6f9;}/* FILA HOVER */
+tbody tr:nth-child(even) td{background:#f4f6f9;}/* FILAS ALTERNADAS */
+tbody tr:nth-child(even):hover td{background:#e5e7eb;}/* FILAS ALTERNADAS HOVER */
 
 /* ══════════════════════════════════════════════════════════════════════════════════════ */
 

@@ -275,7 +275,7 @@ export default function initMostrarVentas() {
         });
     }
 
- $(document).on('click', '.detalle-venta', function () {
+    $(document).off('click', '.detalle-venta').on('click', '.detalle-venta', function () {
 
         const btn = $(this); // Solucion Temporal
 
@@ -462,7 +462,7 @@ export default function initMostrarVentas() {
 
     });
 
-$(document).on('click', '#btnImprimir', function () {
+$(document).off('click', '#btnImprimir').on('click', '#btnImprimir', function () {
 
     // 🔥 Construimos el objeto desde el modal (REUTILIZANDO TU UI)
     const data = {

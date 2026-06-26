@@ -1,6 +1,6 @@
 export default function initFacturacion() {
 
-     let carrito = [];
+    let carrito = [];
     let imprimirFacturaActivo = false;
     let imprimirProformaActivo = false;
     document.getElementById('titulo').textContent = 'SISTEMA DE FACTURACION';

@@ -47,7 +47,7 @@ export default function initMostrarProductos() {
                 render: function(data){
                     if(!data) return 'Sin impuesto';
                     let porcentaje = parseFloat(data.porcentaje_impuesto).toFixed(0);
-                    return `<!-- ${data.nombre_impuesto} --> ${porcentaje}%`;
+                    return `<!-- ${data.nombre_impuesto} --> <strong> ${porcentaje}% </strong>`;
                 }
             },
             
