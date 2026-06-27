@@ -26,6 +26,12 @@
     <link rel="icon" href="{{ asset('Favicon.ico') }}" type="image/png">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@heroicons/react@2.0.18/24/outline/index.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css">
+
 
 </head>
 
@@ -37,9 +43,9 @@
 
     <div class="sidebar">
 
-        <div class="sidebar-title">
-            <i class="bi bi-shop"></i>
-            Sistema POS
+   <div class="sidebar-title"> FLIX
+            <!-- <i class="bi bi-shop"></i> -->
+           
         </div>
 
         <div class="sidebar-menu">
@@ -48,10 +54,12 @@
                 <a href="{{ route('dashboard') }}"
                     class="sidebar-link"
                     data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-speedometer2 text-info"></i>
+                    <i class="ph ph-chart-pie text-info"></i> 
                     Dashboard
                 </a>
             @endif
+
+            <hr>
 
             <!-- ╔════════════ VENTAS ════════════╗ -->
 
@@ -63,7 +71,7 @@
                 <a href="{{ route('facturacion') }}"
                     class="sidebar-link"
                     data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-receipt text-success"></i>
+                    <i class="ph ph-receipt text-success"></i>
                     Facturación
                 </a>
             @endif
@@ -72,8 +80,8 @@
                 <a href="{{ route('ventas') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-clock-history text-primary"></i>
-                    Historial de Ventas
+                    <i class="ph ph-clock-counter-clockwise text-primary"></i>
+                    Ventas
                 </a>
             @endif
 
@@ -81,10 +89,12 @@
                 <a href="{{ route('clientes') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-person-lines-fill text-warning"></i>
+                    <i class="ph ph-users text-danger"></i>
                     Clientes
                 </a>
             @endif
+
+            <hr>
 
             <!-- ╔════════════ COMPRAS ════════════╗ -->
 
@@ -96,8 +106,8 @@
                 <a href="{{ route('crear.compras') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-cart-check text-success"></i>
-                    Realizar Compra
+                    <i class="ph ph-shopping-cart text-success"></i>
+                    Compras
                 </a>
             @endif
 
@@ -105,7 +115,7 @@
                 <a href="{{ route('compras') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-card-checklist text-primary"></i>
+                    <i class="ph ph-list-checks text-primary"></i>
                     Lista de Compras
                 </a>
             @endif
@@ -114,10 +124,12 @@
                 <a href="{{ route('proveedores') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-truck text-info"></i>
+                    <i class="ph ph-truck text-info"></i>
                     Proveedores
                 </a>
             @endif
+
+            <hr>
 
             <!-- ╔════════════ CAJA ════════════╗ -->
 
@@ -129,7 +141,7 @@
                 <a href="{{ route('cajas') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-wallet2 text-success"></i>
+                    <i class="ph ph-wallet text-success"></i>
                     Cajas
                 </a>
             @endif
@@ -138,10 +150,12 @@
                 <a href="{{ route('movimientos.cajas') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-cash-stack text-primary"></i>
+                   <i class="ph ph-money text-primary"></i>
                     Movimientos de Caja
                 </a>
             @endif
+
+            <hr>
 
             <!-- ╔════════════ CUENTAS ════════════╗ -->
 
@@ -153,7 +167,7 @@
                 <a href="{{ route('cuentas') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-bank text-success"></i>
+                    <i class="ph ph-bank text-success"></i>
                     Cuentas
                 </a>
             @endif
@@ -162,7 +176,7 @@
                 <a href="{{ route('movimientos.cuentas') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-cash-coin text-primary"></i>
+                    <i class="ph ph-arrows-left-right text-primary"></i>
                     Movimientos de Cuenta
                 </a>
             @endif
@@ -177,10 +191,12 @@
                 <a href="{{ route('transferencia') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-arrow-left-right text-warning"></i>
+                    <i class="ph ph-swap text-warning"></i>
                     Caja → Cuenta
                 </a>
             @endif
+
+            <hr>
 
             <!-- ╔════════════ GASTOS ════════════╗ -->
 
@@ -192,7 +208,7 @@
                 <a href="{{ route('gastos') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-cash-stack text-danger"></i>
+                    <i class="ph ph-receipt text-danger"></i>
                     Gastos
                 </a>
             @endif
@@ -201,7 +217,7 @@
                 <a href="{{ route('tipos.gasto') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-tags text-primary"></i>
+                   <i class="ph ph-tag text-primary"></i>
                     Tipos de Gasto
                 </a>
             @endif
@@ -210,10 +226,12 @@
                 <a href="{{ route('movimientos.gastos') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-arrow-left-right text-success"></i>
+                   <i class="ph ph-arrows-left-right text-primary"></i>
                     Movimiento Gastos
                 </a>
             @endif
+
+            <hr>
 
             <!-- ╔════════════ INVENTARIO ════════════╗ -->
 
@@ -225,7 +243,7 @@
                 <a href="{{ route('productos') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-box-seam text-primary"></i>
+                    <i class="ph ph-package text-primary"></i>
                     Productos
                 </a>
             @endif
@@ -234,7 +252,7 @@
                 <a href="{{ route('categorias') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-tags text-warning"></i>
+                    <i class="ph ph-tag text-warning"></i>
                     Categorías
                 </a>
             @endif
@@ -243,10 +261,12 @@
                 <a href="{{ route('movimientos.inventario') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-arrow-left-right text-success"></i>
+                   <i class="ph ph-arrows-left-right text-success"></i>
                     Movimientos Inventario
                 </a>
             @endif
+
+            <hr>
 
             <!-- ╔════════════ ADMINISTRACIÓN ════════════╗ -->
 
@@ -254,11 +274,11 @@
                 Administración
             </div>
 
-           @if(in_array('vista_usuarios', session('permisos', [])))
+            @if(in_array('vista_usuarios', session('permisos', [])))
                 <a href="{{ route('usuarios') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-people text-primary"></i>
+                    <i class="ph ph-users text-primary"></i>
                     Usuarios
                 </a>
             @endif
@@ -267,7 +287,7 @@
                 <a href="{{ route('roles') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-person-badge text-success"></i>
+                    <i class="ph ph-identification-badge text-success"></i>
                     Roles
                 </a>
             @endif
@@ -276,10 +296,12 @@
                 <a href="{{ route('permisos') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-shield-lock text-danger"></i>
+                    <i class="ph ph-shield-check text-danger"></i>
                     Permisos
                 </a>
             @endif
+
+            <hr>
 
             <div class="sidebar-section">
                 Reportes
@@ -289,7 +311,7 @@
                 <a href="{{ route('reportes') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-file-earmark-bar-graph-fill text-warning"></i>
+                    <i class="ph ph-chart-line text-success"></i>
                     Reportes
                 </a>
             @endif
@@ -304,7 +326,7 @@
                 <a href="{{ route('impuestos') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-percent text-warning"></i>
+                    <i class="ph ph-percent text-danger"></i>
                     Impuestos
                 </a>
             @endif
@@ -313,7 +335,7 @@
                 <a href="{{ route('metodos.pago') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-credit-card text-primary"></i>
+                    <i class="ph ph-credit-card text-primary"></i>
                     Métodos de Pago
                 </a>
             @endif
@@ -322,17 +344,19 @@
                 <a href="{{ route('metodos.pago.cuenta') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-link-45deg text-success"></i>
+                    <i class="ph ph-link text-success"></i>
                     Método Pago Cuenta
                 </a>
             @endif
+
+            <hr>
             
             @if(in_array('vista_credenciales', session('permisos', [])))
                 <a href="{{ route('credenciales') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-building text-success"></i>
-                    Credenciales Empresa
+                    <i class="ph ph-buildings text-success"></i>
+                    Credenciales
                 </a>
             @endif
 
@@ -340,10 +364,23 @@
                 <a href="{{ route('respaldo') }}"
                 class="sidebar-link"
                 data-turbo-frame="contenido-dinamico">
-                    <i class="bi bi-database-fill-lock text-primary"></i>
-                    Respaldo y restauración de base de datos
+                    <i class="ph ph-database text-primary"></i>
+                    Respaldo
                 </a>
             @endif
+
+            <hr>
+            
+            <div class="modos">
+                 <button id="theme-toggle" class="theme-toggle" title="Cambiar tema">
+                    <i class="ph ph-moon"></i>
+                </button>
+                <p id="modos"></p>
+            </div>
+
+           
+
+           
 
             <div style="margin-top: 50px"></div>
 
@@ -355,7 +392,7 @@
 
     <div class="content">
 
-        <div class="topbar d-flex justify-content-between align-items-center px-2">
+        <div class="topbar">
 
             <div id="titulo"></div>
 
@@ -379,9 +416,9 @@
                     ({{ session('usuario')['rol'] ?? 'Sin rol' }})
                 </small>
 
-                <button id="btnLogout" class="btn btn-sm">
+                <button id="btnLogout" class="btn-login">
                     Cerrar sesión
-                    <i class="bi bi-box-arrow-right"></i>
+                    <!-- <i class="bi bi-box-arrow-right"></i> -->
                 </button>
 
             </div>
@@ -394,5 +431,40 @@
 
 </div>
 
+<script>
+const html = document.documentElement;
+const btn = document.getElementById("theme-toggle");
+const icon = btn.querySelector("i");
+const texto = document.getElementById("modos");
+
+function actualizarTema() {
+    const dark = html.dataset.theme === "dark";
+
+    icon.className = dark ? "ph ph-sun" : "ph ph-moon";
+    texto.textContent = dark ? "Modo oscuro" : "Modo claro";
+}
+
+// Estado inicial
+actualizarTema();
+
+btn.addEventListener("click", () => {
+
+    icon.style.transform = "rotate(180deg)";
+
+    setTimeout(() => {
+
+        html.dataset.theme =
+            html.dataset.theme === "dark"
+                ? "light"
+                : "dark";
+
+        actualizarTema();
+
+        icon.style.transform = "";
+
+    }, 120);
+
+});
+</script>
 </body>
 </html>

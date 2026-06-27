@@ -61,7 +61,8 @@ class DashboardController extends Controller
             case 'dia':
 
                 $grafica = (clone $query)    
-                    ->whereDate( 'fecha_venta', '>=', Carbon::now()->subDays(60))
+                    // ->whereDate( 'fecha_venta', '>=', Carbon::now()->subDays(60))
+                    ->whereDate( 'fecha_venta', '>=', Carbon::now()->subDays(1000))
                     ->selectRaw("DATE_FORMAT(fecha_venta, '%Y-%m-%d') as label")
                     ->selectRaw('COUNT(*) as cantidad')
                     ->selectRaw('SUM(total_venta) as total')

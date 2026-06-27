@@ -2,7 +2,7 @@
 <turbo-frame id="contenido-dinamico">
 
     @include('ventas.CheckColumnasVentas')
-        <table id="tablaVentas" class="table table-striped table-bordered">
+        <table id="tablaVentas" class="table  table-bordered">
 
             <thead>
                 <tr>

@@ -11,7 +11,10 @@ export default function initMostrarVentas() {
             { data: 'numero_factura' },
             { data: 'cliente.nombre_cliente'},
             { data: 'usuario.nombre_usuario' },
-            { data: 'id_caja' },
+            { data: 'id_caja', render: function(data){
+                    return `Caja ${data}
+                    `;
+                } },
             { data: 'fecha_venta', render: function(data){ return formatearFecha(data); } },
             { data: 'subtotal_venta', render: data => moneda(data) },
             { data: 'impuesto_venta', render: data => moneda(data) },
@@ -30,7 +33,7 @@ export default function initMostrarVentas() {
                 render: function(data){
                     return `
                         <button class="btn detalle-venta btn-detalle" data-id="${data}">
-                            <i class="bi bi-eye"></i> Detalle
+                            <i class="bi bi-eye"></i> 
                         </button>
                     `;
                 }

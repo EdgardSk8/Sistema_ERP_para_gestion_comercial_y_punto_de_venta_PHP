@@ -26,8 +26,8 @@
     flex: 1;
     min-height: 0;
     overflow-y: auto !important;
-    scrollbar-color:#c8d1dc transparent;
-    scrollbar-width:thin;
+     scrollbar-color:#c8d1dc transparent;
+     scrollbar-width:thin;
 }
 
 /* elimina micro gaps por subpixel rendering */
@@ -46,7 +46,7 @@
 /* Columna th (Titulo )*/ 
 .table thead th{ 
     /* background:#1f2937 !important; */
-    background:#273445 !important;
+     background:#273445 !important;
     color:white !important;
     text-align: center !important; /* Horizontal */
     vertical-align: middle !important; /* Vertical */
