@@ -2,7 +2,7 @@ export default function initMostrarVentas() {
 
     document.getElementById('titulo').textContent = 'HISTORIAL DE VENTAS';
 
-    $('#tablaVentas').DataTable({
+    const table = $('#tablaVentas').DataTable({
 
         ajax: { url: '/ventas/mostrar', type: 'GET', dataSrc: 'ventas' },
 
@@ -23,8 +23,8 @@ export default function initMostrarVentas() {
             { data: 'estado_venta',
                 render: function(data){
                     return data == 1
-                        ? '<span class="estado estado-activo">Registrada</span>'
-                        : '<span class="estado estado-inactivo">Anulada</span>';
+                        ? '<span class="estado estado-activo"><i class="fa-solid fa-check me-1"></i></span>'
+                        : '<span class="estado estado-inactivo"><i class="fa-solid fa-ban me-1"></i></span>';
                 }
             },
 
@@ -32,8 +32,8 @@ export default function initMostrarVentas() {
                 data: 'id_venta',
                 render: function(data){
                     return `
-                        <button class="btn detalle-venta btn-detalle" data-id="${data}">
-                            <i class="bi bi-eye"></i> 
+                        <button class=" detalle-venta btn-detalle" data-id="${data}">
+                            <i class="fa-solid fa-eye text-primary"></i>
                         </button>
                     `;
                 }
@@ -45,6 +45,11 @@ export default function initMostrarVentas() {
             ConfigurarFiltrosDataTable(this, { columnasSelect: [2,3, 9], columnasIgnorar: [11] });
         }
     }); // Fin de datatables
+
+
+    $('#toggleFooter').on('change', function () {
+        $('.dataTables_scrollFoot').toggleClass('activo', this.checked);
+    });
 
     configurarToggleColumnas('tablaVentas');
 

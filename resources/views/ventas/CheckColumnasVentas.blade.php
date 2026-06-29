@@ -5,11 +5,11 @@
         <!-- Dropdown columnas -->
         <div class="dropdown">
 
-            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                 Columnas
             </button>
 
-            <div class="dropdown-menu p-3 dropdown-columns">
+            <div class="dropdown-menu dropdown-columns">
 
                 <div class="form-check">
                     <input class="form-check-input toggle-col" type="checkbox" data-column="0" id="colId">
@@ -32,8 +32,8 @@
                 </div>
 
                 <div class="form-check">
-                    <input class="form-check-input toggle-col" type="checkbox" data-column="4" id="colUsuario" checked>
-                    <label class="form-check-label" for="colUsuario">Nº Caja</label>
+                    <input class="form-check-input toggle-col" type="checkbox" data-column="4" id="colNCaja" checked>
+                    <label class="form-check-label" for="colNCaja">Nº Caja</label>
                 </div>
 
                 <div class="form-check">
@@ -74,6 +74,9 @@
             </div>
 
         </div>
+
+        <input type="checkbox" id="toggleFooter" class="togglecheck" hidden>
+        <label for="toggleFooter" class="toggle-btn"> Mostrar filtros </label>
 
     </div>
 

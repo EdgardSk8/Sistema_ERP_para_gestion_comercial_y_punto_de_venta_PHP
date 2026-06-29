@@ -4,25 +4,30 @@
     @include('proveedores.CrearProveedor') {{-- MODAL CREAR --}}
     @include('proveedores.EditarProveedor') {{-- MODAL EDITAR --}}
 
+    <div class="card">
 
-    <table id="tablaProveedores" class="table table-striped table-bordered">
+        <table id="tablaProveedores" class="table table-striped table-bordered">
 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>RUC</th>
-                <th>Teléfono</th>
-                <th>Correo</th>
-                <th>Dirección</th>
-                <!-- <th>Fecha de Creación</th> -->
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>RUC</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Dirección</th>
+                    <!-- <th>Fecha de Creación</th> -->
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
 
-        <tbody></tbody>
+            <tbody></tbody>
 
-    </table>
+        </table>
+
+    </div>
+
+
 
 </turbo-frame>

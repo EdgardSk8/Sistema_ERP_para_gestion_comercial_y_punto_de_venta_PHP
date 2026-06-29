@@ -34,17 +34,17 @@
             </div>
 
         </div>
+        
+        <!-- Botón agregar -->
+        <button type="button" class="btn-agregar" data-bs-toggle="modal" data-bs-target="#modalCrearMetodoPago">
+            + Agregar Método de Pago
+        </button>
 
         <!-- Toggle inactivos -->
         <input type="checkbox" id="toggleInactivosMetodosPago" class="togglecheck" hidden checked>
         <label for="toggleInactivosMetodosPago" class="toggle-btn">
             Ocultar inactivos
         </label>
-
-        <!-- Botón agregar -->
-        <button type="button" class="btn-agregar" data-bs-toggle="modal" data-bs-target="#modalCrearMetodoPago">
-            + Agregar Método de Pago
-        </button>
 
     </div>
 

@@ -40,16 +40,16 @@
 
         </div>
 
+        <!-- Botón agregar -->
+        <button type="button" class="btn-agregar" data-bs-toggle="modal" data-bs-target="#modalCrearImpuesto">
+            + Agregar Impuesto
+        </button>
+
         <!-- Toggle inactivos -->
         <input type="checkbox" id="toggleInactivosImpuestos" class="togglecheck" hidden checked>
         <label for="toggleInactivosImpuestos" class="toggle-btn">
             Ocultar inactivos
         </label>
-
-        <!-- Botón agregar -->
-        <button type="button" class="btn-agregar" data-bs-toggle="modal" data-bs-target="#modalCrearImpuesto">
-            + Agregar Impuesto
-        </button>
 
     </div>
 

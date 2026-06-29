@@ -21,19 +21,34 @@ body{
 
 /* MODO NORMAL */
 :root{
-    --fs-sm:12px;
-    --fs:14px;
-    --fs-lg:16px;
-    --fs-xlg:18px;
-    --primary:#22C55E;
-    --primary-hover:#16A34A;
-    --primary-soft:#EAFBEF;
-    --secondary: #2b66be;
-    --secondary-soft: #e1ebfa;
+    --fs-xsm: 10px;
+    --fs-sm: 12px;
+    --fs: 14px;
+    --fs-lg: 16px;
+    --fs-xlg: 18px;
+
+    --verde:#22C55E;
+    --verde-light: #b8f2c8;
+    --verde-hover:#6d947b;
+    --verde-soft:#EAFBEF;
+
+    --celeste: #a1c7ff;
+    --celeste-soft: #e1ebfa;
+    --celeste-soft-border: #cbd7e9;
+
+    --gris: #CBD5E1;
+    --gris-hover: #94A3B8;
+    --gris-soft: #eeeeee;
+
+    --rojo: #EF4444;
+    --rojo-hover: #DC2626;
+    --rojo-soft: #FEE2E2;
+
     --warning: #EF4444;
     --warning-hover:#ee3434;
     --bg:#F8FAF9;
     --surface:#FFFFFF;
+
     --text:#111827;
     --text-soft:#6B7280;
     --border:#E5E7EB;
@@ -52,8 +67,8 @@ body{
     --text:#F3F4F6;
     --text-soft:#9CA3AF;
     --border:#243029;
-    --primary:#093d1c;
-    --primary-soft:#1A2B20;
+    --verde:#093d1c;
+    --verde-soft:#1A2B20;
     --shadow:none;
 }
 
@@ -215,8 +230,8 @@ body{
 i{ font-size: var(--fs-xlg) }
 hr{ height: 0px; margin: 0 0; } /* Espaciador */
 
-.sidebar-link:hover, .submenu a:hover{ background:var(--primary-soft); color:var(--primary); }
-.sidebar-link.active, .submenu a.active{ background:var(--primary-soft); color:var(--primary); font-weight:600; }
+.sidebar-link:hover, .submenu a:hover{ background:var(--verde-soft); color:var(--verde); }
+.sidebar-link.active, .submenu a.active{ background:var(--verde-soft); color:var(--verde); font-weight:600; }
 
 #titulo{
     font-weight:600;
@@ -284,14 +299,46 @@ hr{ height: 0px; margin: 0 0; } /* Espaciador */
     scrollbar-width:thin;
 }
 
-/* ---------------------------------------------------------------------- */
+.dataTables_scrollFoot{
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(-8px);
+    transition:
+        max-height .4s ease,
+        opacity .2s ease .2s,
+        transform .5s ease;
+}
+
+.dataTables_scrollFoot th { border: none; }
+.dataTables_scrollFoot input { color: var(--text); }
+
+.dataTables_scrollFoot.activo{
+    max-height: 200px;
+    opacity: 1;
+    transform: translateY(0);
+
+    /* ENTRADA (sin delay) */
+    transition:
+        transform .4s ease,
+        opacity .2s ease,
+        max-height .4s ease;
+}
+
+---------------------------------------------------------------- */
 
 /* elimina micro gaps por subpixel rendering */
 .dataTables_scrollBody { margin-top: -1px; }
-.table{ margin: 0 auto; white-space: nowrap; }
+.table{ margin: 0 auto; white-space: nowrap;}
 table.dataTable thead th::before, table.dataTable thead th::after{ display: none !important; }
 
 /* ---------------------------------------------------------------------- */
+
+.card{
+    padding: var(--space-2);
+    min-height: 0;
+    height: 100vh;
+}
 
 /* Columna th (Titulo )*/ 
 .table thead th{ 
@@ -301,9 +348,11 @@ table.dataTable thead th::before, table.dataTable thead th::after{ display: none
     letter-spacing: var(--space-1);
     font-size: var(--fs);
     padding: 8px 2px !important;
+    /* background: var(--gris-soft); */
     border: none;
     border-bottom: 2px solid rgb(204, 204, 204) !important;
 }
+
 
 /* Columna th (Contenido)*/ 
 .table td{
@@ -312,10 +361,11 @@ table.dataTable thead th::before, table.dataTable thead th::after{ display: none
     text-align: center !important; /* Horizontal */
     vertical-align: middle !important; /* Vertical */
     font-size: var(--fs-sm);
-    padding: 6px 2px !important;
+    padding: 6px 0 !important;
     border: none;
+    /* border: 1px solid black; */
     color: var(--text);
-    border-bottom: 1px solid rgb(230, 230, 230) !important;
+    /* border-bottom: 1px solid rgb(230, 230, 230) !important; */
 }
 
 .dataTables_scrollBody thead th{
@@ -325,7 +375,7 @@ table.dataTable thead th::before, table.dataTable thead th::after{ display: none
     line-height:0 !important;
 }
 
-tbody tr:hover td{ background:var(--secondary-soft); transition:.10s; }
+tbody tr:hover td{ background:var(--celeste-soft); transition:.10s; }
 
 /* ---------------------------------------------------------------------- */
 
@@ -337,21 +387,30 @@ td:last-child{  white-space: nowrap; }/* Btn horizontales */
     font-size: var(--fs-sm);
 }
 
-.page-link { font-size: var(--fs-sm); color: var(--secondary); transition: all .2s ease;}
+.dataTables_info{
+    justify-content: center;
+    flex: 1;
+    text-align: center !important;
+    display: flex;
+    align-items: center;
+    padding: 0 !important;
+
+}
+
+.page-link { font-size: var(--fs-sm); transition: all .2s ease; padding: 2px 10px;}
 
 .page-link:hover {
-    background: var(--secondary-soft);
-    color: var(--text);
-    border-color: var(--secondary-soft);
+    background: var(--celeste-soft);
+    border-color: var(--celeste-soft);
     transform: translateY(-1px);
 }
 
 .page-link:active { transform: scale(0.96); }
 
 .page-item.active .page-link {
-    background: var(--secondary-soft);
-    color: var(--text-soft);
-    border-color: var(--secondary-soft);
+    background: var(--celeste);
+    color: var(--text);
+    border-color: var(--celeste-soft);
 }
 
 /* ---------------------------------------------------------------------- */
@@ -375,30 +434,271 @@ table.dataTable tfoot select{
     padding: 2px 6px !important;
     min-height: 22px !important;
     height: 22px !important;
+    justify-content: center;
     font-size: var(--fs-sm);
     line-height: 1 !important;
     border-radius: 4px !important;
+    color: var(--text-soft);
 }
 
 /* QUITAR ESPACIO EXTRA */
-table.dataTable tfoot{
+/* table.dataTable tfoot{
     padding: 0 !important;
     margin: 0 !important;
-}
+} */
 
 /* ---------------------------------------------------------------------- */
 
-.dataTables_scrollBody tbody tr {
-    opacity: 0;
-    transform: translateY(14px);
-    filter: blur(2px);
-    animation: waterIn .5s cubic-bezier(.2,.8,.2,1) forwards;
+.dataTables_scrollBody tbody tr{
+    animation: waterIn .3s ease both;
 }
 
-@keyframes waterIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-        filter: blur(0);
+@keyframes waterIn{
+    0%{
+        opacity: 0;
+        transform: translateX(-10px);
     }
+    75%{
+        opacity: 1;
+        transform: translateX(1px); /* se pasa un poco */
+    }
+    100%{
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.dataTables_scrollBody tbody tr:nth-child(1){animation-delay:.03s;}
+.dataTables_scrollBody tbody tr:nth-child(2){animation-delay:.06s;}
+.dataTables_scrollBody tbody tr:nth-child(3){animation-delay:.09s;}
+.dataTables_scrollBody tbody tr:nth-child(4){animation-delay:.12s;}
+.dataTables_scrollBody tbody tr:nth-child(5){animation-delay:.15s;}
+.dataTables_scrollBody tbody tr:nth-child(6){animation-delay:.18s;}
+.dataTables_scrollBody tbody tr:nth-child(7){animation-delay:.21s;}
+.dataTables_scrollBody tbody tr:nth-child(8){animation-delay:.24s;}
+.dataTables_scrollBody tbody tr:nth-child(9){animation-delay:.27s;}
+.dataTables_scrollBody tbody tr:nth-child(10){animation-delay:.30s;}
+.dataTables_scrollBody tbody tr:nth-child(11){animation-delay:.33s;}
+.dataTables_scrollBody tbody tr:nth-child(12){animation-delay:.36s;}
+.dataTables_scrollBody tbody tr:nth-child(13){animation-delay:.39s;}
+.dataTables_scrollBody tbody tr:nth-child(14){animation-delay:.42s;}
+.dataTables_scrollBody tbody tr:nth-child(15){animation-delay:.45s;}
+.dataTables_scrollBody tbody tr:nth-child(16){animation-delay:.48s;}
+.dataTables_scrollBody tbody tr:nth-child(17){animation-delay:.51s;}
+.dataTables_scrollBody tbody tr:nth-child(18){animation-delay:.54s;}
+.dataTables_scrollBody tbody tr:nth-child(19){animation-delay:.57s;}
+.dataTables_scrollBody tbody tr:nth-child(20){animation-delay:.60s;}
+
+/* ################################################################################################################################# *//* ################################################################################################################################# */
+/* ################################################################################################################################# */
+/* ################################################################################################################################# */
+
+/* [BtnToggle.CSS] */
+
+.dropdown-toggle, .btn-agregar, .toggle-btn{
+    min-width: 160px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 14px;
+
+    background:var(--surface);
+    color: var(--text);
+    font-weight: bold;
+
+    border:1px solid #d1d5db;
+    border-radius: 8px;
+
+    font-size: var(--fs);
+
+    cursor:pointer;
+    margin-bottom: 10px;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        box-shadow .5s ease,
+        transform .3s ease;
+}
+
+.dropdown-toggle:hover{
+    background: var(--celeste-soft);
+    border: 1px solid var(--celeste-soft-border); 
+}
+
+.dropdown-toggle:active{ transform:scale(.9); box-shadow: 0 8px 20px rgba(0,0,0,.08); }
+.dropdown-toggle:focus{ border: 2px solid var(--celeste-soft-border); }
+
+/* ============================
+   MENÚ
+============================ */
+
+.dropdown-menu{
+    min-width: 160px;
+    display:block;
+    opacity:0;
+    visibility:hidden;
+    transform: translateY(-8px) scale(.98);
+    max-height: 60vh;
+    overflow:hidden;
+    border:none;
+    border-radius:14px;
+    background:#ffffff;
+    box-shadow:
+        0 12px 35px rgba(15,23,42,.10),
+        0 3px 10px rgba(15,23,42,.05);
+        padding: 10px 10px !important;
+
+    transition:
+        opacity .3s ease,
+        /* transform .3s ease, */
+        visibility .6s;
+}
+
+.dropdown-menu.show{
+    opacity:1;
+    visibility:visible;
+    transform: translateY(0)scale(1);
+    pointer-events:auto;
+}
+
+
+/* ============================
+   SCROLL
+============================ */
+
+.dropdown-columns{ overflow-y: auto; }
+.dropdown-columns::-webkit-scrollbar{ scrollbar-width: none; }
+
+/* ============================
+   OPCIONES
+============================ */
+
+.dropdown-columns .form-check{
+    display: flex;
+    align-items: center;
+    min-width: 20px;
+    gap: 10px;
+    margin:0;
+    padding: 5px 10px;
+    border-radius: 10px;
+    cursor:pointer;
+    transition:
+        background .20s,
+        transform .18s;
+}
+
+.dropdown-columns .form-check:hover{ background: var(--celeste-soft); transition:.10s; }
+.dropdown-columns .form-check-input{ cursor:pointer; margin:0; }
+.dropdown-columns .form-check-label{ cursor:pointer; color:var(--text); font-size:var(--fs); }
+
+.form-check-label{ width: 100%; height: 100%; }
+
+/* ============================
+   CHECKBOX
+============================ */
+
+.form-check-input{
+    width:17px;
+    height:17px;
+    border-radius:6px;
+    border:1px solid #cbd5e1;
+    transition:.2s;
+}
+
+.form-check-input:checked{ background-color:#2563eb; border-color:#2563eb; }
+
+/* ============================
+   ANIMACIÓN CASCADA
+============================ */
+
+.dropdown-menu.show .form-check{ animation:entrada .28s ease both; }
+.dropdown-menu.show .form-check:nth-child(1){animation-delay:.02s;}
+.dropdown-menu.show .form-check:nth-child(2){animation-delay:.04s;}
+.dropdown-menu.show .form-check:nth-child(3){animation-delay:.06s;}
+.dropdown-menu.show .form-check:nth-child(4){animation-delay:.08s;}
+.dropdown-menu.show .form-check:nth-child(5){animation-delay:.10s;}
+.dropdown-menu.show .form-check:nth-child(6){animation-delay:.12s;}
+.dropdown-menu.show .form-check:nth-child(7){animation-delay:.14s;}
+.dropdown-menu.show .form-check:nth-child(8){animation-delay:.16s;}
+.dropdown-menu.show .form-check:nth-child(9){animation-delay:.18s;}
+.dropdown-menu.show .form-check:nth-child(10){animation-delay:.20s;}
+.dropdown-menu.show .form-check:nth-child(11){animation-delay:.22s;}
+.dropdown-menu.show .form-check:nth-child(12){animation-delay:.24s;}
+
+@keyframes entrada{
+    from{ opacity:0; transform: translateX(-15px); }
+    to{ opacity:1; transform: translateX(0); }
+}
+
+
+.btn-agregar {
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        box-shadow .5s ease,
+        transform .3s ease;
+}
+
+.btn-agregar:hover{
+    background: var(--celeste-soft);
+    border: 1px solid var(--celeste-soft-border); 
+}
+
+.btn-agregar:active{ transform:scale(.9); box-shadow: 0 8px 20px rgba(0,0,0,.08); background: var(--celeste); border: 1px solid var(--celeste-soft); }
+.btn-agregar:focus{ border: 1px solid var(--celeste-soft-border); }
+
+.togglecheck:checked + .toggle-btn {
+    background: var(--verde);
+    border-color: var(--verde-hover);
+    color: var(--surface);
+    justify-content: center;
+}
+
+.togglecheck:not(:checked) + .toggle-btn {
+    background: var(--rojo);
+    border-color:var(--rojo-hover);
+    color: var(--surface);
+    justify-content: center;
+}
+
+.toggle-btn:hover{
+    background:#334155;
+    border-color:#475569;
+}
+
+/* ################################################################################################################################# *//* ################################################################################################################################# */
+/* ################################################################################################################################# */
+/* ################################################################################################################################# */
+
+/* [Botones.CSS] */
+
+/* .badge{
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    border-radius: 12px;
+} */
+
+.btn-detalle{
+    transition: all 0.15s ease;
+    background: transparent;
+    padding: 0 10px;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.btn-detalle:hover { transform: scale(1.6); }
+.btn-detalle:active { transform: scale(0.95); }
+
+.estado{ display: flex; justify-content: center; transition: all 0.15s ease; }
+.estado-inactivo i{ color: var(--rojo); font-size: var(--fs-xlg);  }
+.estado-activo{ color: var(--verde); }
+
+.estado:hover{
+    transform: scale(1.6);
+
 }

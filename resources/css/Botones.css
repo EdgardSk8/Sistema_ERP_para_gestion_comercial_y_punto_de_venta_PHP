@@ -30,7 +30,7 @@ button:disabled,
 
 /* ══════════════════════════════════════════════════════════════════════════════════════ */
 
-.btn-detalle, .btn-editar, td .btn-baja, .btn-alta, .estado, .btn-transferir, 
+/*.btn-detalle,*/ .btn-editar, td .btn-baja, .btn-alta,/* .estado,*/.btn-transferir, 
 .agregar-saldo, .retirar-saldo, .pagar-gasto, .editar-gasto, .estado-pendiente, .agregarProducto{
     padding: 2px 8px;
     font-size: 14px;
@@ -44,10 +44,14 @@ button:disabled,
 
 /* ══════════════════════════════════════════════════════════════════════════════════════ */
 
-/* BOTON DETALLES*/
+/* BOTON DETALLES
 .btn-detalle { background-color: #0d6efd; color:white; }
-.btn-detalle:hover { background-color: #0c5cd3; color:white; }
-.btn.btn-detalle:active { background-color: #0c5cd3; color:white; transform: scale(0.90); }
+
+.btn.btn-detalle:active { background-color: #0c5cd3; color:white; transform: scale(0.90); } */
+
+
+
+
 
 /* BOTON DE TRANSFERIR */
 .btn-transferir { background-color: #198754;color: white; }
@@ -82,7 +86,7 @@ button:disabled,
 .btn-baja{ background:#ef4444; color:white; }
 .btn-baja:hover{ background:#dc2626; color:white; }
 .btn.btn-baja:active { background:#dc2626; color:white; transform: scale(0.90); }
-
-.estado-activo{ background:#22c55e; color:white; } /* ACTIVO */
+/* 
+.estado-activo{ background:#22c55e; color:white; } ACTIVO 
 .estado-inactivo{ background:#ef4444; color:white; } /* INACTIVO */
 .estado-pendiente{ background-color: #ef4444; color: white; } /* PENDIENTE */
