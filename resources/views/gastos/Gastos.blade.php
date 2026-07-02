@@ -2,33 +2,37 @@
 
 {{-- ══════════════════════════════════ MODALES ══════════════════════════════════ --}}
 
-@include('gastos.CrearGasto')
-@include('gastos.EditarGasto')
-@include('gastos.PagarGasto')
-@include('gastos.DetalleGasto')
-@include('gastos.CheckColumnasGastos')
+    @include('gastos.CrearGasto')
+    @include('gastos.EditarGasto')
+    @include('gastos.PagarGasto')
+    @include('gastos.DetalleGasto')
+    @include('gastos.CheckColumnasGastos')
 
 <!-- ═════════════════════════════ Tabla (Datatables) ════════════════════════════ -->
 
-<table id="tablaGastos" class="table table-striped table-bordered">
+    <div class="card">
 
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Tipo</th>
-                <th>Detalle</th>
-                <th>Vencimiento</th>
-                <th>Estado pago</th>
-                <th>Último Pago</th>
-                <th>Monto</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
+        <table id="tablaGastos" class="table  table-bordered">
 
-    <tbody></tbody>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>Detalle</th>
+                    <th>Vencimiento</th>
+                    <th>Estado pago</th>
+                    <th>Último Pago</th>
+                    <th>Monto</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
 
-</table>
+            <tbody></tbody>
+
+        </table>
+
+    </div>
 
 <!-- ═════════════════════════════════════════════════════════════════════════════ -->
 

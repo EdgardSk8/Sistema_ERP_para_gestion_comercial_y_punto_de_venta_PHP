@@ -2,45 +2,49 @@
 
     @include('compras.CheckColumnasCompras')
 
-    <table id="tablaCompras" class="table table-striped table-bordered">
+    <div class="card">
 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Factura</th>
-                <th>Proveedor</th>
-                <th>Usuario</th>
-                <th>Fecha</th>
-                <th>Subtotal</th>
-                <th>Desc</th>
-                <th>Impuesto</th>
-                <th>Total</th>
-                <th>Método Pago</th>
-                <th>Estado</th>
-                <th>Detalles</th>
-            </tr>
-        </thead>
+        <table id="tablaCompras" class="table  table-bordered">
 
-        <tbody></tbody>
-
-        <tfoot>
+            <thead>
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <th>ID</th>
+                    <th>Factura</th>
+                    <th>Proveedor</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                    <th>Subtotal</th>
+                    <th>Desc</th>
+                    <th>Impuesto</th>
+                    <th>Total</th>
+                    <th>Método Pago</th>
+                    <th>Estado</th>
+                    <th>Detalles</th>
                 </tr>
-            </tfoot>
+            </thead>
 
-    </table>
+            <tbody></tbody>
+
+            <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+
+        </table>
+
+    </div>
 
     @include('compras.DetalleCompra')
 

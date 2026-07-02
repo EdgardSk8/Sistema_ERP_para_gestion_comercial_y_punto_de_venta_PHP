@@ -49,39 +49,29 @@ export default function initMostrarProveedores() {
                 render: function(data, type, row){
 
                     let botonEstado = row.estado_proveedor == 1
-                        ? `<button class="btn btn-sm btn-baja bajaProveedor" data-id="${data}">
+                        ? `<button class="btn-baja bajaProveedor" data-id="${data}">
                         
-                            <i class="bi bi-person-x"></i> Dar Baja
+                            <i class="fa-solid fa-ban"></i>
                         
                         </button>`
 
-                        : `<button class="btn btn-sm btn-alta bajaProveedor" data-id="${data}">
+                        : `<button class="btn-alta bajaProveedor" data-id="${data}">
                         
-                            <i class="bi bi-check-circle"></i> Activar
+                            <i class="fa-solid fa-circle-check"></i>
                         
                         </button>`;
 
                     return ` 
-                        <button class="btn btn-sm btn-editar editarProveedor" data-id="${data}">
+                        <button class="btn-editar editarProveedor" data-id="${data}">
                         
-                            <i class="bi bi-pencil-square me-1"></i> Editar
+                            <i class="fa-solid fa-pencil-alt"></i>
                         
                         </button>
                         ${botonEstado}
                     `;
                 }
             }
-        ],
-        columnDefs: [
-            { targets: 0, visible: $('.toggle-col[data-column="0"]').is(':checked') },
-            { targets: 1, visible: $('.toggle-col[data-column="1"]').is(':checked') },
-            { targets: 2, visible: $('.toggle-col[data-column="2"]').is(':checked') },
-            { targets: 3, visible: $('.toggle-col[data-column="3"]').is(':checked') },
-            { targets: 4, visible: $('.toggle-col[data-column="4"]').is(':checked') },
-            { targets: 5, visible: $('.toggle-col[data-column="5"]').is(':checked') },
-            { targets: 6, visible: $('.toggle-col[data-column="6"]').is(':checked') },
-            { targets: 7, visible: $('.toggle-col[data-column="7"]').is(':checked') },
-        ], order: [[0, 'desc']],
+        ], drawCallback: function () { AnimarFilasVisibles(this.api()); }, order: [[0, 'desc']],
 
     });
 

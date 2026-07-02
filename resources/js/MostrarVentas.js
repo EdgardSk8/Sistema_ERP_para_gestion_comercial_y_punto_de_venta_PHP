@@ -32,24 +32,23 @@ export default function initMostrarVentas() {
                 data: 'id_venta',
                 render: function(data){
                     return `
-                        <button class=" detalle-venta btn-detalle" data-id="${data}">
-                            <i class="fa-solid fa-eye text-primary"></i>
+                        <button class="detalle-venta btn-detalle" data-id="${data}">
+                            <i class="fa-solid fa-eye"></i>
                         </button>
                     `;
                 }
             }
+            
         ], 
        
         order: [[0, 'desc']],
         initComplete: function () {
             ConfigurarFiltrosDataTable(this, { columnasSelect: [2,3, 9], columnasIgnorar: [11] });
-        }
-    }); // Fin de datatables
+        },
 
-
-    $('#toggleFooter').on('change', function () {
-        $('.dataTables_scrollFoot').toggleClass('activo', this.checked);
-    });
+        drawCallback: function () { AnimarFilasVisibles(this.api()); }
+        
+    }); // Fin de datatables    
 
     configurarToggleColumnas('tablaVentas');
 

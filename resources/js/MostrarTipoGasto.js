@@ -60,7 +60,7 @@ export default function initTipoGasto() {
                     `;
                 }
             }
-        ], 
+        ], drawCallback: function () { AnimarFilasVisibles(this.api()); }
     });
 
     // Click en botón Editar

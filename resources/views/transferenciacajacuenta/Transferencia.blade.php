@@ -3,25 +3,28 @@
     @include("transferenciacajacuenta.CheckColumnasTransferirCuentas")
     @include('transferenciacajacuenta.TransferirCuenta')
 
-    <table id="tablaCajaCuenta" class="table table-striped table-bordered">
+    <div class="card">
 
-        <thead class="table-dark">
-            <tr>
-                <th>Caja</th>
-                <th>Fecha</th>
-                <th>Abre Caja</th>
-                <th>Cierra Caja</th>
-                <th>Saldo</th>
-                <th>Transferido</th>
-                <th>Cuenta Transferida</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
+        <table id="tablaCajaCuenta" class="table  table-bordered">
 
-        <tbody></tbody>
+            <thead class="table-dark">
+                <tr>
+                    <th>Caja</th>
+                    <th>Fecha</th>
+                    <th>Abre Caja</th>
+                    <th>Cierra Caja</th>
+                    <th>Saldo</th>
+                    <th>Transferido</th>
+                    <th>Cuenta Transferida</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
 
-    </table>
+            <tbody></tbody>
 
+        </table>
+
+    </div>
 
     @include('transferenciacajacuenta.DetalleCuenta')
 

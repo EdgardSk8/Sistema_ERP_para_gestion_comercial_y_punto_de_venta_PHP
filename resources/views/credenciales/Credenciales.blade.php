@@ -1,11 +1,9 @@
 <turbo-frame id="contenido-dinamico">
 
-    <div class="container-fluid">
-
     <!-- ╔════════════ CARD ════════════╗ -->
     <!-- ╚══════════════════════════════╝ -->
 
-        <div class="card shadow-sm">
+        <div class="card">
 
             <div style="background-color: #111827" class="card-header d-flex justify-content-between align-items-center">
                 <h6 class="mb-0"  style="color: #f4f6f9">
@@ -57,7 +55,6 @@
 
         </div>
         
-    </div>
 
     @include('credenciales.EditarCredenciales')
 

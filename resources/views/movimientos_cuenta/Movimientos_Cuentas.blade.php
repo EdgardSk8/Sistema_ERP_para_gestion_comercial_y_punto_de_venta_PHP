@@ -2,34 +2,38 @@
 
 @include('movimientos_cuenta.CheckColumnasMovimientoCuentas')
 
-    <table id="tablaMovimientosCuenta" class="table table-striped table-bordered">
+    <div class="card">
 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Usuario</th>
-                <th>Fecha</th>
-                <th>Cuenta</th>
-                <th>Tipo</th>
-                <th>Descripción</th>
-                <th>Monto</th>
-            </tr>
-        </thead>
+        <table id="tablaMovimientosCuenta" class="table  table-bordered">
 
-        <tbody></tbody>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                    <th>Cuenta</th>
+                    <th>Tipo</th>
+                    <th>Descripción</th>
+                    <th>Monto</th>
+                </tr>
+            </thead>
 
-        <tfoot>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-        </tfoot>
+            <tbody></tbody>
 
-    </table>
+            <tfoot>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </tfoot>
+
+        </table>
+
+    </div>
 
 </turbo-frame>

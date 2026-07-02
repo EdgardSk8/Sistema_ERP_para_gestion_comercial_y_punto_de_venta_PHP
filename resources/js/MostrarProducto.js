@@ -102,12 +102,13 @@ export default function initMostrarProductos() {
                 }
             }
         ],
-        order: [[1, 'asc']],
+        drawCallback: function () { AnimarFilasVisibles(this.api()); }, order: [[1, 'asc']],
         initComplete: function () {
             ConfigurarFiltrosDataTable(this, { columnasSelect: [3, 9], columnasIgnorar: [1, 12] });
         }
 
     }); // Fin de Funcion de inicializacion de tabla
+    
 
 /* ════════════════════════════════════════════════════════════════════════════════════════════════════════════════ */
 

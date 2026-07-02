@@ -4,20 +4,24 @@
     @include('impuestos.CrearImpuesto')
     @include('impuestos.EditarImpuesto')
 
-    <table id="tablaImpuestos" class="table table-striped table-bordered">
+    <div class="card">
 
-        <thead>
-            <tr>
-                <th>Nombre del Impuesto</th>
-                <th>Porcentaje (%)</th>
-                <th>Fecha de Creación</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
+        <table id="tablaImpuestos" class="table  table-bordered">
 
-        <tbody></tbody>
+            <thead>
+                <tr>
+                    <th>Nombre del Impuesto</th>
+                    <th>Porcentaje (%)</th>
+                    <th>Fecha de Creación</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
 
-    </table>
+            <tbody></tbody>
+
+        </table>
+
+    </div>
 
 </turbo-frame>

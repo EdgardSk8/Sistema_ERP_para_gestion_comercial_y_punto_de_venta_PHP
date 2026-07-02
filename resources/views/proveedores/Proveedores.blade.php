@@ -6,7 +6,7 @@
 
     <div class="card">
 
-        <table id="tablaProveedores" class="table table-striped table-bordered">
+        <table id="tablaProveedores" class="table  table-bordered">
 
             <thead>
                 <tr>

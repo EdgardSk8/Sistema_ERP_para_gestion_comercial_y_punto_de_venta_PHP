@@ -565,7 +565,7 @@ const  PlantillaExcel = function (config = {}) {
                             );
                         },
                         columns: respuesta.columnas.map(c => ({ data: c.data, title: c.title, defaultContent: "" })),
-                        pageLength: 20, dom: 'Bt', buttons: generarBotones(reporte), 
+                        pageLength: 20, dom: 'Bt', buttons: generarBotones(reporte), drawCallback: function () { AnimarFilasVisibles(this.api()); },
                         columnDefs: [ { targets: "_all", defaultContent: "" } ]
                         
 

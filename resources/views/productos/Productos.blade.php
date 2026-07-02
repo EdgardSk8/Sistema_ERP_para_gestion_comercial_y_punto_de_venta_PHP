@@ -4,47 +4,51 @@
     @include('productos.DetalleProducto')
     @include('productos.CheckColumnasProductos')
 
-    <table id="TablaMostrarProductos" class="table table-striped table-bordered">
+    <div class="card">
 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Imagen</th>
-                <th>Nombre</th>
-                <th>Categoría</th>
-                <th>P. Compra</th>
-                <th>P. Venta</th>
-                <th>P.V.Final</th>
-                <th>Ganancia</th>
-                <th>Ganancia %</th>
-                <th>Impuesto</th>
-                <th>Stock</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
+        <table id="TablaMostrarProductos" class="table  table-bordered">
 
-        <tbody></tbody>
-
-            <tfoot>
+            <thead>
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <th>ID</th>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>P. Compra</th>
+                    <th>P. Venta</th>
+                    <th>P.V.Final</th>
+                    <th>Ganancia</th>
+                    <th>Ganancia %</th>
+                    <th>Impuesto</th>
+                    <th>Stock</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
                 </tr>
-            </tfoot>
+            </thead>
 
-    </table>
+            <tbody></tbody>
+
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+
+        </table>
+
+    </div>
 
 <!--    ╔════════ Mensaje Toast ══════════╗ 
         ╚═════════════════════════════════╝     -->

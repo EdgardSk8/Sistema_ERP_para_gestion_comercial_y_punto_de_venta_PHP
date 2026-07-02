@@ -71,9 +71,7 @@ export default function initMovimientoCajas() {
             //         return data ? data : '—';
             //     }
             // }
-        ],
-
-        order: [[0, 'desc']],
+        ], drawCallback: function () { AnimarFilasVisibles(this.api()); }, order: [[0, 'desc']],
 
     });
 

@@ -94,6 +94,15 @@ $.extend(true, $.fn.dataTable.defaults, {
     dom: '<"top"lf>rt<"bottom"ip><"clear">',
 });
 
+window.toggleFooterDataTable = function() {
+    $('.dataTables_scrollFoot')
+        .toggleClass('activo', $('#toggleFooter').prop('checked'));
+}
+
+$(document).on('change', '#toggleFooter', function () {
+    window.toggleFooterDataTable();
+});
+
 window.validarRUC = function(ruc) {
 
     if (!ruc || ruc.trim() === '') { return true; }
@@ -324,6 +333,34 @@ window.configurarToggleColumnas = function(idTabla) {
         .on('change.toggleCol', function () {
             tabla.column($(this).data('column')).visible(this.checked);
         });
+}
+
+/* -------------------------------------------------------------------------------- */
+
+window.AnimarFilasVisibles = function(api, tiempo = 30, clase = 'animacion-fila') {
+    const body = $(api.table().container()).find('.dataTables_scrollBody');
+
+    // Si la tabla no tiene scroll, usa el tbody
+    const contenedor = body.length ? body : $(api.table().body());
+
+    const top = contenedor.scrollTop();
+    const bottom = top + contenedor.innerHeight();
+
+    $(api.rows({ page: 'current' }).nodes()).each(function () {
+        const filaTop = this.offsetTop;
+        const filaBottom = filaTop + this.offsetHeight;
+
+        if (filaBottom > top && filaTop < bottom) {
+            const indiceVisible = Math.floor((filaTop - top) / this.offsetHeight);
+
+            this.style.animationDelay = `${indiceVisible * tiempo}ms`;
+            this.classList.remove(clase);
+
+            requestAnimationFrame(() => {
+                this.classList.add(clase);
+            });
+        }
+    });
 }
 
 /* -------------------------------------------------------------------------------- */

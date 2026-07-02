@@ -4,19 +4,23 @@
     @include('tipos_gasto.CrearTipoGasto') {{-- MODAL CREAR --}}
     @include('tipos_gasto.EditarTipoGasto') {{-- MODAL EDITAR --}}
 
-    <table id="tablaTipoGasto" class="table table-striped table-bordered">
+    <div class="card">
 
-        <thead>
-            <tr>
-                <th>Nombre del Tipo de Gasto</th>
-                <th>Descripción</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
+        <table id="tablaTipoGasto" class="table  table-bordered">
 
-        <tbody></tbody>
+            <thead>
+                <tr>
+                    <th>Nombre del Tipo de Gasto</th>
+                    <th>Descripción</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
 
-    </table>
+            <tbody></tbody>
+
+        </table>
+
+    </div>
     
 </turbo-frame>

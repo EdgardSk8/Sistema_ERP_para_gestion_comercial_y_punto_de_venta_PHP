@@ -4,20 +4,24 @@
     @include('categorias.CrearCategoria') {{-- MODAL CREAR CATEGORIA --}}
     @include('categorias.EditarCategoria') {{-- MODAL EDITAR CATEGORIA --}}
 
-    <table id="tablaCategorias" class="table table-striped table-bordered">
+    <div class="card">
 
-        <thead>
-            <tr>
-                <th>Nombre de la Categoría</th>
-                <th>Descripción</th>
-                <th>Fecha de Creación</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
+        <table id="tablaCategorias" class="table  table-bordered">
 
-        <tbody></tbody>
+            <thead>
+                <tr>
+                    <th>Nombre de la Categoría</th>
+                    <th>Descripción</th>
+                    <th>Fecha de Creación</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
 
-    </table>
+            <tbody></tbody>
+
+        </table>
+
+    </div>
 
 </turbo-frame>

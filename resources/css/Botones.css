@@ -30,7 +30,7 @@ button:disabled,
 
 /* ══════════════════════════════════════════════════════════════════════════════════════ */
 
-/*.btn-detalle,*/ .btn-editar, td .btn-baja, .btn-alta,/* .estado,*/.btn-transferir, 
+/*.btn-detalle,*/ /*.btn-editar*/ td .btn-baja/*, .btn-alta, .estado, .btn-transferir, */
 .agregar-saldo, .retirar-saldo, .pagar-gasto, .editar-gasto, .estado-pendiente, .agregarProducto{
     padding: 2px 8px;
     font-size: 14px;
@@ -53,10 +53,10 @@ button:disabled,
 
 
 
-/* BOTON DE TRANSFERIR */
+/* BOTON DE TRANSFERIR
 .btn-transferir { background-color: #198754;color: white; }
 .btn-transferir:hover { background-color: #157347;color: white; } 
-.btn-transferir:active { background-color: #146c43; color: white; transform: scale(0.90); }
+.btn-transferir:active { background-color: #146c43; color: white; transform: scale(0.90); } */
 
 /* BOTON DE AGREGAR SALDO */
 .agregar-saldo { background-color: #198754; color: white; }
@@ -72,20 +72,18 @@ button:disabled,
 .pagar-gasto:hover { background-color: #157347; color: white; }
 .btn.pagar-gasto:active { background-color: #146c43; color: white; transform: scale(0.90); }
 
-/* BOTON ACTIVAR*/
+/* BOTON ACTIVAR
 .btn-alta { background-color: #0d6efd; color:white; }
 .btn-alta:hover { background-color: #0c5cd3; color:white; }
-.btn.btn-baja:active { background-color: #0c5cd3; color:white; transform: scale(0.90); }
+.btn.btn-baja:active { background-color: #0c5cd3; color:white; transform: scale(0.90); } */
 
 /* BOTON EDITAR */
-.btn-editar{ background:#22c55e; color:white; }
+/* .btn-editar{ background:#22c55e; color:white; }
 .btn-editar:hover{ background:#16a34a; color:white; }
-.btn.btn-editar:active { background:#16a34a; color:white; transform: scale(0.90); }
+.btn.btn-editar:active { background:#16a34a; color:white; transform: scale(0.90); } */
 
 /* BOTON DAR DE BAJA */
-.btn-baja{ background:#ef4444; color:white; }
-.btn-baja:hover{ background:#dc2626; color:white; }
-.btn.btn-baja:active { background:#dc2626; color:white; transform: scale(0.90); }
+
 /* 
 .estado-activo{ background:#22c55e; color:white; } ACTIVO 
 .estado-inactivo{ background:#ef4444; color:white; } /* INACTIVO */

@@ -37,91 +37,69 @@ export default function initMostrarCompras() {
                     `;
                 }
             }
-        ],
-
-        columnDefs: [
-            { targets: 0, visible: $('.toggle-col[data-column="0"]').is(':checked') },
-            { targets: 1, visible: $('.toggle-col[data-column="1"]').is(':checked') },
-            { targets: 2, visible: $('.toggle-col[data-column="2"]').is(':checked') },
-            { targets: 3, visible: $('.toggle-col[data-column="3"]').is(':checked') },
-            { targets: 4, visible: $('.toggle-col[data-column="4"]').is(':checked') },
-            { targets: 5, visible: $('.toggle-col[data-column="5"]').is(':checked') },
-            { targets: 6, visible: $('.toggle-col[data-column="6"]').is(':checked') },
-            { targets: 7, visible: $('.toggle-col[data-column="7"]').is(':checked') },
-            { targets: 8, visible: $('.toggle-col[data-column="8"]').is(':checked') },
-            { targets: 9, visible: $('.toggle-col[data-column="9"]').is(':checked') },
-            { targets: 10, visible: $('.toggle-col[data-column="10"]').is(':checked')},
-            { targets: 11, visible: $('.toggle-col[data-column="11"]').is(':checked')},
-        ],
-
-        order: [[0, 'desc']],
-        initComplete: function () {
-            ConfigurarFiltrosDataTable(this, { columnasSelect: [2,3,9], columnasIgnorar: [11] });
-        }
+        ], drawCallback: function () { AnimarFilasVisibles(this.api()); }, order: [[0, 'desc']],
+        initComplete: function () { ConfigurarFiltrosDataTable(this, { columnasSelect: [2,3,9], columnasIgnorar: [11] }); }
     });
 
-    $('.toggle-col').on('change', function () {
-        let column = $('#tablaCompras').DataTable().column($(this).data('column'));
-        column.visible(this.checked);
-    });
+    configurarToggleColumnas('tablaCompras');
 
-$(document).on('click', '.detalle-compra', function () {
+    $(document).on('click', '.detalle-compra', function () {
 
-    const btn = $(this); // Solucion Temporal
+        const btn = $(this); // Solucion Temporal
 
-    let idCompra = btn.data('id');
+        let idCompra = btn.data('id');
 
-    $('#tablaDetallesCompra').html('<tr><td colspan="5" class="text-center">Cargando...</td></tr>');
+        $('#tablaDetallesCompra').html('<tr><td colspan="5" class="text-center">Cargando...</td></tr>');
 
-    $.get(`/compras/${idCompra}/detalle`, function (res) {
+        $.get(`/compras/${idCompra}/detalle`, function (res) {
 
-        let compra = res.compra;
+            let compra = res.compra;
 
-        const btnAnular = $('#btnAnularCompra');
-        btnAnular.data('id', compra.id_compra);
+            const btnAnular = $('#btnAnularCompra');
+            btnAnular.data('id', compra.id_compra);
 
-        if (compra.estado_compra == 0) {
-            btnAnular.prop('disabled', true)
-                .html('<i class="bi bi-x-circle me-1"></i> Factura Anulada');
-        } else {
-            btnAnular.prop('disabled', false)
-                .html('<i class="bi bi-x-circle me-1"></i> Anular Factura');
-        }
+            if (compra.estado_compra == 0) {
+                btnAnular.prop('disabled', true)
+                    .html('<i class="bi bi-x-circle me-1"></i> Factura Anulada');
+            } else {
+                btnAnular.prop('disabled', false)
+                    .html('<i class="bi bi-x-circle me-1"></i> Anular Factura');
+            }
 
-        $('#facturaTituloCompra').text(`Factura: ${compra.numero_factura_compra ?? 'Sin Numero de Factura' }`);
-        $('#proveedorNombre').text(compra.proveedor?.nombre_proveedor ?? '—');
-        $('#usuarioNombreCompra').text(compra.usuario?.nombre_usuario ?? '—');
-        $('#fechaCompra').text(compra.fecha_compra);
-        $('#metodoPagoCompra').text(compra.metodo_pago?.nombre_metodo_pago ?? '—');
+            $('#facturaTituloCompra').text(`Factura: ${compra.numero_factura_compra ?? 'Sin Numero de Factura' }`);
+            $('#proveedorNombre').text(compra.proveedor?.nombre_proveedor ?? '—');
+            $('#usuarioNombreCompra').text(compra.usuario?.nombre_usuario ?? '—');
+            $('#fechaCompra').text(compra.fecha_compra);
+            $('#metodoPagoCompra').text(compra.metodo_pago?.nombre_metodo_pago ?? '—');
 
-        let filas = '';
+            let filas = '';
 
-        compra.detalles.forEach(detalle => {
-            filas += `
-                <tr>
-                    <td>${detalle.producto?.nombre_producto ?? '—'}</td>
-                    <td class="text-center">${detalle.cantidad_compra}</td>
-                    <td class="text-end">C$ ${parseFloat(detalle.precio_unitario_compra).toFixed(2)}</td>
-                    <td class="text-end">C$ ${(detalle.subtotal_detalle_compra - (detalle.precio_unitario_compra * detalle.cantidad_compra)).toFixed(2)}</td>
-                    <td class="text-end">C$ ${parseFloat(detalle.subtotal_detalle_compra).toFixed(2)}</td>
-                </tr>
-            `;
+            compra.detalles.forEach(detalle => {
+                filas += `
+                    <tr>
+                        <td>${detalle.producto?.nombre_producto ?? '—'}</td>
+                        <td class="text-center">${detalle.cantidad_compra}</td>
+                        <td class="text-end">C$ ${parseFloat(detalle.precio_unitario_compra).toFixed(2)}</td>
+                        <td class="text-end">C$ ${(detalle.subtotal_detalle_compra - (detalle.precio_unitario_compra * detalle.cantidad_compra)).toFixed(2)}</td>
+                        <td class="text-end">C$ ${parseFloat(detalle.subtotal_detalle_compra).toFixed(2)}</td>
+                    </tr>
+                `;
+            });
+
+            $('#tablaDetallesCompra').html(filas);
+
+            $('#subtotalCompra').text(`C$ ${parseFloat(compra.subtotal_compra).toFixed(2)}`);
+            $('#descuentoCompra').text(`C$ ${parseFloat(compra.descuento_compra).toFixed(2)}`);
+            $('#impuestoCompra').text(`C$ ${parseFloat(compra.impuesto_compra).toFixed(2)}`);
+            $('#totalCompra').text(`C$ ${parseFloat(compra.total_compra).toFixed(2)}`);
+
+            const modal = new bootstrap.Modal(document.getElementById('modalDetalleCompra'));
+            modal.show();
+
         });
 
-        $('#tablaDetallesCompra').html(filas);
-
-        $('#subtotalCompra').text(`C$ ${parseFloat(compra.subtotal_compra).toFixed(2)}`);
-        $('#descuentoCompra').text(`C$ ${parseFloat(compra.descuento_compra).toFixed(2)}`);
-        $('#impuestoCompra').text(`C$ ${parseFloat(compra.impuesto_compra).toFixed(2)}`);
-        $('#totalCompra').text(`C$ ${parseFloat(compra.total_compra).toFixed(2)}`);
-
-        const modal = new bootstrap.Modal(document.getElementById('modalDetalleCompra'));
-        modal.show();
 
     });
-
-
-});
 
 
 /* ════════════ MODAL CONFIRMACIÓN ANULAR COMPRA ════════════ */

@@ -40,20 +40,20 @@ export default function initMostrarCliente() {
                 render: function(data, type, row){
 
                     let botonEstado = row.estado_cliente == 1
-                        ? `<button class="btn btn-baja bajaCliente" data-id="${data}">
+                        ? `<button class="btn-baja bajaCliente" data-id="${data}">
 
-                                <i class="bi bi-person-x"></i> Dar Baja
+                                <i class="fa-solid fa-ban"></i>
 
                             </button>`
 
-                        : `<button class="btn btn-alta bajaCliente" data-id="${data}">
+                        : `<button class="btn-alta bajaCliente" data-id="${data}">
 
-                                <i class="bi bi-check-circle"></i> Activar
-
+                               <i class="fa-solid fa-circle-check"></i>
+                               
                             </button>`;
                     return `
-                        <button class="btn btn-editar editarCliente" data-id="${data}">
-                            <i class="bi bi-pencil-square me-1"></i> Editar
+                        <button class="btn-editar editarCliente" data-id="${data}">
+                            <i class="fa-solid fa-pencil-alt"></i> <!-- FA5 -->
                         </button>
                         ${botonEstado}
                     `;
@@ -62,17 +62,8 @@ export default function initMostrarCliente() {
             }
 
         ],
-        columnDefs: [
-            // Configurar visibilidad inicial según checkboxes
-            { targets: 0, visible: $('.toggle-col[data-column="0"]').is(':checked') },
-            { targets: 1, visible: $('.toggle-col[data-column="1"]').is(':checked') },
-            { targets: 2, visible: $('.toggle-col[data-column="2"]').is(':checked') },
-            { targets: 3, visible: $('.toggle-col[data-column="3"]').is(':checked') },
-            { targets: 4, visible: $('.toggle-col[data-column="4"]').is(':checked') },
-            { targets: 5, visible: $('.toggle-col[data-column="5"]').is(':checked') },
-            { targets: 6, visible: $('.toggle-col[data-column="6"]').is(':checked') },
-            { targets: 7, visible: $('.toggle-col[data-column="7"]').is(':checked') },
-        ], // Constante de traduccion de datatables
+
+        drawCallback: function () { AnimarFilasVisibles(this.api()); }
     });
 
     configurarToggleColumnas('tablaClientes');

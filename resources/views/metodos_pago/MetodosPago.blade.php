@@ -4,19 +4,25 @@
     @include('metodos_pago.CrearMetodoPago') {{-- MODAL CREAR --}}
     @include('metodos_pago.EditarMetodoPago') {{-- MODAL EDITAR --}}
 
-    <table id="tablaMetodosPago" class="table table-striped table-bordered">
+    <div class="card">
 
-        <thead>
-        <tr>
-            <th>Nombre del Método</th>
-            <th>Descripción</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
+        <table id="tablaMetodosPago" class="table  table-bordered">
 
-        <tbody></tbody>
+            <thead>
 
-    </table>
+                <tr>
+                    <th>Nombre del Método</th>
+                    <th>Descripción</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+
+            </thead>
+
+            <tbody></tbody>
+
+        </table>
+
+    </div>
 
 </turbo-frame>

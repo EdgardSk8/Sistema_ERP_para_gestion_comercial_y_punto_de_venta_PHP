@@ -5,7 +5,7 @@
         <!-- Dropdown columnas -->
         <div class="dropdown">
 
-            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                 Columnas
             </button>
 
@@ -69,6 +69,9 @@
             </div>
 
         </div>
+
+        <input type="checkbox" id="toggleFooter" class="togglecheck" hidden>
+        <label for="toggleFooter" class="toggle-btn"> Mostrar filtros </label>
         
     </div>
 

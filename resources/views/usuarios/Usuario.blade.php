@@ -4,23 +4,27 @@
     @include('usuarios.CrearUsuario') {{-- MODAL CREAR USUARIO --}}
     @include('usuarios.EditarUsuario') {{-- MODAL EDITAR USUARIO --}}
 
-    <table id="tablaUsuarios" class="table table-striped table-bordered">
+    <div class="card">
 
-        <thead>
+        <table id="tablaUsuarios" class="table table-bordered">
 
-            <tr>
-            <th>Nombre</th>
-            <th>Cédula</th>
-            <th>Usuario</th>
-            <th>Rol</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-            </tr>
+            <thead>
 
-        </thead>
+                <tr>
+                <th>Nombre</th>
+                <th>Cédula</th>
+                <th>Usuario</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+                </tr>
 
-        <tbody></tbody>
+            </thead>
 
-    </table>
+            <tbody></tbody>
+
+        </table>
+
+    </div>
     
 </turbo-frame>

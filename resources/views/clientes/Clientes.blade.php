@@ -4,24 +4,28 @@
     @include('clientes.CrearCliente') {{-- MODAL CREAR CLIENTE --}}
     @include('clientes.EditarCliente') {{-- MODAL EDITAR CLIENTE --}}
 
-    <table id="tablaClientes" class="table table-striped table-bordered">
+    <div class="card">
 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Cédula</th>
-                <th>RUC</th>
-                <th>Teléfono</th>
-                <th>Correo</th>
-                <th>Estado</th>
-                <th>Acciones</th>
+        <table id="tablaClientes" class="table  table-bordered">
 
-            </tr>
-        </thead>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Cédula</th>
+                    <th>RUC</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
 
-    <tbody></tbody>
+                </tr>
+            </thead>
 
-    </table>
+        <tbody></tbody>
+
+        </table>
+
+    </div>
 
 </turbo-frame>

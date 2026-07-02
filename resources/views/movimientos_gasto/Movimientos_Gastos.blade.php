@@ -2,26 +2,29 @@
 
     @include('movimientos_gasto.CheckColumnasMovimientosGastos')
 
-    <table id="tablaMovimientosGastos" class="table table-striped table-bordered">
+    <div class="card">
 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Usuario</th>
-                <th>Fecha</th>
-                <th>Gasto</th>
-                
-                <th>Origen</th>
-                <th>Caja</th>
-                <th>Cuenta</th>
-                <th>Monto</th>
-                <th>Observación</th>
-            </tr>
-        </thead>
+        <table id="tablaMovimientosGastos" class="table  table-bordered">
 
-        <tbody></tbody>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                    <th>Gasto</th>
+                    <th>Origen</th>
+                    <th>Caja</th>
+                    <th>Cuenta</th>
+                    <th>Monto</th>
+                    <th>Observación</th>
+                </tr>
+            </thead>
 
-    </table>
+            <tbody></tbody>
+
+        </table>
+
+    </div>
 
     <!--    ╔════════ Mensaje Toast ══════════╗ 
             ╚═════════════════════════════════╝     -->

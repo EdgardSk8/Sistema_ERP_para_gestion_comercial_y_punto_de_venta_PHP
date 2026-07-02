@@ -7,21 +7,25 @@
 
     <!-- ════════════ TABLA DE CUENTAS ════════════ -->
 
-    <table id="tablaCuentas" class="table table-striped table-bordered">
+    <div class="card">
 
-        <thead>
-            <tr>
-                <th>Nombre Cuenta</th>
-                <th>Tipo</th>
-                <th>Descripción</th>
-                <th>Saldo</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
+        <table id="tablaCuentas" class="table  table-bordered">
 
-        <tbody></tbody>
+            <thead>
+                <tr>
+                    <th>Nombre Cuenta</th>
+                    <th>Tipo</th>
+                    <th>Descripción</th>
+                    <th>Saldo</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
 
-    </table>
+            <tbody></tbody>
+
+        </table>
+
+    </div>
 
 </turbo-frame>

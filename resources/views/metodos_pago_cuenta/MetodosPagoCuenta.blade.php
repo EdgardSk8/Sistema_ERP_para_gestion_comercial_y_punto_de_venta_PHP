@@ -4,19 +4,23 @@
     @include('metodos_pago_cuenta.CrearMetodoPagoCuenta')
     @include('metodos_pago_cuenta.EditarMetodoPagoCuenta')
 
-    <table id="tablaMetodoPagoCuenta" class="table table-striped table-bordered">
+    <div class="card">
 
-        <thead>
-        <tr>
-            <th>Método de Pago</th>
-            <th>Cuentas Asociadas</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
+        <table id="tablaMetodoPagoCuenta" class="table  table-bordered">
 
-        <tbody></tbody>
+            <thead>
+                <tr>
+                    <th>Método de Pago</th>
+                    <th>Cuentas Asociadas</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
 
-    </table>
+            <tbody></tbody>
+
+        </table>
+
+    </div>
 
 </turbo-frame>

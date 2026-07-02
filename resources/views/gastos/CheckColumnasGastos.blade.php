@@ -4,7 +4,7 @@
 
     <div class="dropdown">
 
-        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown"> Columnas </button>
+        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside"> Columnas </button>
 
         <div class="dropdown-menu p-3 dropdown-columns">
 

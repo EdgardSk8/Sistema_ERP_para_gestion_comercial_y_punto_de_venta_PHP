@@ -5,14 +5,14 @@
         <!-- Dropdown columnas -->
         <div class="dropdown">
 
-            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                 Columnas
             </button>
 
             <div class="dropdown-menu p-3 dropdown-columns">
 
                 <div class="form-check">
-                    <input class="form-check-input toggle-col" type="checkbox" data-column="0" id="colId" checked>
+                    <input class="form-check-input toggle-col" type="checkbox" data-column="0" id="colId">
                     <label class="form-check-label" for="colId">ID</label>
                 </div>
 
@@ -84,6 +84,9 @@
         <label for="toggleInactivosProductos" class="toggle-btn">
             Ocultar inactivos
         </label>
+
+        <input type="checkbox" id="toggleFooter" class="togglecheck" hidden>
+        <label for="toggleFooter" class="toggle-btn"> Mostrar filtros </label>
 
     </div>
 

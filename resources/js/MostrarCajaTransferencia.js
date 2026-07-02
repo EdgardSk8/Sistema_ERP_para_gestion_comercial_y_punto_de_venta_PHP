@@ -69,8 +69,9 @@ export default function initCajaTransferencia() {
                 data: 'nombre_cuenta',
                 render: function(data){
                     return data 
-                        ? `<span class="badge bg-info text-dark">${data}</span>`
-                        : '<span class="text-muted">-</span>';
+                        ? `<span class="estado-activo">${data}</span>`
+                        // : '<span class="text-muted">-</span>';
+                        : '<i class="fa-solid fa-minus"></i>';
                 }
             },
 
@@ -95,22 +96,22 @@ export default function initCajaTransferencia() {
                     const deshabilitarTransferir = cajaAbierta || saldoCaja <= 0;
 
                     return `
-                        <button class="btn btn-sm ${cajaAbierta ? 'btn-danger' : 'btn-success'} btn-transferir"
+                        <button class="${cajaAbierta ? 'text-danger' : 'text-success'} btn-transferir"
                             data-id_caja="${row.numero_caja}"
                             ${deshabilitarTransferir ? 'disabled title="' + (cajaAbierta ? 'La caja aún está abierta' : 'Saldo insuficiente') + '"' : ''}>
-                            <i class="bi bi-cash-coin"></i> Trasladar
+                            <i class="fa-solid fa-right-left"></i>
                         </button>
 
                         <button class="btn btn-sm btn-detalle"
                             data-id_caja="${row.numero_caja}">
-                            <i class="bi bi-eye"></i> Detalle
+                            <i class="fa-solid fa-eye"></i>
                         </button>
                     `;
                 }
             }
 
         ],
-
+        drawCallback: function () { AnimarFilasVisibles(this.api()); },
         order: [[0, 'desc']],
     });
 

@@ -9,129 +9,136 @@
         ║         CARDS REPORTES            ║
         ╚════════════════════════════════════╝ -->
 
-    <div class="contenedor-reportes">
+        <div class="contenedor-reportes">
 
-        <!-- VENTAS -->
-        <input type="radio" name="reporte" id="ventas" value="ventas" hidden>
+            <!-- VENTAS -->
+            <input type="radio" name="reporte" id="ventas" value="ventas" hidden>
 
-        <label for="ventas" class="card-reporte ventas">
-            <span>📈</span>
-            <small>Ventas</small>
-        </label>
+            <label for="ventas" class="card-reporte ventas">
+                <span>📈</span>
+                <small>Ventas</small>
+            </label>
 
-        <!-- INVENTARIO -->
-        <input type="radio" name="reporte" id="inventario" value="inventario" hidden>
+            <!-- INVENTARIO -->
+            <input type="radio" name="reporte" id="inventario" value="inventario" hidden>
 
-        <label for="inventario" class="card-reporte inventario">
-            <span>📦</span>
-            <small>Inventario</small>
-        </label>
+            <label for="inventario" class="card-reporte inventario">
+                <span>📦</span>
+                <small>Inventario</small>
+            </label>
 
-        <!-- MOVIMIENTOS -->
-        <input type="radio" name="reporte" id="movimientos" value="movimientoinventario" hidden>
+            <!-- MOVIMIENTOS -->
+            <input type="radio" name="reporte" id="movimientos" value="movimientoinventario" hidden>
 
-        <label for="movimientos" class="card-reporte movimientos">
-            <span>🔄</span>
-            <small>Movimientos</small>
-        </label>
+            <label for="movimientos" class="card-reporte movimientos">
+                <span>🔄</span>
+                <small>Movimientos</small>
+            </label>
 
-        <!-- CLIENTES -->
-        <input type="radio" name="reporte" id="clientes" value="clientes" hidden>
+            <!-- CLIENTES -->
+            <input type="radio" name="reporte" id="clientes" value="clientes" hidden>
 
-        <label for="clientes" class="card-reporte clientes">
-            <span>👤</span>
-            <small>Clientes</small>
-        </label>
+            <label for="clientes" class="card-reporte clientes">
+                <span>👤</span>
+                <small>Clientes</small>
+            </label>
 
-        <!-- USUARIOS -->
-        <input type="radio" name="reporte" id="usuarios" value="usuarios" hidden>
+            <!-- USUARIOS -->
+            <input type="radio" name="reporte" id="usuarios" value="usuarios" hidden>
 
-        <label for="usuarios" class="card-reporte usuarios">
-            <span>👨‍💼</span>
-            <small>Usuarios</small>
-        </label>
+            <label for="usuarios" class="card-reporte usuarios">
+                <span>👨‍💼</span>
+                <small>Usuarios</small>
+            </label>
 
-        <!-- CAJAS -->
-        <input type="radio" name="reporte" id="cajas" value="cajas" hidden>
+            <!-- CAJAS -->
+            <input type="radio" name="reporte" id="cajas" value="cajas" hidden>
 
-        <label for="cajas" class="card-reporte cajas">
-            <span>💰</span>
-            <small>Cajas</small>
-        </label>
+            <label for="cajas" class="card-reporte cajas">
+                <span>💰</span>
+                <small>Cajas</small>
+            </label>
 
-        <!-- ---------------------------------------------------------------------------------------- -->
+            <!-- ---------------------------------------------------------------------------------------- -->
 
 
-        <!-- <div class="contenedor-radio-exportar">
+            <!-- <div class="contenedor-radio-exportar">
 
-            <input type="radio" name="tipo_exportacion" id="exportExcel" value="excel" hidden>
-            <label for="exportExcel" class="radio-exportacion excel"> 📊 Excel </label>
+                <input type="radio" name="tipo_exportacion" id="exportExcel" value="excel" hidden>
+                <label for="exportExcel" class="radio-exportacion excel"> 📊 Excel </label>
 
-            <input type="radio" name="tipo_exportacion" id="exportPDF" value="pdf" hidden >
-            <label for="exportPDF" class="radio-exportacion pdf"> 📄 PDF </label>
-            
-            <button id="btnGenerarReporte" class="btn-reporte" disabled> Generar </button>
+                <input type="radio" name="tipo_exportacion" id="exportPDF" value="pdf" hidden >
+                <label for="exportPDF" class="radio-exportacion pdf"> 📄 PDF </label>
+                
+                <button id="btnGenerarReporte" class="btn-reporte" disabled> Generar </button>
 
-        </div> -->
+            </div> -->
 
-        <!-- ---------------------------------------------------------------------------------------- -->
+            <!-- ---------------------------------------------------------------------------------------- -->
 
-    </div>
+        </div>
 
    <!-- ╔════════════════════════════════════╗
         ║             FILTROS               ║
         ╚════════════════════════════════════╝ -->
 
-    <div class="contenedor-filtros">
 
-        <!-- FECHA INICIO -->
-        <div class="grupo-filtro">
 
-            <label class="label-filtro"> Fecha Inicio </label>
-            <input type="date" id="FechaInicio" placeholder="Fecha inicio"
-                autocomplete="off" class="Fecha-Input-Reporte">
+    <div class="card">
+
+        <div class="contenedor-filtros">
+
+            <!-- FECHA INICIO -->
+            <div class="grupo-filtro">
+
+                <label class="label-filtro"> Fecha Inicio </label>
+                <input type="date" id="FechaInicio" placeholder="Fecha inicio"
+                    autocomplete="off" class="Fecha-Input-Reporte">
+
+            </div>
+
+            <!-- FECHA FIN -->
+            <div class="grupo-filtro">
+
+                <label class="label-filtro"> Fecha Fin</label>
+                
+                <input type="date" id="FechaFin"  autocomplete="off"  placeholder="Fecha Fin"  class="Fecha-Input-Reporte">
+
+            </div>
+
+            <!-- LIMITE -->
+            <div class="grupo-filtro">
+
+                <label class="label-filtro"> Cantidad Datos </label>
+                <input type="number" id="LimiteDatos" class="form-control form-control-sm" min="1" value="">
+
+            </div>
+
+
+            <div class="grupo-filtro">
+
+                <select class="select" name="Orden-Datos" id="Orden-Datos">
+
+                    <option value="desc">Descendente</option>
+                    <option value="asc">Ascendente</option>
+
+                </select>
+
+                <button id="limpiafiltroreporte" class="btn-reporte">Limpiar Filtros</button>
+
+            </div>
 
         </div>
 
-        <!-- FECHA FIN -->
-        <div class="grupo-filtro">
 
-            <label class="label-filtro"> Fecha Fin</label>
-               
-            <input type="date" id="FechaFin"  autocomplete="off"  placeholder="Fecha Fin"  class="Fecha-Input-Reporte">
+        <table id="Reportes" class="table  table-bordered">
 
-        </div>
+            <thead></thead>
+            <tbody></tbody>
 
-        <!-- LIMITE -->
-        <div class="grupo-filtro">
-
-            <label class="label-filtro"> Cantidad Datos </label>
-            <input type="number" id="LimiteDatos" class="form-control form-control-sm" min="1" value="">
-
-        </div>
-
-
-        <div class="grupo-filtro">
-
-            <select class="select" name="Orden-Datos" id="Orden-Datos">
-
-                <option value="desc">Descendente</option>
-                <option value="asc">Ascendente</option>
-
-            </select>
-
-            <button id="limpiafiltroreporte" class="btn-reporte">Limpiar Filtros</button>
-
-        </div>
+        </table>
 
     </div>
-
-    <table id="Reportes" class="table table-striped table-bordered">
-
-        <thead></thead>
-        <tbody></tbody>
-
-    </table>
 
 </div>
 

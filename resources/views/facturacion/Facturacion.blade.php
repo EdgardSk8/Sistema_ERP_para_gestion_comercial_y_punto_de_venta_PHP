@@ -44,7 +44,7 @@
 
         <div class="mini-contenedor-pos">
 
-                <table id="tablaProductos" class="table table-striped table-bordered">
+                <table id="tablaProductos" class="table  table-bordered">
                     <thead>
                         <tr>
                             <th>Producto</th>
@@ -167,7 +167,7 @@
 
             <div class="Facturacion-Carrito">
 
-                <table class="table table-striped table-bordered">
+                <table class="table  table-bordered">
                     <thead>
                         <tr>
                             <th>Producto</th>
