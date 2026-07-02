@@ -25,11 +25,11 @@ export default function initMostrarCliente() {
 
         columns: [
             { data: 'id_cliente' },
-            { data: 'nombre_cliente' },
-            { data: 'cedula_cliente' },
-            { data: 'ruc_cliente' },
-            { data: 'telefono_cliente' },
-            { data: 'correo_cliente' },
+            { data: 'nombre_cliente', render: data => data ? data : '<span>—</span>' },
+            { data: 'cedula_cliente', render: data => data ? data : '<span>—</span>' },
+            { data: 'ruc_cliente', render: data => data ? data : '<span>—</span>' },
+            { data: 'telefono_cliente', render: data => data ? data : '<span>—</span>' },
+            { data: 'correo_cliente', render: data => data ? data : '<span>—</span>' },
 
             { data: 'estado_cliente', render: function(data) { return data == 1
                     ? '<span class="estado estado-activo">Activo</span>'
@@ -53,7 +53,7 @@ export default function initMostrarCliente() {
                             </button>`;
                     return `
                         <button class="btn-editar editarCliente" data-id="${data}">
-                            <i class="fa-solid fa-pencil-alt"></i> <!-- FA5 -->
+                            <i class="fa-solid fa-pencil-alt"></i>
                         </button>
                         ${botonEstado}
                     `;

@@ -69,29 +69,29 @@ export default function initMostrarProductos() {
 
                     let botonEstado = row.estado_producto == 1 
 
-                        ? `<button class="btn btn-baja bajaProducto" data-id="${data}">
+                        ? `<button class="btn-baja bajaProducto" data-id="${data}">
                         
-                            <i class="bi bi-person-x"></i> <!-- Dar Baja -->
+                           <i class="fa-solid fa-ban"></i>
                         
                         </button>` 
 
-                        : `<button class="btn btn-baja bajaProducto" data-id="${data}">
+                        : `<button class="btn-baja bajaProducto" data-id="${data}">
                         
-                            <i class="bi bi-check-circle"></i> <!-- Activar -->
+                            <i class="fa-solid fa-circle-check"></i>
                         
                         </button>`;
                     
-                        let botonDetalles = `<button class="btn btn-detalle detallesProducto" data-id="${data}">
+                        let botonDetalles = `<button class="btn-detalle detallesProducto" data-id="${data}">
                         
-                            <i class="bi bi-eye"></i> <!-- Detalle -->
+                            <i class="fa-solid fa-eye"></i>
                         
                         </button>`;
                     
                         return `
 
-                        <button class="btn btn-editar editarProducto" data-id="${data}">
+                        <button class="btn-editar editarProducto" data-id="${data}">
                         
-                            <i class="bi bi-pencil-square me-1"></i> <!-- Editar -->
+                            <i class="fa-solid fa-pencil-alt"></i>
                         
                         </button>
 

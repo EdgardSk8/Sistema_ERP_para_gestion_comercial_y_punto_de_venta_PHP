@@ -38,22 +38,22 @@ export default function initTipoGasto() {
                 searchable: false,
                 render: function(data, type, row){
                     let botonEstado = row.estado_tipo_gasto == 1 
-                        ? `<button class="btn btn-baja bajaTipoGasto" data-id="${data}">
+                        ? `<button class="btn-baja bajaTipoGasto" data-id="${data}">
                         
-                            <i class="bi bi-person-x"></i> Dar Baja
+                            <i class="fa-solid fa-ban"></i>
                         
                         </button>` 
 
-                        : `<button class="btn btn-baja bajaTipoGasto" data-id="${data}">
+                        : `<button class="btn-baja bajaTipoGasto" data-id="${data}">
                         
-                            <i class="bi bi-check-circle"></i> Activar
+                            <i class="fa-solid fa-circle-check"></i>
                         
                         </button>`;
 
                     return `
-                        <button class="btn btn-editar editarTipoGasto" data-id="${data}">
+                        <button class="btn-editar editarTipoGasto" data-id="${data}">
                         
-                            <i class="bi bi-pencil-square me-1"></i> Editar
+                            <i class="fa-solid fa-pencil-alt"></i>
                         
                         </button>
                         ${botonEstado}

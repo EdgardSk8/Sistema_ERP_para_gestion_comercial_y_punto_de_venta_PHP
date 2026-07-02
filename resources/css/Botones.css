@@ -30,8 +30,8 @@ button:disabled,
 
 /* ══════════════════════════════════════════════════════════════════════════════════════ */
 
-/*.btn-detalle,*/ /*.btn-editar*/ td .btn-baja/*, .btn-alta, .estado, .btn-transferir, */
-.agregar-saldo, .retirar-saldo, .pagar-gasto, .editar-gasto, .estado-pendiente, .agregarProducto{
+/*.btn-detalle,*/ /*.btn-editar*/ td/* .btn-baja, .btn-alta, .estado, .btn-transferir, 
+.agregar-saldo, .retirar-saldo, .pagar-gasto, .editar-gasto, */.estado-pendiente, .agregarProducto{
     padding: 2px 8px;
     font-size: 14px;
     line-height: 1.2;
@@ -59,18 +59,18 @@ button:disabled,
 .btn-transferir:active { background-color: #146c43; color: white; transform: scale(0.90); } */
 
 /* BOTON DE AGREGAR SALDO */
-.agregar-saldo { background-color: #198754; color: white; }
+/* .agregar-saldo { background-color: #198754; color: white; }
 .agregar-saldo:hover { background-color: #157347; color: white; }
-.btn.agregar-saldo:active { background-color: #146c43; color: white; transform: scale(0.90); }
+.btn.agregar-saldo:active { background-color: #146c43; color: white; transform: scale(0.90); } */
 
-.retirar-saldo { background-color: #ffc107; color: black; }
+/* .retirar-saldo { background-color: #ffc107; color: black; }
 .retirar-saldo:hover { background-color: #e0a800; color: black; }
-.btn.retirar-saldo:active { background-color: #d39e00; color: black; transform: scale(0.90); }
+.btn.retirar-saldo:active { background-color: #d39e00; color: black; transform: scale(0.90); } */
 
 /* BOTON PAGAR */
-.pagar-gasto { background-color: #198754; color: white; }
+/* .pagar-gasto { background-color: #198754; color: white; }
 .pagar-gasto:hover { background-color: #157347; color: white; }
-.btn.pagar-gasto:active { background-color: #146c43; color: white; transform: scale(0.90); }
+.btn.pagar-gasto:active { background-color: #146c43; color: white; transform: scale(0.90); } */
 
 /* BOTON ACTIVAR
 .btn-alta { background-color: #0d6efd; color:white; }

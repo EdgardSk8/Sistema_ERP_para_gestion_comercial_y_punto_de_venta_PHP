@@ -33,17 +33,16 @@ export default function initMostrarGastos() {
 
         columns: [
 
-            { data: 'nombre_gasto' },
-            { data: 'tipo' },
-            { data: 'descripcion_gasto' },
+            { data: 'nombre_gasto', render: data => data ? data : '<span>—</span>' },
+            { data: 'tipo', render: data => data ? data : '<span>—</span>' },
+            { data: 'descripcion_gasto', render: data => data ? data : '<span>—</span>' },
             {
                 data: 'fecha_pago',
                 render: function (data) {
-                    return data ? FechaSimple(data) : '-';
+                    return data ? FechaSimple(data) : '—';
                 }
             },
 
-            // 🔥 ESTADO DE PAGO (nuevo)
             {
                 data: 'estado_pago',
                 render: function (data) {
@@ -90,16 +89,16 @@ export default function initMostrarGastos() {
                 render: function (data) {
 
                     return `
-                        <button class="btn btn-sm btn-editar editarGasto" data-id="${data}">
-                            <i class="bi bi-pencil-square me-1"></i> Editar
+                        <button class="btn-editar editarGasto" data-id="${data}">
+                            <i class="fa-solid fa-pencil-alt"></i>
                         </button>
 
-                        <button class="btn btn-sm btn-detalle detalleGasto" data-id="${data}">
-                            <i class="bi bi-eye me-1"></i> Detalles
+                        <button class="btn-detalle detalleGasto" data-id="${data}">
+                            <i class="fa-solid fa-eye"></i>
                         </button>
 
-                        <button class="btn btn-sm pagar-gasto pagarGasto" data-id="${data}">
-                            <i class="bi bi-cash-coin me-1"></i> Pagar
+                        <button class="pagar-gasto pagarGasto" data-id="${data}">
+                            <i class="fa-solid fa-credit-card"></i>
                         </button>
                     `;
                 }

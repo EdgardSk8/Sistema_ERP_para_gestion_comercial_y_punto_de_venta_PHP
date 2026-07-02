@@ -89,10 +89,12 @@ $.extend(true, $.fn.dataTable.defaults, {
     paging: true,
     responsive: true,
     processing: true,
+    // serverSide: true,
     lengthMenu: [50, 60, 70, 80, 90, 100, 500, 1000], pageLength: 50,
     ...Traduccion,
     dom: '<"top"lf>rt<"bottom"ip><"clear">',
 });
+
 
 window.toggleFooterDataTable = function() {
     $('.dataTables_scrollFoot')

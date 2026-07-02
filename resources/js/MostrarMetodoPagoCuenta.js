@@ -27,17 +27,17 @@ export default function initMostrarMetodosPagosCuenta() {
                     if (tieneCuentas) {
 
                         let botonEstado = row.estado == 1
-                            ? `<button class="btn btn-baja cambiarEstado" data-id="${row.id_metodo_pago_cuenta}">
-                                    <i class="bi bi-x-circle"></i> Dar Baja
+                            ? `<button class="btn-baja cambiarEstado" data-id="${row.id_metodo_pago_cuenta}">
+                                    <i class="fa-solid fa-ban"></i>
                             </button>`
-                            : `<button class="btn btn-alta cambiarEstado" data-id="${row.id_metodo_pago_cuenta}">
-                                    <i class="bi bi-check-circle"></i> Activar
+                            : `<button class="btn-alta cambiarEstado" data-id="${row.id_metodo_pago_cuenta}">
+                                    <i class="fa-solid fa-circle-check"></i>
                             </button>`;
 
                         let botonEditar = `
-                            <button class="btn btn-editar editarMetodoPagoCuenta"
+                            <button class="btn-editar editarMetodoPagoCuenta"
                                 data-id="${row.id_metodo_pago_cuenta}">
-                                <i class="bi bi-pencil-square me-1"></i> Editar
+                                <i class="fa-solid fa-pencil-alt"></i>
                             </button> `; botones = botonEditar + botonEstado;
                     }
 

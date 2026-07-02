@@ -32,6 +32,11 @@ body{
     --verde-hover:#6d947b;
     --verde-soft:#EAFBEF;
 
+    --amarillo: #FFC107;
+    --amarillo-light: #FFE082;
+    --amarillo-hover: #E0A800;
+    --amarillo-soft: #FFF8E1;
+
     --celeste: #a1c7ff;
     --celeste-soft: #e1ebfa;
     --celeste-soft-border: #cbd7e9;
@@ -648,7 +653,7 @@ table.dataTable tfoot select{
 
 /* CONFIGURACION GENERAL DEL BTN */
 
-.btn-detalle, .btn-editar, .btn-baja, .btn-alta, .btn-transferir{
+.btn-detalle, .btn-editar, .btn-baja, .btn-alta, .btn-transferir, .agregar-saldo, .retirar-saldo, .pagar-gasto{
     transition: all 0.15s ease;
     background: transparent;
     border: none;
@@ -660,8 +665,11 @@ table.dataTable tfoot select{
 .btn-detalle { color: var(--azul); }
 .btn-editar { color: var(--azul); }
 .btn-baja { color: var(--rojo); }
-.btn-alta {color: var(--azul);}
-.btn-transferir { color: var(--verde);}
+.btn-alta {color: var(--azul); }
+.btn-transferir { color: var(--verde); }
+.agregar-saldo { color: var(--verde); }
+.retirar-saldo { color: var(--amarillo); }
+.pagar-gasto{ color: var(--verde);}
 
 /* HOVER */
 
@@ -670,7 +678,10 @@ table.dataTable tfoot select{
 .btn-editar:hover, 
 .btn-baja:hover,
 .btn-alta:hover,
-.btn-transferir:hover
+.btn-transferir:hover,
+.agregar-saldo:hover,
+.retirar-saldo:hover,
+.pagar-gasto:hover
     { transform: scale(1.6); }
 
 /* AL PRESIONAR  */
@@ -678,8 +689,11 @@ table.dataTable tfoot select{
 .btn-detalle:active,
 .btn-editar:active, 
 .btn-baja:active,
-.btn-alta,
-.btn-transferir:active
+.btn-alta:active,
+.btn-transferir:active,
+.agregar-saldo:active,
+.retirar-saldo:active,
+.pagar-gasto:active
     { transform: scale(0.95); }
 
 

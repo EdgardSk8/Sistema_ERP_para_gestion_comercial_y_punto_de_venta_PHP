@@ -26,11 +26,11 @@ export default function initMostrarProveedores() {
 
         columns: [
             { data: 'id_proveedor' },
-            { data: 'nombre_proveedor' },
-            { data: 'ruc_proveedor' },
-            { data: 'telefono_proveedor' },
-            { data: 'correo_proveedor' },
-            { data: 'direccion_proveedor' },
+            { data: 'nombre_proveedor', render: data => data ? data : '<span>—</span>' },
+            { data: 'ruc_proveedor', render: data => data ? data : '<span>—</span>' },
+            { data: 'telefono_proveedor', render: data => data ? data : '<span>—</span>' },
+            { data: 'correo_proveedor', render: data => data ? data : '<span>—</span>' },
+            { data: 'direccion_proveedor', render: data => data ? data : '<span>—</span>' },
             //{ data: 'fecha_creacion_proveedor' },
 
             {

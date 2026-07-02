@@ -70,8 +70,9 @@ export default function initCajaTransferencia() {
                 render: function(data){
                     return data 
                         ? `<span class="estado-activo">${data}</span>`
-                        // : '<span class="text-muted">-</span>';
-                        : '<i class="fa-solid fa-minus"></i>';
+                        : '<span>—</span>';
+                        // : '<i class="fa-solid fa-minus"></i>';
+                        
                 }
             },
 

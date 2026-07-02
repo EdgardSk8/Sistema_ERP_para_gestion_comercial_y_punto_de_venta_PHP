@@ -8,9 +8,9 @@ export default function initMostrarCompras() {
         columns: [
 
             { data: 'id_compra'},
-            { data: 'numero_factura_compra' },
-            { data: 'proveedor.nombre_proveedor' },
-            { data: 'usuario.nombre_usuario' },
+            { data: 'numero_factura_compra', render: data => data ? data : '<span>—</span>' },
+            { data: 'proveedor.nombre_proveedor', render: data => data ? data : '<span>—</span>' },
+            { data: 'usuario.nombre_usuario', render: data => data ? data : '<span>—</span>' },
             { data: 'fecha_compra', render: function (data) { return formatearFecha(data); } },
             { data: 'subtotal_compra', render: data => moneda(data) },
             { data: 'descuento_compra', render: data => moneda(data) },
@@ -31,8 +31,8 @@ export default function initMostrarCompras() {
                 data: 'id_compra',
                 render: function (data) {
                     return `
-                        <button class="btn detalle-compra btn-detalle" data-id="${data}">
-                            <i class="bi bi-eye"></i> Detalle
+                        <button class="detalle-compra btn-detalle" data-id="${data}">
+                            <i class="fa-solid fa-eye"></i>
                         </button>
                     `;
                 }

@@ -8,9 +8,9 @@ export default function initMostrarVentas() {
 
         columns: [
             { data: 'id_venta' },
-            { data: 'numero_factura' },
-            { data: 'cliente.nombre_cliente'},
-            { data: 'usuario.nombre_usuario' },
+            { data: 'numero_factura', render: data => data ? data : '<span>—</span>' },
+            { data: 'cliente.nombre_cliente', render: data => data ? data : '<span>—</span>'},
+            { data: 'usuario.nombre_usuario', render: data => data ? data : '<span>—</span>' },
             { data: 'id_caja', render: function(data){
                     return `Caja ${data}
                     `;

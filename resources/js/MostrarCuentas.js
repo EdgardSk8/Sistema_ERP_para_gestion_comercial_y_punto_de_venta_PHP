@@ -66,30 +66,30 @@ export default function initCuentas() {
     function renderAcciones(data, type, row){
 
         let botonEstado = row.estado == 1
-            ? `<button class="btn btn-sm btn-baja bajaCuenta" data-id="${data}">
-                <i class="bi bi-x-circle"></i> Dar Baja
+            ? `<button class="btn-baja bajaCuenta" data-id="${data}">
+                <i class="fa-solid fa-ban"></i>
               </button>`
-            : `<button class="btn btn-sm btn-alta bajaCuenta" data-id="${data}">
-                <i class="bi bi-check-circle"></i> Activar
+            : `<button class="btn-alta bajaCuenta" data-id="${data}">
+                <i class="fa-solid fa-circle-check"></i>
               </button>`;
         let botonesSaldo = '';
 
         if(row.estado == 1){
             
             botonesSaldo = `
-                <button class="btn btn-sm agregar-saldo" data-id="${data}">
-                    <i class="bi bi-cash-coin me-1"></i> Agregar
+                <button class="agregar-saldo" data-id="${data}">
+                    <i class="fa-solid fa-plus"></i>
                 </button>
 
-                <button class="btn btn-sm retirar-saldo" data-id="${data}">
-                    <i class="bi bi-dash-circle me-1"></i> Retirar
+                <button class="retirar-saldo" data-id="${data}">
+                    <i class="fa-solid fa-minus"></i>
                 </button>
             `;
         }
 
         return `
-            <button class="btn btn-sm btn-editar editarCuenta" data-id="${data}">
-                <i class="bi bi-pencil-square me-1"></i> Editar
+            <button class="btn-editar editarCuenta" data-id="${data}">
+                <i class="fa-solid fa-pencil-alt"></i>
             </button>
 
             ${botonesSaldo}

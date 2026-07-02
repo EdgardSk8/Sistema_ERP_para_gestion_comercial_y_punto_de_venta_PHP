@@ -37,23 +37,23 @@ export default function initMostrarCategorias() {
             { data: 'id_categoria', orderable: false, searchable: false, render: function(data, type, row){
 
                     let botonEstado = row.estado_categoria == 1
-                        ? `<button class="btn btn-baja bajaCategoria" data-id="${data}">
+                        ? `<button class="btn-baja bajaCategoria" data-id="${data}">
                         
-                            <i class="bi bi-person-x"></i> Dar Baja
+                            <i class="fa-solid fa-ban"></i>
                         
                         </button>`
 
-                        : `<button class="btn btn-baja bajaCategoria" data-id="${data}">
+                        : `<button class="btn-baja bajaCategoria" data-id="${data}">
                         
-                            <i class="bi bi-check-circle"></i> Activar
+                            <i class="fa-solid fa-circle-check"></i>
                         
                         </button>`;
 
                     return `
 
-                        <button class="btn btn-editar editarCategoria" data-id="${data}">
+                        <button class="btn-editar editarCategoria" data-id="${data}">
                         
-                            <i class="bi bi-pencil-square me-1"></i> Editar
+                            <i class="fa-solid fa-pencil-alt"></i>
                          
                         </button>
 

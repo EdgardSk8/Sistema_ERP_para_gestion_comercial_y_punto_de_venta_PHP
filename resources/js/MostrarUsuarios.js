@@ -40,23 +40,23 @@ export default function initMostrarUsuarios() {
                 searchable: false,
                 render: function(data, type, row){
                     let botonEstado = row.estado_usuario == 1 
-                        ? `<button class="btn btn-baja bajaUsuario" data-id="${data}">
+                        ? `<button class="btn-baja bajaUsuario" data-id="${data}">
                         
-                            <i class="bi bi-person-x"></i> Dar Baja
+                            <i class="fa-solid fa-ban"></i>
                         
                         </button>` 
 
-                        : `<button class="btn btn-baja bajaUsuario" data-id="${data}">
+                        : `<button class="btn-baja bajaUsuario" data-id="${data}">
                         
-                            <i class="bi bi-check-circle"></i> Activar
+                            <i class="fa-solid fa-circle-check"></i>
                         
                         </button>`;
 
                     return `
 
-                        <button class="btn btn-editar editarUsuario" data-id="${data}">
+                        <button class="btn-editar editarUsuario" data-id="${data}">
                         
-                            <i class="bi bi-pencil-square me-1"></i> Editar
+                           <i class="fa-solid fa-pencil-alt"></i>
                         
                         </button>
                         
