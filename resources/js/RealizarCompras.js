@@ -54,61 +54,71 @@ export default function initCompras() {
 /* 🔹 SELECTORES AUXILIARES */
 /* ------------------------------------------------------------------------------------------------------------------- */
 
-    function cargarTiposFactura() {
-        $.get('/tipo-factura-compra/mostrar', function (res) {
-            let html = '<option disabled selected>Seleccione tipo factura</option>';
-            res.data.forEach(t => {
-                html += `<option value="${t.id_tipo_factura}">${t.nombre_tipo_factura}</option>`;
-            });
-            $('#tipo_factura').html(html);
-        });
-    }
+    $('#tipo_factura').select2({
+        ajax: {
+            url: '/tipo-factura-compra/mostrar',
+            dataType: 'json',
+            processResults: function (res) {
+                return {
+                    results: res.data.map(t => ({ id: t.id_tipo_factura, text: t.nombre_tipo_factura }))
+                };
+            }
+        }
+    });
 
-    function cargarMetodosPago() {
-        $.get('/metodo-pago-compra/mostrar', function (res) {
-            let html = '<option disabled selected>Seleccione método</option>';
-            res.data.forEach(m => {
-                html += `<option value="${m.id_metodo_pago}">${m.nombre_metodo_pago}</option>`;
-            });
-            $('#metodo_pago').html(html);
-        });
-    }
+    $('#metodo_pago').select2({
+        ajax: {
+            url: '/metodo-pago-compra/mostrar',
+            dataType: 'json',
+            processResults: function (res) {
+                return {
+                    results: res.data.map(m => ({
+                        id: m.id_metodo_pago,
+                        text: m.nombre_metodo_pago
+                    }))
+                };
+            }
+        }
+    });
 
-        $('#cajacuentaselect').on('change', function() {
+$('#cajacuentaselect').select2({
+    data: [
+        { id: 'caja', text: 'Caja' },
+        { id: 'cuenta', text: 'Cuenta' }
+    ]
+});
+
+    $('#cajacuentaselect').on('change', function () {
 
         const tipoPago = $(this).val();
 
-        if (tipoPago === 'caja') { // Resetea el selector
+        if (tipoPago === 'caja') {
 
-            $('#caja_select').prop('disabled', false).val('');
-            $('#cuenta').prop('disabled', true).val('');
+            $('#caja_select').prop('disabled', false).trigger('change.select2');
+            $('#cuenta').prop('disabled', true).val(null).trigger('change');
 
         } else if (tipoPago === 'cuenta') {
 
-            $('#cuenta').prop('disabled', false).val('');
-            $('#caja_select').prop('disabled', true).val('');
+            $('#cuenta').prop('disabled', false).trigger('change.select2');
+            $('#caja_select').prop('disabled', true).val(null).trigger('change');
 
-        } else { $('#caja_select, #cuenta').prop('disabled', true).val(''); }
+        } else { $('#caja_select, #cuenta').prop('disabled', true).val(null).trigger('change'); }
 
     });
-    function cargarCuentas() {
-        $.get('/cuenta-compra/mostrar', function (res) {
-            let select = $('#cuenta');
-            select.html('<option value="" disabled selected>Seleccione cuenta</option>');
 
-            if (res.success && Array.isArray(res.cuentas)) {
-                res.cuentas.forEach(c => {
-                    select.append(`<option value="${c.id}">${c.display}</option>`);
-                });
+    $('#cuenta').select2({
+        ajax: {
+            url: '/cuenta-compra/mostrar',
+            dataType: 'json',
+            processResults: function (res) {
+                return {
+                    results: (res.success && Array.isArray(res.cuentas)) ? res.cuentas.map(c => ({ id: c.id, text: c.display })) : []
+                };
             }
-        });
-    }
+        }
+    });
 
-    cargarTiposFactura();
-    cargarMetodosPago();
-    cargarCuentas();
-
-
+/* ---------------------------------------------------------------------------------------------------------------------------- */
 
     $(document).on('producto-creado', function(e, p) {
 
@@ -132,30 +142,51 @@ export default function initCompras() {
 
 /* ═════════════ ( SELECTOR CAJAS ABIERTAS ) ═══════════════ */
 
-    function cargarCajasAbiertas(total = 0) {
+function cargarCajasAbiertas(total = 0) {
 
-        $.get('/caja-compra/mostrar', function(res) {
+    $('#caja_select').select2({
+        ajax: {
+            url: '/caja-compra/mostrar',
+            dataType: 'json',
+            processResults: function (res) {
 
-            let html = '<option value="" disabled selected>Seleccione caja</option>';
+                const data = res.data || [];
 
-            if (!res.data?.length) {
-                html += '<option value="" disabled>No hay cajas abiertas</option>';
-                $('#caja_select').html(html).prop('disabled', true);
-                return;
+                if (!data.length) {
+                    return {
+                        results: [{
+                            id: '',
+                            text: 'No hay cajas abiertas',
+                            disabled: true
+                        }]
+                    };
+                }
+
+                return {
+                    results: data.map(c => {
+                        const saldoSuficiente = c.saldo_actual >= total;
+
+                        return {
+                            id: c.id,
+                            text: saldoSuficiente
+                                ? c.text
+                                : `${c.text} (Saldo insuficiente)`,
+                            disabled: !saldoSuficiente
+                        };
+                    })
+                };
+            }
+        },
+
+        templateResult: function (data) {
+            if (data.disabled) {
+                return $('<span style="color:red;">' + data.text + '</span>');
             }
 
-            html += res.data.map(c => {
-                const saldoSuficiente = c.saldo_actual >= total;
-                const style = saldoSuficiente ? 'color: green; font-weight: bold;' : 'color: red;';
-                const disabled = saldoSuficiente ? '' : 'disabled';
-                const label = saldoSuficiente ? c.text : `${c.text} (Saldo insuficiente)`;
-                return `<option value="${c.id}" style="${style}" ${disabled}>${label}</option>`;
-            }).join('');
-
-            $('#caja_select').html(html);
-
-        });
-    }
+            return $('<span style="color:white;font-weight:bold;">' + data.text + '</span>');
+        }
+    });
+}
 
 /* --------------------------------------------------------------------------------------------- */
 

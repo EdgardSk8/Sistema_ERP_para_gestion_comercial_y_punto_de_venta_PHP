@@ -23,19 +23,11 @@
     border: 1px solid rgb(187, 187, 187);
 }
 
-.Contenedor-General{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-
-    height: 100vh; 
-    min-height: 0;
-    overflow: hidden;
-    animation: aparecerSuave .35s ease;
-    border: 2px solid black;
-    border-radius: 10px;
-    background-color: #1f2937;
-    padding: 10px;
+.cantidad:focus,
+.precio:focus {
+    outline: none;
+    border: 1px solid #8bbbe7;
+     box-shadow: 0 0 0 .15rem rgba(13, 110, 253, .25);
 }
 
 .form-label, .row{margin: 0 !important; padding: 0 !important;}
@@ -102,4 +94,8 @@
 .card-body{
     display: flex;
     flex-direction: column;
+}
+
+.dataTables_wrapper {
+    border: 1px solid red;
 }

@@ -880,7 +880,7 @@ async function obtenerCredencialesEmpresa() {
 
 /* SELECT */
 
-    function selectores() {
+    function Selectores() {
 
         $.get('/clientes/pos', function (res) {
 
@@ -929,12 +929,15 @@ async function obtenerCredencialesEmpresa() {
             let selectCuenta = $('#id_cuenta_metodo_pago');
             selectCuenta.empty();
 
+            if (idMetodoPago == 1) {
+                selectCuenta.append(`<option value="">Seleccione un Metodo de Pago</option>`);
+                selectCuenta.prop('disabled', true); return;
+            }
+            selectCuenta.prop('disabled', false);
+
             let cuentas = metodosPagoPOS.filter( item => item.id_metodo_pago == idMetodoPago );
 
-            if (cuentas.length === 0) {
-                selectCuenta.append(` <option value=""> Sin cuentas </option> `);
-                return;
-            }
+            if (cuentas.length === 0) { selectCuenta.append(` <option value=""> Sin cuentas </option> `); return; }
 
             if ($.fn.select2) { selectCuenta.select2(); }
 
@@ -944,7 +947,7 @@ async function obtenerCredencialesEmpresa() {
 
         });
 
-    }; selectores();
+    }; Selectores();
 
 /* ------------------------------------------------------------------------------------------------------------------------------------ */
 

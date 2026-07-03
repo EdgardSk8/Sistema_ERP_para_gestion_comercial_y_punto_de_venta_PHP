@@ -137,13 +137,15 @@ class CompraController extends Controller
                 ]);
             }
 
-            // =====================
-            // 6️⃣ MOVIMIENTO DE CAJA O CUENTA
-            // =====================
+            // VALIDACION DE MOVIMIENTO DE CAJA
             if ($usaCaja) {
+
                 $caja = Caja::find($request->caja);
-                if (!$caja) {
-                    return response()->json(['success' => false, 'mensaje' => 'Caja no encontrada'], 422);
+
+                if (!$caja) { return response()->json(['success' => false, 'mensaje' => 'Caja no encontrada'], 422); }
+
+                if ($caja->saldo_actual < $totalCalculado) {
+                    return response()->json([ 'success' => false, 'mensaje' => 'Saldo insuficiente en caja' ], 422);
                 }
 
                 MovimientoCaja::create([
@@ -154,13 +156,15 @@ class CompraController extends Controller
                     'id_usuario' => session('usuario.id'),
                     'id_referencia' => $compra->id_compra,
                 ]);
+
             }
 
+            // VALIDACION DE MOVIMIENTO DE CUENTA
             if ($usaCuenta) {
+
                 $cuenta = Cuenta::find($request->cuenta);
-                if (!$cuenta) {
-                    return response()->json(['success' => false, 'mensaje' => 'Cuenta no encontrada'], 422);
-                }
+
+                if (!$cuenta) { return response()->json(['success' => false, 'mensaje' => 'Cuenta no encontrada'], 422); }
 
                 if ($cuenta->saldo_actual < $totalCalculado) {
                     return response()->json(['success' => false, 'mensaje' => 'Saldo insuficiente en cuenta'], 422);
@@ -176,6 +180,8 @@ class CompraController extends Controller
 
                 $cuenta->decrement('saldo_actual', $totalCalculado);
             }
+
+            /* ----------------------------------------------------------------------------------------------------- */
 
             DB::commit();
 

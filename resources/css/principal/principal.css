@@ -348,6 +348,7 @@ td:last-child{  white-space: nowrap; }/* Btn horizontales */
 .dataTables_length, .dataTables_filter, .dataTables_info{ font-size: var(--fs-sm);  }
 .form-select{ padding: 2px 20px 2px 6px;}
 
+
 .select2-results__options { font-size: var(--fs-m);}
 
 .select2-results__option--highlighted{

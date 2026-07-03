@@ -101,7 +101,6 @@ export default function initMostrarCompras() {
 
     });
 
-
 /* ════════════ MODAL CONFIRMACIÓN ANULAR COMPRA ════════════ */
 
 window.modalAnularCompra = window.modalAnularCompra || null;

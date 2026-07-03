@@ -6,9 +6,9 @@
 
     <!-- ═════════════ ( CONTENEDOR PRINCIPAL ) ═══════════════ -->
 
-    <div class="Contenedor-General">
+    <div class="card">
 
-        <div class="row Contenedor-Selector">
+        <div class="row">
 
             <div class="col-md-4">
 
@@ -39,7 +39,9 @@
 
             <div class="col-md-3">
                 <label class="form-label small">Método Pago</label>
-                <select class="form-select form-select-sm" id="metodo_pago"></select>
+                <select class="form-select form-select-sm" id="metodo_pago">
+                    <option value="" selected disabled>Seleccione Metodo de Pago</option>
+                </select>
             </div>
 
             <div class="col-md-3">
@@ -57,18 +59,22 @@
             <div class="col-md-5">
 
                 <label class="form-label small">Caja</label>
-                <select class="form-select form-select-sm" disabled id="caja_select"></select>
+                <select class="form-select form-select-sm" disabled id="caja_select">
+                    <option value="" selected disabled>Seleccione Caja</option>
+                </select>
 
             </div>
 
             <div class="col-md-4">
 
                 <label class="form-label small">Cuenta</label>
-                <select class="form-select form-select-sm" disabled id="cuenta"></select>
+                <select class="form-select form-select-sm" disabled id="cuenta">
+                    <option value="" selected disabled>Seleccione Cuenta</option>
+                </select>
 
             </div>
 
-            <div class="mb-2"></div>
+            <!-- <div class="mb-2"></div> -->
 
         </div>
 
@@ -95,8 +101,6 @@
             </div>
 
         </div>
-
-<!--  -->
 
         <div class="Contenedor-CarritoTotales m-0">
 
@@ -166,49 +170,8 @@
             </div>
 
         </div>
-
-<!--  -->
         
     </div>
 
-<!-- ---------------------------------------------------------------------------------------------------------------------- -->
-
-        <!-- ═════════════ ( DATOS PRINCIPALES ) ═══════════════ -->
-
-
-
-       
-
-<!-- ---------------------------------------------------------------------------------------------------------------------- -->
-
-        <!-- ═════════════ ( PRODUCTOS ) ═══════════════ -->
-
-        
-
-<!-- ---------------------------------------------------------------------------------------------------------------------- -->
-
-    <!-- ═════════════ ( CONTENEDOR CARRITO Y TOTALES ) ═══════════════ -->
-
-    
-<!-- ---------------------------------------------------------------------------------------------------------------------- -->
-
-<!--    ╔════════ Mensaje Toast ══════════╗ 
-        ╚═════════════════════════════════╝     -->
-
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-
-        <div id="toastMensaje" class="toast text-bg-success border-0">
-
-            <div class="d-flex">
-
-            <div class="toast-body" id="toastTexto"></div>
-
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-
-            </div>
-
-        </div>
-
-    </div>
 
 </turbo-frame>
