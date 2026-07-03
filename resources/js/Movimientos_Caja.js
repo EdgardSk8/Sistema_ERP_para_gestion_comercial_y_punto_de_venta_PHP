@@ -4,13 +4,7 @@ export default function initMovimientoCajas() {
 
     let tabla = $('#tablaMovimientosCaja').DataTable({
 
-        processing: true,
-
-        ajax: { 
-            url: '/movimientos-caja/mostrar', 
-            type: 'GET', 
-            dataSrc: 'movimientos' 
-        },
+        ajax: { url: '/movimientos-caja/mostrar', type: 'GET', dataSrc: 'movimientos' },
 
         columns: [
 

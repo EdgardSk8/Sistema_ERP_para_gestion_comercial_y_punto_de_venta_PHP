@@ -15,12 +15,9 @@ export default function initMostrarUsuarios() {
 
     // Inicializar DataTable
     const tabla = $('#tablaUsuarios').DataTable({
-        processing: true,
-        ajax: {
-            url: '/usuarios/mostrar',
-            type: 'GET',
-            dataSrc: 'usuarios'
-        },
+
+        ajax: { url: '/usuarios/mostrar', type: 'GET', dataSrc: 'usuarios' },
+        
         columns: [
             { data: 'nombre_completo_usuario' },
             { data: 'cedula_identidad_usuario' },

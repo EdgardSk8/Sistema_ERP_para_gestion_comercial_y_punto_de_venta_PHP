@@ -62,7 +62,7 @@ export default function initFacturacion() {
                     <td>C$ ${subtotal.toFixed(2)}</td>
                     <td>
                         <button class="eliminar" data-index="${i}">
-                            <i class="bi bi-trash"></i>
+                            <i class="fa-regular fa-trash-can"></i>
                         </button>
                     </td>
                 </tr>
@@ -141,8 +141,7 @@ export default function initFacturacion() {
                                 data-stock="${row.stock_actual}"
                                 data-porcentaje="${row.iva}"
                                 ${deshabilitado}>
-                                <i class="bi bi-cart-plus"></i>
-                                Agregar
+                                <i class="fa-solid fa-cart-shopping"></i>
                             </button>
                         `;
                     }

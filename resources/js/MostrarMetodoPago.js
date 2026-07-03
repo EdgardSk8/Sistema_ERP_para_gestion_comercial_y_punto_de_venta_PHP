@@ -15,25 +15,22 @@ export default function initMostrarMetodosPagos() {
 
     // Inicializar DataTable
     const tabla = $('#tablaMetodosPago').DataTable({
-        processing: true,
-        ajax: {
-            url: '/metodos-pago/mostrar',
-            type: 'GET',
-            dataSrc: 'metodos_pago'
-        },
+
+        ajax: { url: '/metodos-pago/mostrar', type: 'GET', dataSrc: 'metodos_pago' },
+
         columns: [
             { data: 'nombre_metodo_pago' },
             { data: 'descripcion_metodo_pago' },
-            { 
-                data: 'estado_metodo_pago',
+
+            { data: 'estado_metodo_pago',
                 render: function(data){
                     return data == 1 
                         ? '<span class="estado estado-activo">Activo</span>'
                         : '<span class="estado estado-inactivo">Inactivo</span>';
                 }
             },
-            {
-                data: 'id_metodo_pago',
+
+            { data: 'id_metodo_pago',
                 orderable: false,
                 searchable: false,
                 render: function(data, type, row){

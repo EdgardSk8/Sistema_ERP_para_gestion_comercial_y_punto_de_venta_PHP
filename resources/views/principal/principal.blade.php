@@ -10,6 +10,8 @@
 
     @include('principal.links')
 
+    @vite(['resources/css/variables.css'])
+
     @vite(['resources/css/app.css'])
     @vite(['resources/css/principal/principal.css'])
 

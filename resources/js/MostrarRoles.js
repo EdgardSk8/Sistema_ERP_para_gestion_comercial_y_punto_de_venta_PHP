@@ -18,12 +18,9 @@ export default function initMostrarRoles() {
     $('#toggleInactivosRoles').on('change', function() { tabla.draw(); });
     
     const tabla = $('#tablaRoles').DataTable({ // Inicializar DataTable
-        processing: true,
-        ajax: {
-            url: '/roles/mostrar',
-            type: 'GET',
-            dataSrc: 'roles'
-        },
+        
+        ajax: { url: '/roles/mostrar', type: 'GET', dataSrc: 'roles' },
+        
         columns: [
             { data: 'nombre_rol' },
             { data: 'descripcion_rol' },

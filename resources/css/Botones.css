@@ -28,10 +28,14 @@ button:disabled,
     box-shadow: none !important;
 }
 
+.btn{
+    padding: 2px 8px;
+}
+
 /* ══════════════════════════════════════════════════════════════════════════════════════ */
 
 /*.btn-detalle,*/ /*.btn-editar*/ td/* .btn-baja, .btn-alta, .estado, .btn-transferir, 
-.agregar-saldo, .retirar-saldo, .pagar-gasto, .editar-gasto, */.estado-pendiente, .agregarProducto{
+.agregar-saldo, .retirar-saldo, .pagar-gasto, .editar-gasto, */.estado-pendiente /*.agregarProducto */{
     padding: 2px 8px;
     font-size: 14px;
     line-height: 1.2;

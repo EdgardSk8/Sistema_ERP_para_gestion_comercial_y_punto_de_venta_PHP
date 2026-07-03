@@ -54,8 +54,36 @@ window.moneda = function(valor, decimales = 2) {
     });
 }
 
+function crearToast() {
+
+    if (document.getElementById("toastMensaje")) return;
+
+    document.body.insertAdjacentHTML("beforeend", `
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+
+            <div id="toastMensaje" class="toast border-0">
+
+                <div class="d-flex">
+
+                    <div class="toast-body" id="toastTexto"></div>
+
+                    <button type="button"
+                            class="btn-close btn-close-white me-2 m-auto"
+                            data-bs-dismiss="toast">
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    `);
+
+}
+
 // MOSTRAR TOAST
 window.mostrarToast = function (mensaje, tipo = "success") {
+     crearToast();
     const toastElemento = document.getElementById("toastMensaje");
     const toastTexto = document.getElementById("toastTexto");
 
@@ -85,7 +113,8 @@ window.Traduccion = {
 };
 
 $.extend(true, $.fn.dataTable.defaults, {
-    scrollY: true,
+    scrollY: '100vh',
+    // scrollY: true,
     paging: true,
     responsive: true,
     processing: true,
@@ -325,17 +354,27 @@ window.FechaSimple = function(fechaSQL) {
 
 /* -------------------------------------------------------------------------------- */
 
-window.configurarToggleColumnas = function(idTabla) {
+window.configurarToggleColumnas = function (idTabla) {
 
-    let tabla = $(`#${idTabla}`).DataTable();
+    const tabla = $(`#${idTabla}`).DataTable();
 
-    $('.toggle-col').each(function () { tabla.column($(this).data('column')).visible(this.checked); });
+    $('.toggle-col').each(function () {
+        tabla.column($(this).data('column')).visible(this.checked, false);
+    });
 
-    $('.toggle-col').off('change.toggleCol')
+    tabla.columns.adjust().draw(false);
+
+    $('.toggle-col')
+        .off('change.toggleCol')
         .on('change.toggleCol', function () {
-            tabla.column($(this).data('column')).visible(this.checked);
+
+            tabla
+                .column($(this).data('column'))
+                .visible(this.checked, false);
+
+            tabla.columns.adjust().draw(false);
         });
-}
+};
 
 /* -------------------------------------------------------------------------------- */
 

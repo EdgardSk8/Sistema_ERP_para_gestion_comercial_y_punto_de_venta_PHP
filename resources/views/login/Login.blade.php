@@ -8,138 +8,113 @@
     <title>Login - Sistema POS</title>
 
     @include('principal.links')
-
     @vite(['resources/css/login/login.css'])
 
     <script src="{{ Vite::asset('resources/js/Login.js') }}"></script>
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    </head>
+</head>
 
-<body>
+<body class="bg-light">
 
-<!-- FONDO -->
-    <div class="background-shape shape-1"></div>
-    <div class="background-shape shape-2"></div>
+    <!-- BACKGROUND DECORATIVO (opcional mantener tu CSS) -->
+    <div class="position-fixed top-0 start-0 w-100 h-100 overflow-hidden" style="z-index:0;">
+        <div class="bg-shape bg-1"></div>
+        <div class="bg-shape bg-2"></div>
+    </div>
 
-    <div class="login-container">
+    <!-- CENTRADO BOOTSTRAP -->
+    <div class="container min-vh-100 d-flex justify-content-center align-items-center position-relative" style="z-index:1;">
 
-        <div class="login-box">
+        <div class="card shadow-lg border-0 rounded-4 p-4" style="width: 100%; max-width: 420px;">
 
-            <!-- PANEL IZQUIERDO -->
-            <div class="login-side">
+            <!-- HEADER -->
+            <div class="text-center">
 
-                <div class="brand-mini">
+                <img src="{{ asset('img/icono.png') }}"
+                     class="login-logo"
+                     alt="Logo">
 
-                    <div> <h1>Tellez S.A</h1> <span>Sistema POS</span> </div>
-                    <img src="{{ asset('img/icono.png') }}" alt="Logo" class="logo">
-
-                </div>
-
-                <div class="side-content">
-                    <h2> <!-- Control total de tu negocio --></h2>
-                    <p> <!-- Gestión moderna de ventas, inventario, cajas y facturación en un solo sistema. --> </p>
-                </div>
+                <h4 class="mb-0 fw-bold">Tellez S.A</h4>
+                <small class="text-muted">Sistema POS</small>
 
             </div>
 
-            <!-- PANEL DERECHO -->
-            <div class="login-form-panel">
+            <!-- FORM -->
+            <form id="formLogin">
 
-                <div class="form-card">
+                @csrf
 
-                    <div class="form-header">
+                <!-- Usuario -->
+                <div class="mb-3">
 
-                        <h3>LOGIN</h3>
+                    <label class="form-label">Usuario</label>
 
-                        <p>
-                            Acceso al sistema administrativo
-                        </p>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-person"></i>
+                        </span>
 
-                    </div>
-
-                    <form id="formLogin">
-
-                        @csrf
-
-                        <!-- Usuario -->
-                        <div class="form-group">
-
-                            <label>USUARIO</label>
-
-                            <div class="input-modern">
-
-                                <i class="bi bi-person"></i>
-
-                                <input 
-                                    type="text"
-                                    name="nombre_usuario"
-                                    placeholder="Ingrese su usuario"
-                                    required
-                                >
-
-                            </div>
-
-                        </div>
-
-                        <!-- Password -->
-                        <div class="form-group">
-
-                            <label>CONTRASEÑA</label>
-
-                            <div class="input-modern">
-
-                                <i class="bi bi-lock"></i>
-
-                                <input 
-                                    type="password"
-                                    name="password"
-                                    placeholder="Ingrese su contraseña"
-                                    required
-                                >
-
-                            </div>
-
-                        </div>
-
-                        <button class="btn-login">
-
-                            <i class="bi bi-box-arrow-in-right"></i>
-
-                            INGRESAR
-
-                        </button>
-
-                    </form>
-
-                    <div class="footer-login">
-
-                        © {{ date('Y') }} Tellez S.A
-
+                        <input type="text"
+                               name="nombre_usuario"
+                               class="form-control"
+                               placeholder="Usuario"
+                               required>
                     </div>
 
                 </div>
 
+                <!-- Password -->
+                <div class="mb-3">
+
+                    <label class="form-label">Contraseña</label>
+
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-lock"></i>
+                        </span>
+
+                        <input type="password"
+                               name="password"
+                               class="form-control"
+                               placeholder="Contraseña"
+                               required>
+                    </div>
+
+                </div>
+
+                <!-- BOTÓN -->
+                <button type="submit"
+                        class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2">
+
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    Ingresar
+
+                </button>
+
+            </form>
+
+            <!-- FOOTER -->
+            <div class="text-center mt-3 small text-muted">
+                © {{ date('Y') }} Tellez S.A
             </div>
 
         </div>
 
     </div>
 
-    <!-- TOAST -->
+    <!-- TOAST BOOTSTRAP -->
     <div class="toast-container position-fixed top-0 end-0 p-3">
 
-        <div id="toastMensaje" class="toast text-bg-success border-0">
+        <div id="toastMensaje" class="toast align-items-center text-bg-success border-0">
 
             <div class="d-flex">
 
                 <div class="toast-body" id="toastTexto"></div>
 
-                <button 
-                    type="button"
-                    class="btn-close btn-close-white me-2 m-auto"
-                    data-bs-dismiss="toast">
+                <button type="button"
+                        class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast">
                 </button>
 
             </div>

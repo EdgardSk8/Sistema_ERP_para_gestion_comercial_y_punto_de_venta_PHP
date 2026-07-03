@@ -12,7 +12,7 @@ export default function initMostrarProductos() {
 
     const tabla = $('#TablaMostrarProductos').DataTable({
 
-        processing: true, ajax: { url: '/productos/mostrar', type: 'GET', dataSrc: 'productos' },
+        ajax: { url: '/productos/mostrar', type: 'GET', dataSrc: 'productos' },
 
         columns: [
 

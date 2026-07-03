@@ -15,15 +15,13 @@ export default function initTipoGasto() {
 
     // Inicializar DataTable
     const tabla = $('#tablaTipoGasto').DataTable({
-        processing: true,
-        ajax: {
-            url: '/tipo-gasto/mostrar',
-            type: 'GET',
-            dataSrc: 'tipos_gasto'
-        },
+        
+        ajax: { url: '/tipo-gasto/mostrar', type: 'GET', dataSrc: 'tipos_gasto' },
+
         columns: [
             { data: 'nombre_tipo_gasto' },
             { data: 'descripcion_tipo_gasto' },
+
             { 
                 data: 'estado_tipo_gasto',
                 render: function(data){
@@ -32,6 +30,7 @@ export default function initTipoGasto() {
                         : '<span class="estado estado-inactivo">Inactivo</span>';
                 }
             },
+            
             {
                 data: 'id_tipo_gasto',
                 orderable: false,

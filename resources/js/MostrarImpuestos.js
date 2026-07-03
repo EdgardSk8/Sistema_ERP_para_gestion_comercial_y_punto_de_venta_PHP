@@ -15,32 +15,17 @@ export default function initMostrarImpuestos() {
 
     // Inicializar DataTable
     const tabla = $('#tablaImpuestos').DataTable({
-        processing: true,
-        ajax: {
-            url: '/impuestos/mostrar',
-            type: 'GET',
-            dataSrc: 'impuestos'
-        },
+
+        ajax: { url: '/impuestos/mostrar', type: 'GET', dataSrc: 'impuestos' },
+
         columns: [
             { data: 'nombre_impuesto' },
 
-            { 
-                data: 'porcentaje_impuesto',
-                render: function(data){
-                    return data + ' %';
-                }
-            },
+            { data: 'porcentaje_impuesto', render: function(data){ return data + ' %'; } },
 
-            {
-                data: 'fecha_creacion_impuesto',
-                render: function (data, type, row) {
-                    return formatearFechaDia(data);
-                }
-            },
+            { data: 'fecha_creacion_impuesto', render: function (data, type, row) { return formatearFechaDia(data); } },
                 
-
-            { 
-                data: 'estado_impuesto',
+            { data: 'estado_impuesto',
                 render: function(data){
                     return data == 1 
                         ? '<span class="estado estado-activo">Activo</span>'
@@ -48,8 +33,7 @@ export default function initMostrarImpuestos() {
                 }
             },
 
-            {
-                data: 'id_impuesto',
+            { data: 'id_impuesto',
                 orderable: false,
                 searchable: false,
                 render: function(data, type, row){
@@ -85,8 +69,6 @@ export default function initMostrarImpuestos() {
 
     configurarToggleColumnas('tablaImpuestos');
 
-
-    // Click en botón Editar
     $('#tablaImpuestos').on('click', '.editarImpuesto', function(){
         const id = $(this).data('id');
         abrirModalEditar(id);
@@ -119,7 +101,6 @@ export default function initMostrarImpuestos() {
 
     }
 
-
     // Actualizar impuesto
     $('#btnActualizarImpuesto').click(function() {
 
@@ -128,15 +109,8 @@ export default function initMostrarImpuestos() {
         const estado = $('#editar_estado_impuesto').val();
         const id = $('#editar_id_impuesto').val();
 
-        if(nombre === ''){
-            mostrarToast('El nombre del impuesto es obligatorio', 'danger');
-            return;
-        }
-
-        if(porcentaje === ''){
-            mostrarToast('El porcentaje es obligatorio', 'danger');
-            return;
-        }
+        if(nombre === ''){ mostrarToast('El nombre del impuesto es obligatorio', 'danger'); return; }
+        if(porcentaje === ''){ mostrarToast('El porcentaje es obligatorio', 'danger'); return; }
 
         const datos = {
 

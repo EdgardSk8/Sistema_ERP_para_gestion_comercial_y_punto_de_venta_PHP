@@ -159,7 +159,7 @@
                         </div>
 
                         <!-- 🧾 BOTÓN -->
-                        <button class="btn btn-success btn-sm w-100" id="btnFacturar">
+                        <button class="btn btn-sm btnFacturar" id="btnFacturar">
                             Facturar
                         </button>
 
@@ -171,9 +171,9 @@
                     <thead>
                         <tr>
                             <th>Producto</th>
-                            <th>Cant</th>
+                            <th>Cantidad</th>
                             <th>Precio</th>
-                            <th>Sub</th>
+                            <th>Sub total</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -183,26 +183,6 @@
             </div>
 
                 
-
-        </div>
-
-    </div>
-
-
-<!--    ╔════════ Mensaje Toast ══════════╗ 
-        ╚═════════════════════════════════╝     -->
-
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-
-        <div id="toastMensaje" class="toast text-bg-success border-0">
-
-            <div class="d-flex">
-
-            <div class="toast-body" id="toastTexto"></div>
-
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-
-            </div>
 
         </div>
 

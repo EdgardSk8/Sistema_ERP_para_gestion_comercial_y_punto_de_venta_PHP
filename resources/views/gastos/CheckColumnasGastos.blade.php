@@ -1,12 +1,10 @@
-<div class="d-flex justify-content-between align-items-center">
-
 <div class="d-flex align-items-center gap-3">
 
-    <div class="dropdown">
+    <div>
 
         <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside"> Columnas </button>
 
-        <div class="dropdown-menu p-3 dropdown-columns">
+        <div class="dropdown-menu dropdown-columns">
 
             <div class="form-check">
                 <input class="form-check-input toggle-col" type="checkbox" data-column="0" id="colNombre" checked>
@@ -57,15 +55,9 @@
 
     </div>
 
-        <button type="button"
-            class="btn-agregar"
-            data-bs-toggle="modal"
-            data-bs-target="#modalCrearGasto">
-            + Agregar Gasto
-        </button>
+    <button type="button" class="btn-agregar" data-bs-toggle="modal" data-bs-target="#modalCrearGasto"> + Agregar Gasto </button>
 
-        <input type="checkbox" id="toggleInactivosGastos" class="togglecheck" hidden checked>
-            <label for="toggleInactivosGastos" class="toggle-btn"> Ocultar inactivos </label>
-        </div>
+    <input type="checkbox" id="toggleInactivosGastos" class="togglecheck" hidden checked>
+    <label for="toggleInactivosGastos" class="toggle-btn"> Ocultar inactivos </label>
 
 </div>

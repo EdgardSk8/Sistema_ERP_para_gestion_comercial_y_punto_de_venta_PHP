@@ -4,20 +4,12 @@ export default function initCajaTransferencia() {
     
 
     const tabla = $('#tablaCajaCuenta').DataTable({
-
-        processing: true,
-        ajax: {
-            url: '/movimientos-caja-cuenta/mostrar',
-            type: 'GET',
-            dataSrc: 'data',
-        },
+        ajax: { url: '/movimientos-caja-cuenta/mostrar', type: 'GET', dataSrc: 'data', },
 
         columns: [
 
-            // Nº Caja
             { data: 'numero_caja' },
 
-            // Fecha cierre
             {
                 data: 'fecha_cierre',
                 render: function(data){
@@ -27,10 +19,8 @@ export default function initCajaTransferencia() {
                 }
             },
 
-            // Monto Inicial
             { data: 'monto_inicial', render: data => moneda(data) },
 
-            // Monto Final (BD)
             {
                 data: 'monto_final',
                 render: function(data, type, row) {
@@ -38,13 +28,11 @@ export default function initCajaTransferencia() {
                     return moneda(data);
                 }
             },
-            // Saldo Caja
+
             { 
                 data: 'saldo_caja',
                 render: function(data){
-
                     const valor = parseFloat(data || 0);
-
                     return valor > 0
                         ? '<span class="text-success fw-bold">' + moneda(valor) + '</span>'
                         : '<span class="text-danger fw-bold">' + moneda(valor) + '</span>';
@@ -53,47 +41,25 @@ export default function initCajaTransferencia() {
             { 
                 data: 'monto_transferido',
                 render: function(data){
-
                     let monto = parseFloat(data) || 0;
-
-                    if (monto === 0) {
-                        return '<span>' + moneda(0) + '</span>';
-                    }
-
+                    if (monto === 0) { return '<span>' + moneda(0) + '</span>'; }
                     return '<span class="fw-bold">' + moneda(monto) + '</span>';
                 }
             },
 
-            // Nombre Cuenta (última usada)
             {
                 data: 'nombre_cuenta',
                 render: function(data){
-                    return data 
-                        ? `<span class="estado-activo">${data}</span>`
-                        : '<span>—</span>';
-                        // : '<i class="fa-solid fa-minus"></i>';
-                        
+                    return data ? `<span class="estado-activo">${data}</span>` : '<span>—</span>';
                 }
             },
 
-            // Saldo Cuenta
-            // { 
-            //     data: 'saldo_cuenta',
-            //     render: function(data){
-            //         return data !== null
-            //             ? '<span class="text-success fw-bold">C$ ' + parseFloat(data).toFixed(2) + '</span>'
-            //             : '<span class="text-muted">-</span>';
-            //     }
-            // },
-
-            // Acciones
             {
                 data: null,
                 render: function(data, type, row){
 
                     const cajaAbierta = !row.fecha_cierre;
                     const saldoCaja = parseFloat(row.saldo_caja) || 0;
-
                     const deshabilitarTransferir = cajaAbierta || saldoCaja <= 0;
 
                     return `
@@ -121,9 +87,9 @@ export default function initCajaTransferencia() {
     window.saldoCaja = window.saldoCaja ?? 0;
     window.saldoCajaActual = 0;
 
-/* =========================
-   EVENTO PRINCIPAL
-========================= */
+    /* =========================
+    EVENTO PRINCIPAL
+    ========================= */
     $('#tablaCajaCuenta').on('click', '.btn-transferir', function () {
 
         const row = obtenerFilaCaja(this);
@@ -137,18 +103,18 @@ export default function initCajaTransferencia() {
     });
 
 
-/* =========================
-   OBTENER FILA DATATABLE
-    ========================= */
+    /* =========================
+    OBTENER FILA DATATABLE
+        ========================= */
     function obtenerFilaCaja(btn) {
         const tabla = $('#tablaCajaCuenta').DataTable();
         return tabla.row($(btn).closest('tr')).data();
     }
 
 
-/* =========================
-   LLENAR MODAL
-========================= */
+    /* =========================
+    LLENAR MODAL
+    ========================= */
     function llenarModalCaja(row) {
 
         $('#id_caja').val(row.numero_caja);

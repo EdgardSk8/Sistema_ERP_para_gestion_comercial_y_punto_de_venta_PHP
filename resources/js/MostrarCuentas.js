@@ -25,7 +25,7 @@ export default function initCuentas() {
 
     tabla = $('#tablaCuentas').DataTable({
 
-        autoWidth: false, processing: true, order: [[0, 'asc']],
+        // autoWidth: false,
         ajax: { url: '/cuenta/mostrar', type: 'GET', dataSrc: 'cuentas' },
 
         columns: [
@@ -37,7 +37,7 @@ export default function initCuentas() {
             { data: 'estado', render: renderEstado },
             { data: 'id_cuenta', render: renderAcciones }
 
-        ], drawCallback: function () { AnimarFilasVisibles(this.api()); }
+        ], order: [[0, 'asc']], drawCallback: function () { AnimarFilasVisibles(this.api()); }
 
     });
 

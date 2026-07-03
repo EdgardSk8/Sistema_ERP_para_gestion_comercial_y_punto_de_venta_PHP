@@ -70,28 +70,25 @@
                    required>
           </div>
 
-          <!-- 🔁 Renovación de fecha -->
-<div class="col-8">
+            <!-- 🔁 Renovación de fecha -->
+          <div class="col-8">
 
-  <label class="form-label">Renovación de vencimiento</label>
+            <label class="form-label">Renovación de vencimiento</label>
 
-  <select id="pagar_renovar_fecha" class="form-select form-select-sm">
-    <option value="auto">Automático ( +1 mes )</option>
-    <option value="manual">Elegir fecha manual</option>
-  </select>
+            <select id="pagar_renovar_fecha" class="form-select form-select-sm">
+              <option value="auto">Automático ( +1 mes )</option>
+              <option value="manual">Elegir fecha manual</option>
+            </select>
 
-</div>
+          </div>
 
-<!-- fecha manual (oculto por defecto) -->
-<div class="col-12 d-none" id="grupo_fecha_manual">
+          <!-- fecha manual (oculto por defecto) -->
+          <div class="col-12 d-none" id="grupo_fecha_manual">
 
-  <label class="form-label">Nueva fecha de vencimiento</label>
+            <label class="form-label">Nueva fecha de vencimiento</label>
+            <input type="date" id="pagar_nueva_fecha" class="form-control form-control-sm" placeholder="Elegir Fecha">
 
-  <input type="date"
-         id="pagar_nueva_fecha"
-         class="form-control form-control-sm">
-
-</div>
+          </div>
 
         </form>
 

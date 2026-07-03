@@ -15,14 +15,10 @@ export default function initMostrarProveedores() {
     $('#toggleInactivosProveedores').on('change', function() { tabla.draw(); });
 
     // Inicializar DataTable
-    const tabla = $('#tablaProveedores').DataTable({autoWidth: false,
+    const tabla = $('#tablaProveedores').DataTable({
+        // autoWidth: false,
 
-        processing: true,
-        ajax: {
-            url: '/proveedores/mostrar',
-            type: 'GET',
-            dataSrc: 'proveedores'
-        },
+        ajax: { url: '/proveedores/mostrar', type: 'GET', dataSrc: 'proveedores' },
 
         columns: [
             { data: 'id_proveedor' },

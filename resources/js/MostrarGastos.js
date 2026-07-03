@@ -5,75 +5,40 @@ export default function initMostrarGastos() {
     /* ═════════════ FILTRO INACTIVOS ═════════════ */
 
     $.fn.dataTable.ext.search.push(function (settings, data) {
-
         const ocultar = $('#toggleInactivosGastos').is(':checked');
-
         if (!ocultar) return true;
-
         const estado = data[7];
-
         return estado.includes('Activo');
     });
 
-    $('#toggleInactivosGastos').on('change', function () {
-        tabla.draw();
-    });
+    $('#toggleInactivosGastos').off('change.toggleInactivosGastos').on('change', function () { tabla.draw(); });
 
-    /* ═════════════ TABLA ═════════════ */
+    /* ═════════════ TABLA ═════════════ */$.fn.dataTable.ext.errMode = 'throw';
 
     const tabla = $('#tablaGastos').DataTable({
 
-        processing: true,
-
-        ajax: {
-            url: '/gastos/mostrar',
-            type: 'GET',
-            dataSrc: 'gastos'
-        },
+        ajax: { url: '/gastos/mostrar', type: 'GET', dataSrc: 'gastos' },
 
         columns: [
 
             { data: 'nombre_gasto', render: data => data ? data : '<span>—</span>' },
             { data: 'tipo', render: data => data ? data : '<span>—</span>' },
             { data: 'descripcion_gasto', render: data => data ? data : '<span>—</span>' },
-            {
-                data: 'fecha_pago',
-                render: function (data) {
-                    return data ? FechaSimple(data) : '—';
-                }
-            },
+            { data: 'fecha_pago', render: function (data) { return data ? FechaSimple(data) : '—'; } },
 
-            {
-                data: 'estado_pago',
+            { data: 'estado_pago',
                 render: function (data) {
-
                     const estado = (data || '').toUpperCase();
-
-                    if (estado === 'PAGADO') {
-                        return '<span class="estado estado-activo">Pagado</span>';
-                    }
-
-                    if (estado === 'ATRASADO') {
-                        return '<span class="estado estado-inactivo">Atrasado</span>';
-                    }
-
+                    if (estado === 'PAGADO') { return '<span class="estado estado-activo">Pagado</span>'; }
+                    if (estado === 'ATRASADO') { return '<span class="estado estado-inactivo">Atrasado</span>'; }
                     return '<span class="estado estado-pendiente">Sin pagar</span>';
                 }
             },
 
-            // 🔹 ÚLTIMA FECHA
-            {
-                data: 'ultimo_pago_fecha',
-                render: function (data) {
-                    return data ? FechaSimple(data) : '-';
-                }
-            },
-            // 🔹 ÚLTIMO MONTO
+            { data: 'ultimo_pago_fecha', render: function (data) { return data ? FechaSimple(data) : '-'; } },
             { data: 'ultimo_pago_monto', render: data => moneda(data) },
 
-            // 🔹 ESTADO ACTIVO / INACTIVO
-            {
-                data: 'estado_gasto',
+            { data: 'estado_gasto',
                 render: function (data) {
                     return data == 1
                         ? '<span class="estado estado-activo">Activo</span>'
@@ -81,9 +46,7 @@ export default function initMostrarGastos() {
                 }
             },
 
-            // 🔹 ACCIONES
-            {
-                data: 'id_gasto',
+            { data: 'id_gasto',
                 orderable: false,
                 searchable: false,
                 render: function (data) {
@@ -111,11 +74,9 @@ export default function initMostrarGastos() {
     
     configurarToggleColumnas('tablaGastos');
 
-    /* ═════════════ EDITAR GASTO ═════════════ */
-
-    $('#tablaGastos').on('click', '.editarGasto', function () {
-        const id = $(this).data('id');
-        abrirModalEditarGasto(id);
+    // EDITAR GASTO
+    $('#tablaGastos').off('click.editarGasto', '.editarGasto').on('click.editarGasto', '.editarGasto', function () {
+        const id = $(this).data('id'); abrirModalEditarGasto(id);
     });
 
     function abrirModalEditarGasto(id) {
@@ -213,15 +174,16 @@ export default function initMostrarGastos() {
 
     /* ═════════════ RECARGA ═════════════ */
 
-    $('#modalEditarGasto').on('hidden.bs.modal', function () { tabla.ajax.reload(); });
+    // $('#modalEditarGasto').on('hidden.bs.modal', function () { tabla.ajax.reload(); });
 
 /* ----------------------------------------------------------------------------------------- */
 
-/* Crear Gasto */
 
+    // CREAR GASTO
     function cargarTipoGasto() {
 
         FlatPickr(crear_fecha_pago);
+        FlatPickr(pagar_nueva_fecha);
 
         const modal = document.getElementById("modalCrearGasto");
         const selectTipo = document.getElementById("crear_id_tipo_gasto");
@@ -258,7 +220,7 @@ export default function initMostrarGastos() {
 
 /* ═══════════════════════════════════════════════════════ */
 
-    $('#btnGuardarGasto').on('click', function () {
+    $('#btnGuardarGasto').off('click.guardarGasto').on('click', function () {
 
         const nombre = $('#crear_nombre_gasto').val().trim();
         const tipo = $('#crear_id_tipo_gasto').val();
@@ -311,9 +273,7 @@ export default function initMostrarGastos() {
         });
     });
 
-/* ═══════════════════════════════════════════════════════ */
-/* 🔥 LIMPIAR FORMULARIO CREAR */
-/* ═══════════════════════════════════════════════════════ */
+    // LIMPIAR FORMULARIO CREAR
 
     function limpiarFormularioCrearGasto() {
 
@@ -321,27 +281,16 @@ export default function initMostrarGastos() {
         $('#crear_id_tipo_gasto').val('');
         $('#crear_descripcion_gasto').val('');
         $('#crear_fecha_pago').val('');
-
         const selectTipo = document.getElementById("crear_id_tipo_gasto");
+        if (selectTipo) { selectTipo.dataset.loaded = "0"; }
 
-        // 🔥 permite recargar tipos la próxima vez
-        if (selectTipo) {
-            selectTipo.dataset.loaded = "0";
-        }
     }
 
-    /* ═══════════════════════════════════════════════════════ */
-    /* 🔥 LIMPIAR AL CERRAR MODAL (EXTRA SEGURIDAD) */
-    /* ═══════════════════════════════════════════════════════ */
+    // LIMPIAR AL CERRAR MODAL (EXTRA SEGURIDAD)
 
-    $('#modalCrearGasto').on('hidden.bs.modal', function () {
-        limpiarFormularioCrearGasto();
-    });
+    $('#modalCrearGasto').off('hidden.bs.modal').on('hidden.bs.modal', function () { limpiarFormularioCrearGasto(); });
 
-    /* ═══════════════════════════════════════════════════════ */
-    /* CARGA INICIAL */
-    /* ═══════════════════════════════════════════════════════ */
-
+    // CARGA INICIAL
     cargarTipoGasto();
 
 /* ----------------------------------------------------------------------------------------- */
@@ -428,7 +377,7 @@ export default function initMostrarGastos() {
             DETALLE
         ═══════════════════════════════ */
 
-        $('#tablaGastos').on('click', '.detalleGasto', function () {
+        $('#tablaGastos').off('click', '.detalleGasto').on('click', '.detalleGasto', function () {
 
             const id = $(this).data('id');
 
@@ -504,7 +453,7 @@ export default function initMostrarGastos() {
             EDITAR
         ═══════════════════════════════ */
 
-        $('#tablaHistorialGasto').on('click', '.editarPago', function () {
+        $('#tablaHistorialGasto').off('click.editarPago', '.editarPago').on('click', '.editarPago', function () {
 
             const tr = $(this).closest('tr');
 
@@ -519,22 +468,16 @@ export default function initMostrarGastos() {
             CANCELAR
         ═══════════════════════════════ */
 
-        $('#tablaHistorialGasto').on('click', '.cancelarPago', function () {
-
+        $('#tablaHistorialGasto').off('click.cancelarPago', '.cancelarPago').on('click', '.cancelarPago', function () {
             const tr = $(this).closest('tr');
-
             tr.find('.monto-text, .origen-text').removeClass('d-none');
             tr.find('.monto-edit, .origen-edit-container').addClass('d-none');
-
             tr.find('.editarPago').removeClass('d-none');
             tr.find('.guardarPago, .cancelarPago').addClass('d-none');
         });
 
-        /* ═══════════════════════════════
-            GUARDAR
-        ═══════════════════════════════ */
-
-        $('#tablaHistorialGasto').on('click', '.guardarPago', function () {
+        // GUARDAR
+        $('#tablaHistorialGasto').off('click.guardarPago', '.guardarPago').on('click', '.guardarPago', function () {
 
             const btn = $(this);
 
@@ -616,107 +559,51 @@ export default function initMostrarGastos() {
 
 /* ----------------------------------------------------------------------------------------- */
 
-/* Pagar Gasto */
 
-    function pagargasto() {
+    //FUNCION PAGAR GASTOS
+    function PagarGasto() {
 
-        /* ═══════════════════════════════
-            CARGAR CAJAS
-        ═══════════════════════════════ */
+        // CARGAR CAJAS
         function cargarCajas() {
-
             $.get('/gastos-cajas/mostrar', function (res) {
-
                 if (!res.success) return;
-
                 let html = '<option value="">Seleccione caja</option>';
-
-                res.cajas.forEach(caja => {
-                    html += `<option value="${caja.id}" data-saldo="${caja.saldo}">
-                                ${caja.display}
-                            </option>`;
-                });
-
+                res.cajas.forEach(caja => { html += `<option value="${caja.id}" data-saldo="${caja.saldo}"> ${caja.display} </option>`; });
                 $('#pagar_id_caja').html(html);
             });
         }
 
-        /* ═══════════════════════════════
-            CARGAR CUENTAS
-        ═══════════════════════════════ */
+        // CARGAR CUENTAS
         function cargarCuentas() {
-
             $.get('/gastos-cuentas/mostrar', function (res) {
-
                 if (!res.success) return;
-
                 let html = '<option value="">Seleccione cuenta</option>';
-
-                res.cuentas.forEach(cuenta => {
-                    html += `<option value="${cuenta.id}" data-saldo="${cuenta.saldo}">
-                                ${cuenta.display}
-                            </option>`;
-                });
-
+                res.cuentas.forEach(cuenta => { html += `<option value="${cuenta.id}" data-saldo="${cuenta.saldo}"> ${cuenta.display} </option>`; });
                 $('#pagar_id_cuenta').html(html);
             });
         }
 
         function validarPago({ monto, id_caja, id_cuenta, fecha }) {
 
-        // ❌ monto vacío
-        if (!monto) {
-            mostrarToast('Debe ingresar un monto', 'danger');
-            return false;
+            const saldoCaja = parseFloat($('#pagar_id_caja option:selected').data('saldo') || 0);
+            const saldoCuenta = parseFloat($('#pagar_id_cuenta option:selected').data('saldo') || 0);
+
+            if (!monto) { mostrarToast('Debe ingresar un monto', 'danger'); return false; }
+            if (monto == 0) { mostrarToast('No se permiten pagos en 0', 'danger'); return false; }
+            if (monto < 0) { mostrarToast('No se permiten pagos negativos', 'danger'); return false;}
+            if (!id_caja && !id_cuenta) { mostrarToast('Debe seleccionar una caja o cuenta', 'danger'); return false;}
+            if (id_caja && id_cuenta) { mostrarToast('Seleccione solo caja o cuenta, no ambos', 'danger'); return false; }
+            if (fecha && isNaN(new Date(fecha).getTime())) { mostrarToast('La fecha ingresada no es válida', 'danger'); return false; }
+            if (monto > saldoCaja) { mostrarToast('Saldo insuficiente en la caja seleccionada', 'danger'); return false; }
+            if (monto > saldoCuenta) { mostrarToast('Saldo insuficiente en la cuenta seleccionada', 'danger'); return false; }
+            return true;
         }
 
-        // ❌ monto cero
-        if (monto == 0) {
-            mostrarToast('No se permiten pagos en 0', 'danger');
-            return false;
-        }
+        // SOLO UNO (CAJA / CUENTA)
+        $('#pagar_id_caja').on('change', function () { if ($(this).val()) $('#pagar_id_cuenta').val(''); });
+        $('#pagar_id_cuenta').on('change', function () {if ($(this).val()) $('#pagar_id_caja').val(''); });
 
-        // ❌ monto negativo
-        if (monto < 0) {
-            mostrarToast('No se permiten pagos negativos', 'danger');
-            return false;
-        }
-
-        // ❌ sin caja ni cuenta
-        if (!id_caja && !id_cuenta) {
-            mostrarToast('Debe seleccionar una caja o cuenta', 'danger');
-            return false;
-        }
-
-        // ❌ ambos seleccionados
-        if (id_caja && id_cuenta) {
-            mostrarToast('Seleccione solo caja o cuenta, no ambos', 'danger');
-            return false;
-        }
-
-        // ❌ fecha inválida (si aplica)
-        if (fecha && isNaN(new Date(fecha).getTime())) {
-            mostrarToast('La fecha ingresada no es válida', 'danger');
-            return false;
-        }
-
-        return true;
-    }
-
-        /* ═══════════════════════════════
-            SOLO UNO (CAJA / CUENTA)
-        ═══════════════════════════════ */
-        $('#pagar_id_caja').on('change', function () {
-            if ($(this).val()) $('#pagar_id_cuenta').val('');
-        });
-
-        $('#pagar_id_cuenta').on('change', function () {
-            if ($(this).val()) $('#pagar_id_caja').val('');
-        });
-
-        /* ═══════════════════════════════
-            VALIDAR SALDO
-        ═══════════════════════════════ */
+        // VALIDAR SALDO
         function validarSaldo() {
 
             const monto = parseFloat($('#pagar_monto').val());
@@ -724,70 +611,51 @@ export default function initMostrarGastos() {
 
             const cajaOption = $('#pagar_id_caja option:selected');
             const cuentaOption = $('#pagar_id_cuenta option:selected');
-
             const saldoCaja = parseFloat(cajaOption.data('saldo') || 0);
             const saldoCuenta = parseFloat(cuentaOption.data('saldo') || 0);
 
-            if ($('#pagar_id_caja').val() && monto > saldoCaja) {
-                mostrarToast('El monto supera el saldo de caja', 'danger');
-            }
-
-            if ($('#pagar_id_cuenta').val() && monto > saldoCuenta) {
-                mostrarToast('El monto supera el saldo de cuenta', 'danger');
-            }
+            if ($('#pagar_id_caja').val() && monto > saldoCaja) { mostrarToast('El monto supera el saldo de caja', 'danger'); }
+            if ($('#pagar_id_cuenta').val() && monto > saldoCuenta) { mostrarToast('El monto supera el saldo de cuenta', 'danger'); }
         }
 
-        $('#pagar_monto').on('input', validarSaldo);
+        $('#pagar_monto').off('input.validarSaldo').on('input', validarSaldo);
 
-        /* ═══════════════════════════════
-            ABRIR MODAL (CORREGIDO)
-        ═══════════════════════════════ */
-        $('#tablaGastos').on('click', '.pagarGasto', function () {
+        // ABRIR MODAL (CORREGIDO)
+        $('#tablaGastos').off('click.pagarGasto', '.pagarGasto').on('click', '.pagarGasto', function () {
 
             const tabla = $('#tablaGastos').DataTable();
             const fila = tabla.row($(this).closest('tr')).data();
 
             if (!fila) return;
 
-            // 🔥 abrir modal primero
             const modal = new bootstrap.Modal(document.getElementById('modalPagarGasto'));
             modal.show();
 
-            // 🔥 llenar datos después de abrir
             setTimeout(() => {
 
                 $('#pagar_id_gasto').val(fila.id_gasto);
                 $('#pagar_nombre_gasto').val(fila.nombre_gasto);
                 $('#pagar_ultimo_pago').val(fila.ultimo_pago_fecha ?? 'Nunca');
-                $('#pagar_ultimo_pago').val(
-                    fila.ultimo_pago_fecha
-                        ? formatearFechaDiaHora(fila.ultimo_pago_fecha)
-                        : 'Nunca'
-                );
+                $('#pagar_ultimo_pago').val( fila.ultimo_pago_fecha ? formatearFechaDiaHora(fila.ultimo_pago_fecha) : 'Nunca' );
                 $('#pagar_ultimo_monto').val(fila.ultimo_pago_monto ?? '0.00');
-
                 $('#pagar_monto').val(fila.ultimo_pago_monto ?? '');
-
                 $('#pagar_id_caja').val('');
                 $('#pagar_id_cuenta').val('');
-
                 $('#pagar_renovar_fecha').val('auto');
                 $('#grupo_fecha_manual').addClass('d-none');
                 $('#pagar_nueva_fecha').val('');
-
                 cargarCajas();
                 cargarCuentas();
 
             }, 150);
+
         });
 
-        /* ═══════════════════════════════
-            PAGAR (ANTI DOBLE CLICK)
-        ═══════════════════════════════ */
-        $('#btnPagarGasto').on('click', function () {
+        // PAGAR (ANTI DOBLE CLICK)
+
+        $('#btnPagarGasto').off('click.pagarGasto').on('click', function () {
 
             const btn = $(this);
-
             if (btn.data('loading')) return;
 
             const id_gasto = $('#pagar_id_gasto').val();
@@ -798,21 +666,13 @@ export default function initMostrarGastos() {
             const renovar = $('#pagar_renovar_fecha').val();
             const nueva_fecha = $('#pagar_nueva_fecha').val();
 
-            // ✔ VALIDACIÓN CENTRALIZADA
-            if (!validarPago({
-                monto,
-                id_caja,
-                id_cuenta,
-                fecha: nueva_fecha
-            })) {
-                return;
-            }
+            if (!validarPago({ monto, id_caja, id_cuenta, fecha: nueva_fecha })) { return; }
 
             btn.data('loading', true).prop('disabled', true);
 
             $.ajax({
-                url: '/gastos/pagar',
-                method: 'POST',
+                url: '/gastos/pagar', method: 'POST',
+
                 data: {
                     id_gasto,
                     monto,
@@ -828,61 +688,41 @@ export default function initMostrarGastos() {
                     if (res.success) {
 
                         mostrarToast('Pago registrado correctamente', 'success');
-
-                        bootstrap.Modal.getInstance(
-                            document.getElementById('modalPagarGasto')
-                        ).hide();
-
+                        bootstrap.Modal.getInstance(document.getElementById('modalPagarGasto')).hide();
                         $('#tablaGastos').DataTable().ajax.reload(null, false);
-                    } else {
-                        mostrarToast(res.mensaje || 'Error al pagar', 'danger');
-                    }
+
+                    } else { mostrarToast(res.mensaje || 'Error al pagar', 'danger'); }
                 },
 
-                error: function () {
-                    mostrarToast('Error del servidor', 'danger');
-                },
+                error: function () { mostrarToast('Error del servidor', 'danger'); },
+                complete: function () { btn.data('loading', false).prop('disabled', false); }
 
-                complete: function () {
-                    btn.data('loading', false).prop('disabled', false);
-                }
             });
+
         });
 
         
-    $('#pagar_renovar_fecha').on('change', function () {
+        $('#pagar_renovar_fecha').off('change.renovarFecha').on('change', function () {
 
-        const valor = $(this).val();
+            const valor = $(this).val();
+            if (valor === 'manual') { $('#grupo_fecha_manual').removeClass('d-none');
+            } else { $('#grupo_fecha_manual').addClass('d-none'); $('#pagar_nueva_fecha').val(''); }
 
-        if (valor === 'manual') {
-            $('#grupo_fecha_manual').removeClass('d-none');
-        } else {
-            $('#grupo_fecha_manual').addClass('d-none');
-            $('#pagar_nueva_fecha').val('');
-        }
-    });
+        });
 
-        /* ═══════════════════════════════
-            LIMPIAR MODAL (CORRECTO)
-        ═══════════════════════════════ */
+        //  LIMPIAR MODAL (CORRECTO)
         function limpiarPago() {
-
             $('#formPagarGasto')[0].reset();
-
             $('#pagar_id_gasto').val('');
             $('#pagar_id_caja').val('');
             $('#pagar_id_cuenta').val('');
-
             $('#grupo_fecha_manual').addClass('d-none');
             $('#pagar_nueva_fecha').val('');
         }
 
-        /* ✔ limpiar al cerrar modal */
-        $('#modalPagarGasto').on('hidden.bs.modal', function () {
-            limpiarPago();
-        });
+        $('#modalPagarGasto').off('hidden.bs.modal.limpiarPago').on('hidden.bs.modal', function () { limpiarPago(); });
 
-    }; pagargasto();
+    }; PagarGasto();
 
 
 /* ----------------------------------------------------------------------------------------- */

@@ -16,8 +16,6 @@ export default function initMostrarCategorias() {
     // Inicializar DataTable
     const tabla = $('#tablaCategorias').DataTable({
 
-        processing: true,
-
         ajax: {url: '/categorias/mostrar' ,type: 'GET', dataSrc: 'categorias' },
 
         columns: [

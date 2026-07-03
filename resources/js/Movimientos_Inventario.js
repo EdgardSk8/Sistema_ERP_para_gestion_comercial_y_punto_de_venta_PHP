@@ -4,13 +4,7 @@ export default function initMovimientoInventario() {
 
     $('#tablaKardex').DataTable({
 
-        processing: true, scrollY: true,
-
-        ajax: { 
-            url: '/movimiento-inventario/mostrar', 
-            type: 'GET', 
-            dataSrc: 'movimientos' 
-        },
+        ajax: { url: '/movimiento-inventario/mostrar', type: 'GET', dataSrc: 'movimientos' },
 
         columns: [
             { data: 'id_movimiento_inventario' },

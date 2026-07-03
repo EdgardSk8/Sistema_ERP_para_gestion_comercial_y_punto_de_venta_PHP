@@ -19,8 +19,6 @@ export default function initMostrarCliente() {
     // Inicializar DataTable
     const tabla = $('#tablaClientes').DataTable({
 
-        processing: true,
-
         ajax: {url: '/clientes/mostrar', type: 'GET', dataSrc: 'clientes'},
 
         columns: [

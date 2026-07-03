@@ -19,71 +19,6 @@ body{
 
 /* ------------------------------------------------------ */
 
-/* MODO NORMAL */
-:root{
-    --fs-xsm: 10px;
-    --fs-sm: 12px;
-    --fs: 14px;
-    --fs-lg: 16px;
-    --fs-xlg: 18px;
-
-    --verde:#22C55E;
-    --verde-light: #b8f2c8;
-    --verde-hover:#6d947b;
-    --verde-soft:#EAFBEF;
-
-    --amarillo: #FFC107;
-    --amarillo-light: #FFE082;
-    --amarillo-hover: #E0A800;
-    --amarillo-soft: #FFF8E1;
-
-    --celeste: #a1c7ff;
-    --celeste-soft: #e1ebfa;
-    --celeste-soft-border: #cbd7e9;
-
-    --gris: #CBD5E1;
-    --gris-hover: #94A3B8;
-    --gris-soft: #eeeeee;
-
-    --rojo: #EF4444;
-    --rojo-hover: #DC2626;
-    --rojo-soft: #FEE2E2;
-
-    --azul: #3B82F6;
-    --azul-hover: #2563EB;
-    --azul-soft: #DBEAFE;
-
-    --warning: #EF4444;
-    --warning-hover:#ee3434;
-    --bg:#F8FAF9;
-    --surface:#FFFFFF;
-
-    --text:#111827;
-    --text-soft:#6B7280;
-    --border:#E5E7EB;
-    --radius:10px;
-    --space-1: 1px;
-    --space-2: 8px;
-    --space-3: 12px;
-    --space-4: 16px;
-    --shadow: 0 1px 2px rgba(0,0,0,.04);
-}
-
-/* MODO OSCURO */
-[data-theme="dark"]{
-    --bg:#0F1412;
-    --surface:#151A17;
-    --text:#F3F4F6;
-    --text-soft:#9CA3AF;
-    --border:#243029;
-    --verde:#093d1c;
-    --verde-soft:#1A2B20;
-    --shadow:none;
-}
-
-
-/* ------------------------------------------------------ */
-
 /* CONTENEDOR DE MODO OSCURO/CLARO */
 .modos{
     display:flex;
@@ -332,7 +267,7 @@ hr{ height: 0px; margin: 0 0; } /* Espaciador */
         max-height .4s ease;
 }
 
----------------------------------------------------------------- */
+/* ---------------------------------------------------------------- */
 
 /* elimina micro gaps por subpixel rendering */
 .dataTables_scrollBody { margin-top: -1px; }
@@ -345,6 +280,25 @@ table.dataTable thead th::before, table.dataTable thead th::after{ display: none
     padding: var(--space-2);
     min-height: 0;
     height: 100vh;
+}
+
+div.dataTables_processing{ background: transparent; border: none; }
+div.dataTables_processing > div:last-child { display: none !important; }
+
+.dataTables_processing::before{
+    content: "";
+    display: inline-block;
+    width: 66px;
+    height: 66px;
+    margin-right: 6px;
+    border-radius: 50%;
+    border: 4px solid rgba(154,165,181,0.25);
+    border-top-color: var(--verde, #0077ff);
+    animation: spin .3s linear infinite;
+}
+
+@keyframes spin{
+    to { transform: rotate(360deg); }
 }
 
 /* Columna th (Titulo )*/ 
@@ -394,9 +348,18 @@ td:last-child{  white-space: nowrap; }/* Btn horizontales */
 .dataTables_length, .dataTables_filter, .dataTables_info{ font-size: var(--fs-sm);  }
 .form-select{ padding: 2px 20px 2px 6px;}
 
-.dataTables_filter .form-control{
-    font-size: var(--fs-sm);
+.select2-results__options { font-size: var(--fs-m);}
+
+.select2-results__option--highlighted{
+    background: var(--verde) !important;
+    transition: 0;
+
 }
+
+
+
+.dataTables_filter .form-control{ font-size: var(--fs-sm); }
+
 
 .dataTables_info{
     justify-content: center;
@@ -653,7 +616,7 @@ table.dataTable tfoot select{
 
 /* CONFIGURACION GENERAL DEL BTN */
 
-.btn-detalle, .btn-editar, .btn-baja, .btn-alta, .btn-transferir, .agregar-saldo, .retirar-saldo, .pagar-gasto{
+.btn-detalle, .btn-editar, .btn-baja, .btn-alta, .btn-transferir, .agregar-saldo, .retirar-saldo, .pagar-gasto, .agregarProducto{
     transition: all 0.15s ease;
     background: transparent;
     border: none;
@@ -670,6 +633,7 @@ table.dataTable tfoot select{
 .agregar-saldo { color: var(--verde); }
 .retirar-saldo { color: var(--amarillo); }
 .pagar-gasto{ color: var(--verde);}
+.agregarProducto { color: var(--verde); width: 100%;}
 
 /* HOVER */
 
@@ -682,7 +646,11 @@ table.dataTable tfoot select{
 .agregar-saldo:hover,
 .retirar-saldo:hover,
 .pagar-gasto:hover
+/* .agregarProducto:hover */
     { transform: scale(1.6); }
+
+
+    .agregarProducto:hover{ color: var(--azul); }
 
 /* AL PRESIONAR  */
 
@@ -693,10 +661,11 @@ table.dataTable tfoot select{
 .btn-transferir:active,
 .agregar-saldo:active,
 .retirar-saldo:active,
-.pagar-gasto:active
+.pagar-gasto:active,
+.agregarProducto:active
     { transform: scale(0.95); }
 
-
+.agregarProducto:active{ transform: scale(0.85); color: var(--azul);}
 
 
 
