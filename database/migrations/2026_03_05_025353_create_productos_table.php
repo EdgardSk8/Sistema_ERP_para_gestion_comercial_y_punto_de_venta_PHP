@@ -21,6 +21,7 @@ class CreateProductosTable extends Migration
             $table->unsignedInteger('id_categoria');
             $table->unsignedInteger('id_impuesto');
             $table->unsignedInteger('id_ubicacion')->nullable();
+            $table->unsignedBigInteger('id_medida')->nullable();
             $table->string('imagen_producto',255)->nullable();
 
             $table->decimal('precio_compra',10,2);
@@ -43,6 +44,12 @@ class CreateProductosTable extends Migration
                   ->references('id_ubicacion')
                   ->on('ubicaciones')
                   ->onDelete('set null'); // 👈 recomendable
+
+            $table->foreign('id_medida')
+                  ->references('id_medida')
+                  ->on('medidas')
+                  ->onUpdate('cascade')
+                  ->onDelete('restrict');
         });
     }
 

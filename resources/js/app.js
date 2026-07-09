@@ -175,6 +175,9 @@ import initMostrarMetodosPagosCuenta from './MostrarMetodoPagoCuenta'
 import initCredenciales from './Credenciales'
 import initRespaldo from './Respaldo'
 
+import initMostrarTiposMedidas from './MostrarTiposMedidas'
+import initMostrarMedidas from './MostrarMedidas'
+
 /*
 |--------------------------------------------------------------------------
 | REGISTRO DE MODULOS
@@ -208,7 +211,12 @@ const modulos = [
     ['#tablaMetodosPago', initMostrarMetodosPagos],
     ['#tablaMetodoPagoCuenta', initMostrarMetodosPagosCuenta],
     ['#nombre_empresa', initCredenciales],
-    ['#btnExportarSistema', initRespaldo]
+    ['#btnExportarSistema', initRespaldo],
+    ['#tablaTiposMedidas', initMostrarTiposMedidas],
+    ['#tablaMedidas', initMostrarMedidas]
+
+
+
 ];
 
 /*
@@ -315,7 +323,7 @@ function cargarInicial(primero) {
     if (!url) {console.warn("No hay ruta para:", primero); return; }
 
     // document.getElementById('contenido-dinamico').setAttribute('src', url);
-    document.getElementById('contenido-dinamico').setAttribute('src', '/compras/crear');
+    document.getElementById('contenido-dinamico').setAttribute('src', '/medidas');
 }
 
 fetch('/cargar-permisos').then(r => r.json())

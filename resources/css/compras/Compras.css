@@ -95,7 +95,3 @@
     display: flex;
     flex-direction: column;
 }
-
-.dataTables_wrapper {
-    border: 1px solid red;
-}

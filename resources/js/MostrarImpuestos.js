@@ -45,7 +45,7 @@ export default function initMostrarImpuestos() {
 
                         </button>` 
 
-                        : `<button class="btn-baja bajaImpuesto" data-id="${data}">
+                        : `<button class="btn-alta bajaImpuesto" data-id="${data}">
                         
                             <i class="fa-solid fa-circle-check"></i>
                         
@@ -69,11 +69,11 @@ export default function initMostrarImpuestos() {
 
     configurarToggleColumnas('tablaImpuestos');
 
-    $('#tablaImpuestos').on('click', '.editarImpuesto', function(){
-        const id = $(this).data('id');
-        abrirModalEditar(id);
-    });
+/* ------------------------------------------------------------------------------------------------- */
 
+    $('#tablaImpuestos').on('click', '.editarImpuesto', function(){
+        const id = $(this).data('id'); abrirModalEditar(id);
+    });
 
     // Abrir modal y llenar datos
     function abrirModalEditar(id) {

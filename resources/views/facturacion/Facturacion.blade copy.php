@@ -171,8 +171,8 @@
 <!-- ════════════════════ CARRITO ═══════════════════════ -->
 
                 <div class="carrito-scroll">
-                    <table class="table table-bordered table-sm">
-                        <thead class="table-dark">
+                    <table>
+                        <thead>
                             <tr>
                                 <th>Producto</th>
                                 <th>Cantidad</th>

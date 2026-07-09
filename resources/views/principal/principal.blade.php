@@ -371,6 +371,24 @@
                 </a>
             @endif
 
+            @if(in_array('vista_tipos_medidas', session('permisos', [])))
+                <a href="{{ route('tipos.medidas') }}"
+                class="sidebar-link"
+                data-turbo-frame="contenido-dinamico">
+                    <i class="fa-solid fa-ruler-combined text-primary"></i>
+                    Tipos de Medidas
+                </a>
+            @endif
+
+            @if(in_array('vista_medidas', session('permisos', [])))
+                <a href="{{ route('medidas') }}"
+                class="sidebar-link"
+                data-turbo-frame="contenido-dinamico">
+                    <i class="fa-solid fa-ruler text-success"></i>
+                    Medidas
+                </a>
+            @endif
+
             <hr>
             
             <div class="modos">

@@ -5,7 +5,7 @@
         <div class="modal-content">
 
             <!-- HEADER -->
-            <div class="modal-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <div class="modal-header d-flex justify-content-between align-items-center">
 
                 <h5 class="modal-title">
                     Transferencias de Caja: <span id="cajaDetalleTitulo">—</span>
@@ -37,9 +37,9 @@
 
                 <!-- TABLA -->
                 <div class="table-responsive">
-                    <table class="table table-sm table-bordered text-center align-middle">
+                    <table class="table text-center align-middle">
 
-                        <thead class="table-dark">
+                        <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Usuario</th>

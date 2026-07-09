@@ -187,6 +187,14 @@ class permisosSeeder extends Seeder
             ['nombre_permiso' => 'vista_reportes','descripcion_permiso' => 'Ver Reportes','modulo_permiso' => 'reportes'],
             ['nombre_permiso' => 'mostrar_reportes','descripcion_permiso' => 'Mostrar Reportes','modulo_permiso' => 'reportes'],
 
+            /* ═════════════ TIPOS MEDIDAS ═════════════ */
+
+            ['nombre_permiso' => 'vista_tipos_medidas','descripcion_permiso' => 'Ver Tipos de Medidas','modulo_permiso' => 'tipos_medidas'],
+
+            /* ═════════════ MEDIDAS ═════════════ */
+
+            ['nombre_permiso' => 'vista_medidas','descripcion_permiso' => 'Ver Medidas','modulo_permiso' => 'medidas'],
+
         ]);
     }
 }

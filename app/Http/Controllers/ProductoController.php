@@ -305,7 +305,7 @@ class ProductoController extends Controller
     {
         try {
 
-            $productos = Producto::with(['categoria', 'impuesto', 'ubicacion'])->get();
+            $productos = Producto::with(['categoria', 'impuesto', 'ubicacion', 'medida'])->get();
 
             return response()->json([
                 'success' => true,

@@ -1,0 +1,29 @@
+<turbo-frame id="contenido-dinamico">
+
+    @include('medidas.CheckColumnasMedidas')
+    @include('medidas.CrearMedidas')
+    @include('medidas.EditarMedidas')
+
+    <div class="card">
+
+        <table id="tablaMedidas" class="table table-bordered">
+
+            <thead>
+                <tr>
+                    <th>Tipo de Medida</th>
+                    <th>Nombre</th>
+                    <th>Abreviatura</th>
+                    <th>Orden</th>
+                    <th>Fecha de Creación</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody></tbody>
+
+        </table>
+
+    </div>
+
+</turbo-frame>

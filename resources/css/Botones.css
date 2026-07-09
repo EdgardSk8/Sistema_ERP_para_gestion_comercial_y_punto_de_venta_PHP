@@ -30,6 +30,10 @@ button:disabled,
 
 .btn{
     padding: 2px 8px;
+    display: flex;
+    flex-wrap: nowrap;
+
+    display: inline-block;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════════════ */
@@ -44,7 +48,7 @@ button:disabled,
     transition: all 0.15s ease;
 }
 
-.btn i { font-size: 14px; } /* Icono Detalle */
+
 
 /* ══════════════════════════════════════════════════════════════════════════════════════ */
 

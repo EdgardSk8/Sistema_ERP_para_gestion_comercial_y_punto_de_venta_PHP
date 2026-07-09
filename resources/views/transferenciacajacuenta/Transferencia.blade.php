@@ -5,9 +5,9 @@
 
     <div class="card">
 
-        <table id="tablaCajaCuenta" class="table  table-bordered">
+        <table id="tablaCajaCuenta" class="table table-bordered">
 
-            <thead class="table-dark">
+            <thead>
                 <tr>
                     <th>Caja</th>
                     <th>Fecha</th>

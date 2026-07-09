@@ -1,3 +1,25 @@
-.modal-header{ background-color: #111827 !important; color: #cbd5e1; }
-.modal-body, .modal-footer{ background-color: #f4f6f9 !important; }
-.modal-header .btn-close { filter: invert(1); }
+/* .modal-header{ background-color: #111827 !important; color: #cbd5e1; } */
+
+.modal-body{ 
+    background-color: #f4f6f9 !important;
+    scrollbar-width: thin;
+    scrollbar-color:var(--text-soft) transparent;
+}
+
+/* .list-group{ padding: 8px; } */
+.list-group-item{ padding: 6px; transition: .10s; }
+.list-group-item:hover{ background:var(--verde-soft); cursor: pointer; }
+.modal-header{ height: 30px;}
+.modal-footer{ padding: 0;  }
+.modal-title{ text-align: center; width: 100%;} 
+.btn-close{ transition: .20s; }
+.btns-right{ top: 10; position: absolute; right: 16px; }
+
+.card-responsive{
+    border: 1px solid #e9ecef;
+    padding: 12px;
+    border-radius: 12px;
+    background: #fff;
+    transition: all .25s ease;
+    overflow: hidden;
+}

@@ -5,7 +5,7 @@
         <div class="modal-content">
 
             <!-- HEADER -->
-            <div class="modal-header bg-dark text-white d-flex justify-content-between">
+            <div class="modal-header d-flex justify-content-between">
 
                 <h5 class="modal-title">
                     Detalle de Gasto: <span id="detalleNombreGasto">—</span>
@@ -39,9 +39,9 @@
                 <!-- HISTORIAL -->
                 <div class="table-responsive">
 
-                    <table class="table table-sm table-bordered text-center align-middle">
+                    <table class="table text-center align-middle">
 
-                        <thead class="table-dark">
+                        <thead>
                             <tr>
                                 <th>Fecha</th>
                                 <th>Monto</th>

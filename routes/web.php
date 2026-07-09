@@ -39,6 +39,8 @@ use App\Http\Controllers\BackupController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\CargaVistaController;
 use App\Http\Controllers\MetodoPagoCuentaController;
+use App\Http\Controllers\TiposMedidasController;
+use App\Http\Controllers\MedidasController;
 
 /*  ╔════════════ LOGIN ═════════════╗ 
     ╚════════════════════════════════╝ */
@@ -84,6 +86,11 @@ Route::view('/cuentas/movimientos', 'movimientos_cuenta.Movimientos_Cuentas')->m
 Route::view('/gastos/movimientos', 'movimientos_gasto.Movimientos_Gastos')->middleware('permiso:vista_movimientos_gastos')->name('movimientos.gastos');
 Route::view('/respaldo', 'respaldo.Respaldo')->middleware('permiso:vista_respaldo')->name('respaldo');
 Route::view('/reportes', 'reportes.Reportes')->middleware('permiso:vista_reportes')->name('reportes');
+Route::view('/tipos-medidas', 'tipos_medidas.TiposMedidas')->middleware('permiso:vista_tipos_medidas')->name('tipos.medidas');
+Route::view('/medidas', 'medidas.Medidas')->middleware('permiso:vista_medidas')->name('medidas');
+
+
+
 Route::view('/error', 'errors.sin_permiso')->name('error');
 /* ════════════════════════════════════════════════════════════════════════════════════════════════════════════ */
     
@@ -325,3 +332,26 @@ Route::get('/reportes/movimiento-inventario', [ReporteController::class, 'Report
 Route::get('/reportes/clientes', [ReporteController::class, 'ReporteClientes'])->middleware('permiso:mostrar_reportes');
 Route::get('/reportes/usuarios', [ReporteController::class, 'ReporteUsuarios'])->middleware('permiso:mostrar_reportes');
 Route::get('/reportes/cajas', [ReporteController::class, 'ReporteCajas'])->middleware('permiso:mostrar_reportes');
+
+/*  ╔════════ Endpoint Tipos de Medidas ═════════╗ 
+    ╚════════════════════════════════════════════╝ */
+
+Route::get('/tipos-medidas/mostrar', [TiposMedidasController::class, 'MostrarTiposMedidas']);
+Route::post('/tipos-medidas/crear', [TiposMedidasController::class, 'CrearTipoMedida']);
+Route::get('/tipos-medidas/editar/{id}', [TiposMedidasController::class, 'EditarTipoMedida']);
+Route::put('/tipos-medidas/actualizar/{id}', [TiposMedidasController::class, 'ActualizarTipoMedida']);
+Route::put('/tipos-medidas/cambiar-estado/{id}', [TiposMedidasController::class, 'CambiarEstadoTipoMedida']);
+
+/*  ╔════════════ Endpoint de Medida ════════════╗ 
+    ╚════════════════════════════════════════════╝ */
+
+Route::get('/medidas/mostrar', [MedidasController::class, 'MostrarMedidas']);
+Route::post('/medidas/crear', [MedidasController::class, 'CrearMedida']);
+Route::get('/medidas/editar/{id}', [MedidasController::class, 'EditarMedida']);
+Route::put('/medidas/actualizar/{id}', [MedidasController::class, 'ActualizarMedida']);
+Route::put('/medidas/cambiar-estado/{id}', [MedidasController::class, 'CambiarEstadoMedida']);
+Route::get('/medidas/tipos-medidas/mostrar',[MedidasController::class, 'MostrarTiposMedidas']);
+
+
+
+

@@ -4,7 +4,7 @@
         <div class="modal-content">
 
             <!-- HEADER -->
-            <div class="modal-header bg-dark text-white py-2">
+            <div class="modal-header py-2">
                 <h6 class="modal-title">Vincular método de pago y cuenta</h6>
 
                 <button type="button"

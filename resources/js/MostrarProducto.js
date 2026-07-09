@@ -31,7 +31,9 @@ export default function initMostrarProductos() {
 
             { data: 'nombre_producto' }, /*  ══════ Nombre Producto  ══════ */
 
-            { data: 'categoria.nombre_categoria', defaultContent: 'Sin categoría' }, /*  ══════ Categoria  ══════*/
+            { data: 'categoria.nombre_categoria', defaultContent: '—' }, /*  ══════ Categoria  ══════*/
+
+            { data: 'medida.nombre_medida', defaultContent: '—'},
 
             { data: 'precio_compra', render: data => moneda(data) }, /*  ══════ P.Compra ══════ */
 
@@ -121,7 +123,7 @@ export default function initMostrarProductos() {
             const ocultar = $('#toggleInactivosProductos').is(':checked');
             if (!ocultar) return true;
 
-            const estado = data[11]; // columna estado (IMPORTANTE)
+            const estado = data[12]; // columna estado (IMPORTANTE)
             return estado.includes('Activo');
         }
 
@@ -305,7 +307,7 @@ $('#TablaMostrarProductos').on('click', '.detallesProducto', function () {
             $('#detalle_fecha_producto').text( p.fecha_creacion_producto ? formatearFecha(p.fecha_creacion_producto) : '-' );
             $('#detalle_categoria_producto').text(p.categoria?.nombre_categoria || 'SIN CATEGORIA');
             $('#detalle_ubicacion_producto').text(p.ubicacion?.nombre_ubicacion || 'SIN UBICACION');
-            $('#detalle_impuesto_producto').text(p.impuesto?.nombre_impuesto || 'SIN IMPUESTO ASIGNADO');
+            $('#detalle_impuesto_producto').text(p.impuesto?.nombre_impuesto+ ' ' + p.impuesto?.porcentaje_impuesto + '%' || 'SIN IMPUESTO ASIGNADO');
             $('#detalle_precio_compra').text(`C$ ${parseFloat(p.precio_compra).toFixed(2)}`);
             $('#detalle_precio_venta').text(`C$ ${parseFloat(p.precio_venta).toFixed(2)}`);
             $('#detalle_stock_producto').text(p.stock_actual);

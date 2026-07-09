@@ -126,7 +126,7 @@ body{
 
 .sidebar{
     width:130px;
-    min-width:10px;
+    min-width:130px;
     display:flex;
     flex-direction:column;
     height:100vh;
@@ -340,7 +340,7 @@ div.dataTables_processing > div:last-child { display: none !important; }
     line-height:0 !important;
 }
 
-tbody tr:hover td{ background:var(--celeste-soft); transition:.10s; }
+tbody tr:hover td{ background:var(--celeste-soft); transition: .10s; }
 
 /* ---------------------------------------------------------------------- */
 
@@ -624,6 +624,12 @@ table.dataTable tfoot select{
     padding: 0 6px;
 }
 
+button i{
+    pointer-events:none;
+}
+
+/* .btn i { font-size: 14px; pointer-events: none;} */
+
 /* COLORES DE BTN */
 
 .btn-detalle { color: var(--azul); }
@@ -647,7 +653,6 @@ table.dataTable tfoot select{
 .agregar-saldo:hover,
 .retirar-saldo:hover,
 .pagar-gasto:hover
-/* .agregarProducto:hover */
     { transform: scale(1.6); }
 
 

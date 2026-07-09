@@ -14,6 +14,7 @@
                     <th>Imagen</th>
                     <th>Nombre</th>
                     <th>Categoría</th>
+                    <th>Medidas</th>
                     <th>P. Compra</th>
                     <th>P. Venta</th>
                     <th>P.V.Final</th>
@@ -30,6 +31,7 @@
 
                 <tfoot>
                     <tr>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>

@@ -5,19 +5,19 @@
         <div class="modal-content">
 
             <!-- HEADER -->
-            <div class="modal-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <div class="modal-header d-flex justify-content-between align-items-center">
 
                 <h5 class="modal-title" id="facturaTituloCompra">
                     Factura: —
                 </h5>
 
-                <div class="d-flex align-items-center gap-2">
+                <div class="btns-right d-flex align-items-center gap-2">
 
                     <button type="button" data-id="" class="btn btn-danger btn-sm" id="btnAnularCompra">
                         <i class="bi bi-x-circle"></i> Anular Factura
                     </button>
 
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 
                 </div>
 

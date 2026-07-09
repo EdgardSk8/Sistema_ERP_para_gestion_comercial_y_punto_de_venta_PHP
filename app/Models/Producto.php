@@ -14,6 +14,7 @@ class Producto extends Model
         'nombre_producto',
         'descripcion_producto',
         'id_categoria',
+        'id_medida',
         'id_impuesto',
         'id_ubicacion',
         'imagen_producto',
@@ -26,7 +27,7 @@ class Producto extends Model
 
     // 🔗 Relaciones
 
-    protected $appends = ['ganancia', 'porcentaje_ganancia', 'precio_venta_final'];
+    protected $appends = ['ganancia', 'porcentaje_ganancia', 'precio_venta_final', 'medida_nombre'];
 
     public function getGananciaAttribute()
     {
@@ -73,6 +74,16 @@ class Producto extends Model
     public function impuestoProducto()
     {
         return $this->belongsTo(Impuesto::class, 'id_impuesto', 'id_impuesto');
+    }
+
+    public function medida()
+    {
+        return $this->belongsTo(Medida::class, 'id_medida', 'id_medida');
+    }
+
+    public function getMedidaNombreAttribute()
+    {
+        return $this->medida?->nombre_medida;
     }
     
 }

@@ -81,12 +81,12 @@ export default function initCompras() {
         }
     });
 
-$('#cajacuentaselect').select2({
-    data: [
-        { id: 'caja', text: 'Caja' },
-        { id: 'cuenta', text: 'Cuenta' }
-    ]
-});
+    $('#cajacuentaselect').select2({
+        data: [
+            { id: 'caja', text: 'Caja' },
+            { id: 'cuenta', text: 'Cuenta' }
+        ]
+    });
 
     $('#cajacuentaselect').on('change', function () {
 

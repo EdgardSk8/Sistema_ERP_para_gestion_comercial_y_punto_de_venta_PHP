@@ -5,13 +5,19 @@
       <!-- Cabecera -->
       <div class="modal-header">
         <h6 class="modal-title">Detalle del Producto</h6>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       <!-- Cuerpo -->
       <div class="modal-body">
 
         <ul class="list-group list-group-flush small">
+
+          <!-- Imagen al final -->
+          <div class="text-center mb-3">
+            <img id="detalle_imagen_producto" src="" class="img-thumbnail d-none" style="max-height: 120px;">
+            <div id="sin_imagen_texto" class="small d-none"> Sin foto del producto </div>
+          </div>
 
           <li class="list-group-item">
             <strong>Nombre:</strong>
@@ -21,11 +27,6 @@
           <li class="list-group-item">
             <strong>Descripción:</strong>
             <span id="detalle_descripcion_producto"></span>
-          </li>
-
-          <li class="list-group-item">
-            <strong>Fecha:</strong>
-            <span id="detalle_fecha_producto"></span>
           </li>
 
           <li class="list-group-item">
@@ -59,23 +60,18 @@
           </li>
 
           <li class="list-group-item">
+            <strong>Fecha creacion:</strong>
+            <span id="detalle_fecha_producto"></span>
+          </li>
+
+          <li class="list-group-item">
             <strong>Estado:</strong>
             <span id="detalle_estado_producto"></span>
           </li>
 
         </ul>
 
-        <!-- Imagen al final -->
-        <div class="text-center mt-3">
-          <img id="detalle_imagen_producto" 
-               src="" 
-               class="img-thumbnail d-none" 
-               style="max-height: 120px;">
-
-          <div id="sin_imagen_texto" class="text-muted small d-none">
-            Sin foto del producto
-          </div>
-        </div>
+        
 
       </div>
 
