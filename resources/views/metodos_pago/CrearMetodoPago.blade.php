@@ -1,62 +1,88 @@
-<div class="modal fade" id="modalCrearMetodoPago" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modalCrearMetodoPago" tabindex="-1">
 
-  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered">
 
-    <div class="modal-content">
+        <div class="modal-content">
 
-      <div class="modal-header">
+            <div class="modal-header">
 
-        <h5 class="modal-title">Crear Método de Pago</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">Crear Método de Pago</h5>
 
-      </div>
+                <button
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
 
-      <div class="modal-body">
+            </div>
 
-        <form id="formCrearMetodoPago" class="row g-3">
 
-          <div class="col-md-6">
-            <label class="form-label">Nombre del Método de Pago</label>
-            <input 
-              type="text"
-              id="crear_nombre_metodo_pago"
-              placeholder="Nombre del método de pago"
-              class="form-control form-control-sm"
-              maxlength="100"
-              required>
-          </div>
+            <div class="modal-body">
 
-          <div class="col-md-6">
-            <label class="form-label">Descripción</label>
-            <input 
-              type="text"
-              id="crear_descripcion_metodo_pago"
-              placeholder="Descripción del método de pago"
-              class="form-control form-control-sm"
-              maxlength="150">
-          </div>
+                <div class="card-responsive">
 
-        </form>
+                    <form id="formCrearMetodoPago" class="row g-3">
 
-      </div>
 
-      <div class="modal-footer d-flex align-items-center justify-content-between">
+                        <div class="col-12">
 
-        <div class="text-start">
-          <div><strong>Nombre máximo:</strong> 100 caracteres</div>
-          <div><strong>Descripción máxima:</strong> 150 caracteres</div>
+                            <label class="form-label">
+                                Nombre del Método de Pago
+                            </label>
+
+                            <input
+                                id="crear_nombre_metodo_pago"
+                                type="text"
+                                class="form-control form-control-sm"
+                                placeholder="Nombre del método de pago"
+                                maxlength="100"
+                                required>
+
+                        </div>
+
+
+                        <div class="col-12">
+
+                            <label class="form-label">
+                                Descripción
+                            </label>
+
+                            <textarea
+                                id="crear_descripcion_metodo_pago"
+                                class="form-control form-control-sm"
+                                placeholder="Descripción del método de pago"
+                                maxlength="150"
+                                rows="1"></textarea>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn cancelar"
+                    data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+
+                <button
+                    id="btnGuardarMetodoPago"
+                    type="button"
+                    class="btn guardar">
+                    Guardar
+                </button>
+
+            </div>
+
+
         </div>
-
-        <div>
-          <button class="btn cancelar" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn guardar" id="btnGuardarMetodoPago">Guardar</button>
-        </div>
-
-      </div>
 
     </div>
 
-  </div>
-
 </div>
-

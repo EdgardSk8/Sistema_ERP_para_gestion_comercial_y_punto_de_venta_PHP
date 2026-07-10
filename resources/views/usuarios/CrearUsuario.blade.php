@@ -1,73 +1,95 @@
-<div class="modal fade" id="modalCrearUsuario" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modalCrearUsuario" tabindex="-1">
 
-  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered">
 
-    <div class="modal-content">
+        <div class="modal-content">
 
-      <div class="modal-header">
+            <div class="modal-header">
+                <h5 class="modal-title">Crear Usuario</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
 
-        <h5 class="modal-title">Crear Usuario</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-body">
 
-      </div>
+                <div class="card-responsive">
 
-      <div class="modal-body">
+                    <form id="formCrearUsuario" class="row g-3">
 
-        <form id="formCrearUsuario" class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">Nombre Completo</label>
+                            <input
+                                id="crear_nombre_completo_usuario"
+                                type="text"
+                                class="form-control form-control-sm"
+                                placeholder="Nombre Completo Real"
+                                pattern="^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$"
+                                required>
+                        </div>
 
-          <div class="col-md-4">
-            <label class="form-label">Nombre Completo</label>
-            <input type="text" id="crear_nombre_completo_usuario" placeholder="Nombre Completo Real" class="form-control form-control-sm" pattern="^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$" required>
-          </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Cédula</label>
+                            <input
+                                id="crear_cedula_usuario"
+                                type="text"
+                                class="form-control form-control-sm"
+                                placeholder="000-000000-0000A"
+                                maxlength="16">
+                        </div>
 
-          <div class="col-md-2">
-            <label class="form-label">Cédula</label>
-            <input type="text" id="crear_cedula_usuario" class="form-control form-control-sm" maxlength="16" placeholder="000-000000-0000A">
-          </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Nombre de Usuario</label>
+                            <input
+                                id="crear_nombre_usuario"
+                                type="text"
+                                class="form-control form-control-sm"
+                                placeholder="Usuario Login"
+                                autocomplete="username"
+                                required>
+                        </div>
 
-          <div class="col-md-2">
-            <label class="form-label">Nombre de Usuario</label>
-            <input type="text" autocomplete="username" id="crear_nombre_usuario" placeholder="Usuario Login" class="form-control form-control-sm" required>
-          </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Rol</label>
+                            <select
+                                id="crear_rol_usuario"
+                                class="form-select form-select-sm">
+                            </select>
+                        </div>
 
-          <div class="col-md-2">
-            <label class="form-label">Rol</label>
-            <select id="crear_rol_usuario" class="form-select form-select-sm"></select>
-          </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Contraseña</label>
+                            <input
+                                id="crear_password_usuario"
+                                type="password"
+                                class="form-control form-control-sm"
+                                placeholder="Mínimo 6 caracteres"
+                                autocomplete="new-password"
+                                minlength="6"
+                                required>
+                        </div>
 
-          <div class="col-md-2">
-            <label class="form-label">Contraseña</label>
-            <input type="password" autocomplete="new-password" id="crear_password_usuario" minlength="6" placeholder="Mínimo 6 caracteres" class="form-control form-control-sm" required>
-          </div>
+                    </form>
 
-        </form>
+                </div>
 
-      </div>
+            </div>
 
-      <div class="modal-footer d-flex align-items-center justify-content-between">
+            <div class="modal-footer">
 
-        <div class="text-start">
+                <button class="btn cancelar" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
 
-          <div><strong>Formato cédula:</strong> 000-000000-0000A</div>
-          <div><strong>Contraseña mínima:</strong> 6 caracteres</div>
+                <button
+                    id="btnGuardarUsuario"
+                    type="button"
+                    class="btn guardar">
+                    Guardar
+                </button>
+
+            </div>
 
         </div>
-
-        <div>
-
-          <button class="btn cancelar" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn guardar" id="btnGuardarUsuario">Guardar</button>
-
-        </div>
-
-      </div>
 
     </div>
 
-  </div>
-
 </div>
-
-
-
-

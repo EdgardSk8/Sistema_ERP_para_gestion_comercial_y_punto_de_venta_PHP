@@ -1,78 +1,104 @@
-<div class="modal fade" id="modalCrearCliente" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modalCrearCliente" tabindex="-1">
 
-  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered">
 
-    <div class="modal-content">
+        <div class="modal-content">
 
-      <div class="modal-header">
+            <div class="modal-header">
+                <h5 class="modal-title">Crear Cliente</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
 
-        <h5 class="modal-title">Crear Cliente</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-body">
 
-      </div>
+                <div class="card-responsive">
 
-      <div class="modal-body">
+                    <form id="formCrearCliente" class="row g-3">
 
-        <form id="formCrearCliente" class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">Nombre del Cliente</label>
+                            <input
+                                id="crear_nombre_cliente"
+                                type="text"
+                                class="form-control form-control-sm"
+                                placeholder="Nombre del Cliente"
+                                maxlength="150"
+                                required>
+                        </div>
 
-          <div class="col-md-3">
-            <label class="form-label">Nombre del Cliente</label>
-            <input type="text" id="crear_nombre_cliente" placeholder="Nombre del Cliente"
-            class="form-control form-control-sm" maxlength="150" required>
-          </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Cédula</label>
+                            <input
+                                id="crear_cedula_cliente"
+                                type="text"
+                                class="form-control form-control-sm"
+                                placeholder="000-000000-0000A"
+                                maxlength="16">
+                        </div>
 
-          <div class="col-md-3">
-            <label class="form-label">Cédula</label>
-            <input type="text" id="crear_cedula_cliente" placeholder="000-000000-0000A"
-            class="form-control form-control-sm" maxlength="16">
-          </div>
+                        <div class="col-md-6">
+                            <label class="form-label">RUC</label>
+                            <input
+                                id="crear_ruc_cliente"
+                                type="text"
+                                class="form-control form-control-sm"
+                                placeholder="RUC del Cliente"
+                                maxlength="20">
+                        </div>
 
-          <div class="col-md-3">
-            <label class="form-label">RUC</label>
-            <input type="text" id="crear_ruc_cliente" placeholder="RUC del Cliente"
-            class="form-control form-control-sm" maxlength="20">
-          </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Teléfono</label>
+                            <input
+                                id="crear_telefono_cliente"
+                                type="text"
+                                class="form-control form-control-sm"
+                                placeholder="Teléfono del Cliente"
+                                maxlength="20">
+                        </div>
 
-          <div class="col-md-3">
-            <label class="form-label">Teléfono</label>
-            <input type="text" id="crear_telefono_cliente" placeholder="Teléfono del Cliente"
-            class="form-control form-control-sm" maxlength="20">
-          </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Correo</label>
+                            <input
+                                id="crear_correo_cliente"
+                                type="email"
+                                class="form-control form-control-sm"
+                                placeholder="Correo del Cliente"
+                                maxlength="100">
+                        </div>
 
-          <div class="col-md-3">
-            <label class="form-label">Correo</label>
-            <input type="email" id="crear_correo_cliente" placeholder="Correo del Cliente"
-            class="form-control form-control-sm" maxlength="100">
-          </div>
+                        <div class="col-12">
+                            <label class="form-label">Dirección</label>
+                            <input
+                                id="crear_direccion_cliente"
+                                type="text"
+                                class="form-control form-control-sm"
+                                placeholder="Dirección del Cliente"
+                                maxlength="200">
+                        </div>
 
-          <div class="col-md-9">
-            <label class="form-label">Dirección</label>
-            <input type="text" id="crear_direccion_cliente" placeholder="Dirección del Cliente"
-            class="form-control form-control-sm" maxlength="200">
-          </div>
+                    </form>
 
-        </form>
+                </div>
 
-      </div>
+            </div>
 
-      <div class="modal-footer d-flex align-items-center justify-content-between">
+            <div class="modal-footer">
 
-        <div class="text-start">
-          <div><strong>Formato cédula:</strong> 000-000000-0000A</div>
-          <div><strong>RUC máximo:</strong> 20 caracteres</div>
+                <button class="btn cancelar" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+
+                <button
+                    id="btnGuardarCliente"
+                    type="button"
+                    class="btn guardar">
+                    Guardar
+                </button>
+
+            </div>
+
         </div>
-
-        <div>
-          <button class="btn cancelar" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn guardar" id="btnGuardarCliente">Guardar</button>
-        </div>
-
-      </div>
 
     </div>
 
-  </div>
-
 </div>
-
-

@@ -3,7 +3,7 @@ export default function initMostrarMedidas() {
     document.getElementById('titulo').textContent = 'GESTIÓN DE MEDIDAS';
     
     // INICIALIZACION DE TABLA
-    let tabla = $('#tablaMedidas').DataTable({
+    const tabla = $('#tablaMedidas').DataTable({
 
         ajax:{
             url:'/medidas/mostrar',
@@ -50,7 +50,8 @@ export default function initMostrarMedidas() {
                     `;
                 }
             }
-        ],order:[ [0,'asc'],[3,'asc'] ], drawCallback:function(){ AnimarFilasVisibles(this.api()); }
+        ],order:[ [0,'asc'],[3,'asc'] ], drawCallback:function(){ AnimarFilasVisibles(this.api()); },
+        initComplete: function () { ConfigurarFiltrosDataTable(this, { columnasSelect: [0,3], columnasIgnorar: [6]}); }
 
     });
 

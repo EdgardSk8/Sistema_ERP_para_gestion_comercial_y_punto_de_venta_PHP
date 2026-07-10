@@ -59,6 +59,9 @@
             Ocultar inactivos
         </label>
 
+        <input type="checkbox" id="toggleFooter" class="togglecheck" hidden>
+        <label for="toggleFooter" class="toggle-btn"> Mostrar filtros </label>
+
     </div>
 
 </div>

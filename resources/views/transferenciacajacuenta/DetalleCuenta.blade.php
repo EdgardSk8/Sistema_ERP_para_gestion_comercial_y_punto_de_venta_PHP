@@ -1,59 +1,63 @@
 <div class="modal fade" id="modalDetalleTransferencias" tabindex="-1">
 
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
 
         <div class="modal-content">
 
-            <!-- HEADER -->
-            <div class="modal-header d-flex justify-content-between align-items-center">
+            <div class="modal-header">
 
                 <h5 class="modal-title">
                     Transferencias de Caja: <span id="cajaDetalleTitulo">—</span>
                 </h5>
 
-                <div class="d-flex align-items-center gap-2">
-
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-
-                </div>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
 
             </div>
 
-            <!-- BODY -->
             <div class="modal-body">
 
-                <!-- INFO GENERAL -->
-                <div class="row mb-3">
-                    <div class="col-6">
-                        <strong>Caja:</strong> <span id="detalleCajaNumero">—</span><br>
-                        <strong>Total transferido:</strong> <span id="detalleTotalTransferido">C$ 0.00</span>
+                <div class="card-responsive">
+
+                    <div class="row g-3 mb-3">
+
+                        <div class="col-md-6">
+                            <strong>Caja:</strong>
+                            <span id="detalleCajaNumero">—</span>
+                        </div>
+
+                        <div class="col-md-6 text-md-end">
+                            <strong>Cantidad de transferencias:</strong>
+                            <span id="detalleCantidadTransferencias">0</span>
+                        </div>
+
+                        <div class="col-12">
+                            <strong>Total transferido:</strong>
+                            <span id="detalleTotalTransferido">C$ 0.00</span>
+                        </div>
+
                     </div>
 
-                    <div class="col-6 text-end">
-                        <strong>Cantidad de transferencias:</strong>
-                        <span id="detalleCantidadTransferencias">0</span> <br>
+                    <div class="table-responsive">
+
+                        <table class="table text-center align-middle">
+
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Usuario</th>
+                                    <th>Cuenta</th>
+                                    <th>Monto</th>
+                                    <th>Fecha</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tablaDetalleTransferencias">
+                            </tbody>
+
+                        </table>
+
                     </div>
-                </div>
 
-                <!-- TABLA -->
-                <div class="table-responsive">
-                    <table class="table text-center align-middle">
-
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Usuario</th>
-                                <th>Cuenta</th>
-                                <th>Monto</th>
-                                <th>Fecha</th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="tablaDetalleTransferencias">
-                            <!-- JS -->
-                        </tbody>
-
-                    </table>
                 </div>
 
             </div>

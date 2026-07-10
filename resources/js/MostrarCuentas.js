@@ -209,97 +209,138 @@ export default function initCuentas() {
 
         /* ═════════════ ( HTML MODAL ) ═════════════ */
 
-        let html = `
-        <div class="modal fade" id="modalMovimiento" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
+    let html = `
+    <div class="modal fade" id="modalMovimiento" tabindex="-1">
 
-                    <div class="modal-header text-white py-2">
-                        <h6 class="modal-title">${titulo}</h6>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                    </div>
+        <div class="modal-dialog modal-dialog-centered">
 
-                    <div class="modal-body py-2">
+            <div class="modal-content">
 
-                        <input type="hidden" id="movimiento_id_cuenta" value="${cuenta.id_cuenta}">
-                        <input type="hidden" id="tipo_movimiento" value="${tipo}">
-                        <input type="hidden" id="saldo_base" value="${saldoActual}">
+                <div class="modal-header">
+                    <h5 class="modal-title">${titulo}</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
 
-                        <!-- ═════════════ ( INFO CUENTA ) ═════════════ -->
+                <div class="modal-body">
 
-                        <div class="mb-2">
-                            <label class="form-label small mb-0">Cuenta</label>
-                            <input type="text" class="form-control form-control-sm"
-                                value="${cuenta.nombre_cuenta}" disabled>
-                        </div>
+                    <div class="card-responsive">
 
-                        <div class="mb-2">
-                            <label class="form-label small mb-0">Saldo actual</label>
-                            <input type="text" class="form-control form-control-sm"
-                                value="C$ ${saldoActual.toLocaleString('es-NI',{minimumFractionDigits:2})}" disabled>
-                        </div>
+                        <form class="row g-3">
 
-                        <!-- ═════════════ ( MONTO ) ═════════════ -->
+                            <input type="hidden" id="movimiento_id_cuenta" value="${cuenta.id_cuenta}">
+                            <input type="hidden" id="tipo_movimiento" value="${tipo}">
+                            <input type="hidden" id="saldo_base" value="${saldoActual}">
 
-                        <div class="mb-2">
-                            <label class="form-label small mb-0">
-                                ${tipo === 'AGREGAR' ? 'Monto a agregar' : 'Monto a retirar'}
-                            </label>
-                            <input type="number" step="1" min="0"
-                                class="form-control form-control-sm"
-                                id="monto_movimiento">
-                        </div>
+                            <div class="col-12">
+                                <label class="form-label">Cuenta</label>
+                                <input
+                                    type="text"
+                                    class="form-control form-control-sm"
+                                    value="${cuenta.nombre_cuenta}"
+                                    disabled>
+                            </div>
 
-                        <!-- ═════════════ ( TIPO CONCEPTO ) ═════════════ -->
+                            <div class="col-12">
+                                <label class="form-label">Saldo actual</label>
+                                <input
+                                    type="text"
+                                    class="form-control form-control-sm"
+                                    value="C$ ${saldoActual.toLocaleString('es-NI',{minimumFractionDigits:2})}"
+                                    disabled>
+                            </div>
 
-                        <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="usar_input_descripcion">
-                            <label class="form-check-label small">
-                                Escribir concepto manual
-                            </label>
-                        </div>
+                            <div class="col-12">
+                                <label class="form-label">
+                                    ${tipo === 'AGREGAR' ? 'Monto a agregar' : 'Monto a retirar'}
+                                </label>
+                                <input
+                                    id="monto_movimiento"
+                                    type="number"
+                                    step="1"
+                                    min="0"
+                                    class="form-control form-control-sm">
+                            </div>
 
-                        <!-- ═════════════ ( SELECTOR ) ═════════════ -->
+                            <div class="col-12">
 
-                        <div class="mb-2" id="grupo_selector">
-                            <label class="form-label small mb-0">Concepto</label>
-                            <select class="form-select form-select-sm" id="selector_concepto">
-                                ${opcionesConcepto}
-                            </select>
-                        </div>
+                                <div class="form-check form-switch">
 
-                        <!-- ═════════════ ( INPUT MANUAL ) ═════════════ -->
+                                    <input
+                                        id="usar_input_descripcion"
+                                        class="form-check-input"
+                                        type="checkbox">
 
-                        <div class="mb-2 d-none" id="grupo_input">
-                            <label class="form-label small mb-0">Concepto manual</label>
-                            <input type="text" class="form-control form-control-sm" id="input_concepto">
-                        </div>
+                                    <label class="form-check-label">
+                                        Escribir concepto manual
+                                    </label>
 
-                        <!-- ═════════════ ( RESULTADO ) ═════════════ -->
+                                </div>
 
-                        <div class="mb-2">
-                            <label class="form-label small mb-0">Saldo resultante</label>
-                            <input type="text"
-                                class="form-control form-control-sm fw-bold"
-                                id="saldo_resultante" disabled>
-                        </div>
+                            </div>
 
-                    </div>
+                            <div class="col-12" id="grupo_selector">
 
-                    <div class="modal-footer py-2">
-                        <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
-                            Cancelar
-                        </button>
+                                <label class="form-label">Concepto</label>
 
-                        <button class="btn btn-sm btn-${colorBtn}" id="btnGuardarMovimiento">
-                            Confirmar
-                        </button>
+                                <select
+                                    id="selector_concepto"
+                                    class="form-select form-select-sm">
+
+                                    ${opcionesConcepto}
+
+                                </select>
+
+                            </div>
+
+                            <div class="col-12 d-none" id="grupo_input">
+
+                                <label class="form-label">Concepto manual</label>
+
+                                <textarea
+                                    id="input_concepto"
+                                    class="form-control form-control-sm"
+                                    rows="1"></textarea>
+
+                            </div>
+
+                            <div class="col-12">
+
+                                <label class="form-label">Saldo resultante</label>
+
+                                <input
+                                    id="saldo_resultante"
+                                    type="text"
+                                    class="form-control form-control-sm fw-bold"
+                                    disabled>
+
+                            </div>
+
+                        </form>
+
                     </div>
 
                 </div>
+
+                <div class="modal-footer">
+
+                    <button class="btn btn-sm cancelar" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <button
+                        id="btnGuardarMovimiento"
+                        class="btn btn-sm btn-${colorBtn}">
+                        Confirmar
+                    </button>
+
+                </div>
+
             </div>
+
         </div>
-        `;
+
+    </div>
+    `;
 
         /* ═════════════ ( RENDER MODAL ) ═════════════ */
 

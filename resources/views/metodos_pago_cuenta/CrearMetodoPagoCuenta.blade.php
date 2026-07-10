@@ -1,74 +1,99 @@
-<!-- ╔═══════════ Modal Método Pago - Cuenta ═══════════╗ -->
 <div class="modal fade" id="ModalCrearMetodoPagoCuenta" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+    <div class="modal-dialog modal-dialog-centered">
+
         <div class="modal-content">
 
-            <!-- HEADER -->
-            <div class="modal-header py-2">
-                <h6 class="modal-title">Vincular método de pago y cuenta</h6>
 
-                <button type="button"
-                    class="btn-close btn-close-white"
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Vincular método de pago y cuenta
+                </h5>
+
+                <button
+                    class="btn-close"
                     data-bs-dismiss="modal">
                 </button>
+
             </div>
 
-            <!-- BODY -->
-            <div class="modal-body py-2">
 
-                <div class="row">
+            <div class="modal-body">
 
-                    <!-- ═════════════ FORMULARIO ═════════════ -->
-                    <div class="col-md-6 border-end">
+                <div class="card-responsive">
 
-                        <div class="mb-2">
-                            <label class="form-label small mb-0">
+                    <form id="formCrearMetodoPagoCuenta" class="row g-1">
+
+
+                        <div class="col-md-12">
+
+                            <label class="form-label">
                                 Método de pago
                             </label>
 
                             <select
-                                class="form-select form-select-sm"
-                                id="id_metodo_pago">
+                                id="id_metodo_pago"
+                                class="form-select form-select-sm">
                             </select>
+
                         </div>
 
-                        <div class="mb-2">
-                            <label class="form-label small mb-0">
+
+                        <div class="col-md-12">
+
+                            <label class="form-label">
                                 Cuenta
                             </label>
 
                             <select
-                                class="form-select form-select-sm"
-                                id="id_cuenta">
+                                id="id_cuenta"
+                                class="form-select form-select-sm">
                             </select>
+
                         </div>
 
-                        <div class="mb-2">
-                            <label class="form-label small mb-0">
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
                                 Estado
                             </label>
 
                             <select
-                                class="form-select form-select-sm"
-                                id="estado">
-                                <option value="1">Activo</option>
-                                <option value="0">Inactivo</option>
+                                id="estado"
+                                class="form-select form-select-sm">
+
+                                <option value="1">
+                                    Activo
+                                </option>
+
+                                <option value="0">
+                                    Inactivo
+                                </option>
+
                             </select>
+
                         </div>
 
-                    </div>
 
-                    <!-- ═════════════ CUENTAS VINCULADAS ═════════════ -->
-                    <div class="col-md-6">
+                    </form>
 
-                        <label class="form-label small fw-bold mb-2">
+
+                    <br>
+
+
+                    <div>
+
+                        <label class="form-label">
                             Cuentas vinculadas
                         </label>
+
 
                         <div
                             id="listaCuentasVinculadas"
                             class="border rounded p-2 bg-light"
-                            style="min-height:150px; max-height:200px; overflow-y:auto;">
+                            style="min-height:80px; max-height:120px; overflow-y:auto;">
 
                             <div class="text-muted small">
                                 Seleccione un método de pago...
@@ -78,47 +103,49 @@
 
                     </div>
 
-                </div>
 
-                <!-- ═════════════ RESUMEN DE VÍNCULOS ═════════════ -->
-                <div>
+                    <div class="mt-3">
 
-                    <label class="form-label small fw-bold mb-2">
-                        Método de pago → Cuentas vinculadas
-                    </label>
+                        <label class="form-label">
+                            Método de pago → Cuentas vinculadas
+                        </label>
 
-                    <div
-                        id="resumenVinculosMetodoPago"
-                        class="form-control form-control-sm bg-light">
 
-                        <!-- texto explicativo El Metodo de pago (metodo) se vinculara la cuenta (cuenta) -->
+                        <div
+                            id="resumenVinculosMetodoPago"
+                            class="form-control form-control-sm bg-light">
+
+                        </div>
 
                     </div>
+
 
                 </div>
 
             </div>
 
-            <!-- FOOTER -->
-            <div class="modal-footer py-2">
+
+            <div class="modal-footer">
 
                 <button
-                    type="button"
-                    class="btn btn-sm btn-secondary"
+                    class="btn cancelar"
                     data-bs-dismiss="modal">
                     Cancelar
                 </button>
 
+
                 <button
+                    id="btnGuardarMetodoPagoCuenta"
                     type="button"
-                    class="btn btn-sm btn-success"
-                    id="btnGuardarMetodoPagoCuenta">
+                    class="btn guardar">
                     Vincular
                 </button>
 
             </div>
 
-        </div>
-    </div>
-</div>
 
+        </div>
+
+    </div>
+
+</div>

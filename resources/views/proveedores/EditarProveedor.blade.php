@@ -1,116 +1,144 @@
-<div class="modal fade" id="modalEditarProveedor" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modalEditarProveedor" tabindex="-1">
 
-  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered">
 
-    <div class="modal-content">
+        <div class="modal-content">
 
-      <div class="modal-header">
-
-        <h5 class="modal-title">Editar Proveedor</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-
-      </div>
-
-      <div class="modal-body">
-
-        <form id="formEditarProveedor" class="row g-3">
-
-          <!-- ID oculto -->
-          <input type="hidden" id="editar_id_proveedor">
-
-          <div class="col-md-4">
-            <label class="form-label">Nombre del Proveedor</label>
-            <input type="text"
-              id="editar_nombre_proveedor"
-              class="form-control form-control-sm"
-              placeholder="Nombre del proveedor"
-              maxlength="150"
-              required>
-          </div>
-
-          <div class="col-md-2">
-            <label class="form-label">RUC</label>
-            <input type="text"
-              id="editar_ruc_proveedor"
-              class="form-control form-control-sm"
-              placeholder="Ingrese RUC"
-              maxlength="14">
-          </div>
-
-          <div class="col-md-2">
-            <label class="form-label">Teléfono</label>
-            <input type="text"
-              id="editar_telefono_proveedor"
-              class="form-control form-control-sm"
-              placeholder="Teléfono"
-              maxlength="15">
-          </div>
-
-          <div class="col-md-4">
-            <label class="form-label">Correo</label>
-            <input type="email"
-              id="editar_correo_proveedor"
-              class="form-control form-control-sm"
-              placeholder="Correo electrónico"
-              maxlength="100">
-          </div>
-
-          <div class="col-md-12">
-            <label class="form-label">Dirección</label>
-            <input type="text"
-              id="editar_direccion_proveedor"
-              class="form-control form-control-sm"
-              placeholder="Dirección del proveedor"
-              maxlength="200">
-          </div>
-
-          <div class="col-md-2">
-            <label class="form-label">Estado</label>
-            <select id="editar_estado_proveedor"
-              class="form-select form-select-sm">
-              <option value="1">Activo</option>
-              <option value="0">Inactivo</option>
-            </select>
-          </div>
-
-          <div class="col-md-4">
-            <label class="form-label">Fecha de Creación</label>
-            <input
-              type="datetime-local"
-              id="editar_fecha_creacion_proveedor"
-              class="form-control form-control-sm"
-              disabled>
-          </div>
-
-        </form>
-
-      </div>
-
-      <div class="modal-footer d-flex align-items-center justify-content-between">
-
-        <div class="text-start">
-          <div><strong>Formato RUC:</strong> J000000000000K</div>
-          <div><strong>Teléfono:</strong> 00000000</div>
-        </div>
-
-        <div>
-          <button class="btn cancelar" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn actualizar" id="btnActualizarProveedor">Actualizar</button>
-        </div>
-
-        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
-            <div id="toastMensaje" class="toast text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div id="toastTexto" class="toast-body">Mensaje</div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Proveedor</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-        </div>
 
-      </div>
+            <div class="modal-body">
+
+                <div class="card-responsive">
+
+                    <form id="formEditarProveedor" class="row g-3">
+
+                        <input type="hidden" id="editar_id_proveedor">
+
+                        <div class="col-12">
+                            <label class="form-label">Nombre del Proveedor</label>
+                            <input
+                                id="editar_nombre_proveedor"
+                                type="text"
+                                class="form-control form-control-sm"
+                                placeholder="Nombre del proveedor"
+                                maxlength="150"
+                                required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">RUC</label>
+                            <input
+                                id="editar_ruc_proveedor"
+                                type="text"
+                                class="form-control form-control-sm"
+                                placeholder="Ingrese RUC"
+                                maxlength="14">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Teléfono</label>
+                            <input
+                                id="editar_telefono_proveedor"
+                                type="text"
+                                class="form-control form-control-sm"
+                                placeholder="Teléfono"
+                                maxlength="15">
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Correo</label>
+                            <input
+                                id="editar_correo_proveedor"
+                                type="email"
+                                class="form-control form-control-sm"
+                                placeholder="Correo electrónico"
+                                maxlength="100">
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Dirección</label>
+                            <input
+                                id="editar_direccion_proveedor"
+                                type="text"
+                                class="form-control form-control-sm"
+                                placeholder="Dirección del proveedor"
+                                maxlength="200">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Estado</label>
+                            <select
+                                id="editar_estado_proveedor"
+                                class="form-select form-select-sm">
+
+                                <option value="1">Activo</option>
+                                <option value="0">Inactivo</option>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha de Creación</label>
+                            <input
+                                id="editar_fecha_creacion_proveedor"
+                                type="datetime-local"
+                                class="form-control form-control-sm"
+                                disabled>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn cancelar" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+
+                <button
+                    id="btnActualizarProveedor"
+                    type="button"
+                    class="btn actualizar">
+                    Actualizar
+                </button>
+
+            </div>
+
+        </div>
 
     </div>
 
-  </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index:1080;">
+
+    <div
+        id="toastMensaje"
+        class="toast text-bg-success border-0"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true">
+
+        <div class="d-flex">
+
+            <div id="toastTexto" class="toast-body">
+                Mensaje
+            </div>
+
+            <button
+                type="button"
+                class="btn-close btn-close-white me-2 m-auto"
+                data-bs-dismiss="toast">
+            </button>
+
+        </div>
+
+    </div>
 
 </div>

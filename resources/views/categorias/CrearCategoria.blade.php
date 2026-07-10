@@ -1,64 +1,86 @@
-<div class="modal fade" id="modalCrearCategoria" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modalCrearCategoria" tabindex="-1">
 
-  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered">
 
-    <div class="modal-content">
+        <div class="modal-content">
 
-      <div class="modal-header">
+            <div class="modal-header">
 
-        <h5 class="modal-title">Crear Categoría</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">Crear Categoría</h5>
 
-      </div>
+                <button 
+                    class="btn-close" 
+                    data-bs-dismiss="modal">
+                </button>
 
-      <div class="modal-body">
+            </div>
 
-        <form id="formCrearCategoria" class="row g-3">
+            <div class="modal-body">
 
-          <div class="col-md-6">
-            <label class="form-label">Nombre de la Categoría</label>
-            <input 
-              type="text"
-              id="crear_nombre_categoria"
-              placeholder="Nombre de la Categoría"
-              class="form-control form-control-sm"
-              maxlength="100"
-              required
-            >
-          </div>
+                <div class="card-responsive">
 
-          <div class="col-md-6">
-            <label class="form-label">Descripción</label>
-            <input 
-              type="text"
-              id="crear_descripcion_categoria"
-              placeholder="Descripción de la Categoría"
-              class="form-control form-control-sm"
-              maxlength="150"
-            >
-          </div>
+                    <form id="formCrearCategoria" class="row g-3">
 
-        </form>
+                        <div class="col-12">
 
-      </div>
+                            <label class="form-label">
+                                Nombre de la Categoría
+                            </label>
 
-      <div class="modal-footer d-flex align-items-center justify-content-between">
+                            <input
+                                id="crear_nombre_categoria"
+                                type="text"
+                                class="form-control form-control-sm"
+                                placeholder="Nombre de la Categoría"
+                                maxlength="100"
+                                required>
 
-        <div class="text-start">
-          <div><strong>Nombre máximo:</strong> 100 caracteres</div>
-          <div><strong>Descripción máxima:</strong> 150 caracteres</div>
+                        </div>
+
+
+                        <div class="col-12">
+
+                            <label class="form-label">
+                                Descripción
+                            </label>
+
+                            <textarea
+                                id="crear_descripcion_categoria"
+                                type="text"
+                                rows="1"
+                                class="form-control form-control-sm"
+                                placeholder="Descripción de la Categoría"
+                                maxlength="150"></textarea>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button 
+                    class="btn cancelar" 
+                    data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+
+                <button
+                    id="btnGuardarCategoria"
+                    type="button"
+                    class="btn guardar">
+                    Guardar
+                </button>
+
+            </div>
+
+
         </div>
-
-        <div>
-          <button class="btn cancelar" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn guardar" id="btnGuardarCategoria">Guardar</button>
-        </div>
-
-      </div>
 
     </div>
 
-  </div>
-
 </div>
-
