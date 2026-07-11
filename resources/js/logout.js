@@ -18,12 +18,12 @@ $(function(){
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                         </div>
 
-                        <div class="modal-body">
+                        <div class="modal-body p-2">
                             ¿Estás seguro que deseas cerrar sesión?
                         </div>
 
                         <div class="modal-footer">
-                            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button class="btn btn-success" data-bs-dismiss="modal">Cancelar</button>
                             <button class="btn btn-danger" id="confirmarLogout">Cerrar sesión</button>
                         </div>
 

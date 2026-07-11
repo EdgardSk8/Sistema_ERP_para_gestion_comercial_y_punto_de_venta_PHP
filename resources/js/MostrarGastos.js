@@ -435,8 +435,8 @@ export default function initMostrarGastos() {
 
                             <td>
                                 <button class="btn btn-success btn-sm editarPago">Editar</button>
-                                <button class="btn btn-secondary btn-sm cancelarPago d-none">Cancelar</button>
-                                <button class="btn btn-primary btn-sm guardarPago d-none">Guardar</button>
+                                <button class="btn btn-danger btn-sm cancelarPago d-none">Cancelar</button>
+                                <button class="btn btn-success btn-sm guardarPago d-none">Guardar</button>
                             </td>
 
                         </tr>

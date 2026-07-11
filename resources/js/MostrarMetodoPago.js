@@ -248,13 +248,13 @@ export default function initMostrarMetodosPagos() {
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
 
-                            <div class="modal-body">
+                            <div class="modal-body p-2">
                                 ¿Deseas cambiar el estado de este método de pago?
                             </div>
 
                             <div class="modal-footer">
-                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button class="btn btn-danger" id="confirmarCambioEstadoMetodoPago">Confirmar</button>
+                                <button class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button class="btn btn-success" id="confirmarCambioEstadoMetodoPago">Confirmar</button>
                             </div>
 
                         </div>

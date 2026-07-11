@@ -163,13 +163,13 @@ export default function initTipoGasto() {
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
 
-                            <div class="modal-body">
+                            <div class="modal-body p-2">
                                 ¿Deseas cambiar el estado de este tipo de gasto?
                             </div>
 
                             <div class="modal-footer">
-                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button class="btn btn-danger" id="confirmarCambioEstadoTipoGasto">Confirmar</button>
+                                <button class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button class="btn btn-success" id="confirmarCambioEstadoTipoGasto">Confirmar</button>
                             </div>
 
                         </div>

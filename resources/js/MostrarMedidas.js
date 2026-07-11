@@ -235,8 +235,8 @@ export default function initMostrarMedidas() {
                             </div>
 
                             <div class="modal-footer">
-                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button class="btn btn-danger" id="confirmarCambioEstadoMedida">Confirmar</button>
+                                <button class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button class="btn btn-success" id="confirmarCambioEstadoMedida">Confirmar</button>
                             </div>
 
                         </div>

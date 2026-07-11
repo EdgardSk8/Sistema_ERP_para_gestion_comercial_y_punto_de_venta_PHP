@@ -1,21 +1,6 @@
 
 
 
-window.BloqueoBTN = function (handler, tiempo = 1000) {
-    
-    return function (e) {
-
-        console.log("Funcion de bloqueo por doble Click aplicado \n (/js/FuncionesGlobales.js)");
-
-        const btn = $(this);
-        if (btn.prop('disabled')) return;
-        btn.prop('disabled', true);
-
-        setTimeout(() => { btn.prop('disabled', false); }, tiempo);
-
-        handler.call(this, e);
-    };
-}
 
 window.formatearCedula = function(inputId) {
     
@@ -37,15 +22,14 @@ window.formatearCedula = function(inputId) {
     });
 }
 
-$(document).on('click', '.btn', function (e) {
+// $(document).on('click', '.btn', function (e) {
 
-    const btn = $(e.currentTarget);
-    if (btn.prop('disabled')) { e.preventDefault(); e.stopImmediatePropagation(); return false; }
-    btn.prop('disabled', true);
-    setTimeout(() => { btn.prop('disabled', false); }, 500);
-    // console.log("Funcion anti doble click aplicada");
+//     const btn = $(e.currentTarget);
+//     if (btn.prop('disabled')) { e.preventDefault(); e.stopImmediatePropagation(); return false; }
+//     btn.prop('disabled', true);
+//     setTimeout(() => { btn.prop('disabled', false); }, 500);
 
-});
+// });
 
 window.moneda = function(valor, decimales = 2) {
     return 'C$ ' + parseFloat(valor || 0).toLocaleString('es-NI', {
@@ -59,16 +43,26 @@ function crearToast() {
     if (document.getElementById("toastMensaje")) return;
 
     document.body.insertAdjacentHTML("beforeend", `
-        <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div class="toast-container position-fixed top-0 end-0">
 
-            <div id="toastMensaje" class="toast border-0">
+            <div id="toastMensaje" class="toast toast-custom fade" role="alert">
 
-                <div class="d-flex">
+                <div class="toast-content">
 
-                    <div class="toast-body" id="toastTexto"></div>
+                    <div class="toast-icon" id="toastIcon"></div>
+
+                    <div class="toast-divider"></div>
+
+                    <div class="toast-text">
+
+                        <div class="toast-title" id="toastTitulo"></div>
+
+                        <div class="toast-message" id="toastTexto"></div>
+
+                    </div>
 
                     <button type="button"
-                            class="btn-close btn-close-white me-2 m-auto"
+                            class="btn-close"
                             data-bs-dismiss="toast">
                     </button>
 
@@ -78,21 +72,110 @@ function crearToast() {
 
         </div>
     `);
-
 }
 
-// MOSTRAR TOAST
+
 window.mostrarToast = function (mensaje, tipo = "success") {
-     crearToast();
-    const toastElemento = document.getElementById("toastMensaje");
-    const toastTexto = document.getElementById("toastTexto");
 
-    toastElemento.className = `toast text-bg-${tipo} border-0`;
-    toastTexto.textContent = mensaje;
+    crearToast();
 
-    const toast = new bootstrap.Toast(toastElemento, { delay: 5000 });
-    toast.show();
-}
+    const toast = document.getElementById("toastMensaje");
+    const titulo = document.getElementById("toastTitulo");
+    const texto = document.getElementById("toastTexto");
+    const icono = document.getElementById("toastIcon");
+
+
+    // Limpiar clases anteriores
+    toast.classList.remove(
+        "toast-success",
+        "toast-danger",
+        "toast-warning",
+        "toast-info",
+        "hide"
+    );
+
+
+    texto.textContent = mensaje;
+
+
+    switch (tipo) {
+
+        case "success":
+
+            titulo.textContent = "Éxito";
+
+            icono.innerHTML =
+                '<i class="fa-solid fa-circle-check"></i>';
+
+            toast.classList.add("toast-success");
+
+            break;
+
+
+        case "danger":
+
+            titulo.textContent = "Error";
+
+            icono.innerHTML =
+                '<i class="fa-solid fa-circle-xmark"></i>';
+
+            toast.classList.add("toast-danger");
+
+            break;
+
+
+        case "warning":
+
+            titulo.textContent = "Advertencia";
+
+            icono.innerHTML =
+                '<i class="fa-solid fa-triangle-exclamation"></i>';
+
+            toast.classList.add("toast-warning");
+
+            break;
+
+
+        case "info":
+
+            titulo.textContent = "Información";
+
+            icono.innerHTML =
+                '<i class="fa-solid fa-circle-info"></i>';
+
+            toast.classList.add("toast-info");
+
+            break;
+    }
+
+
+
+    // Animación salida personalizada
+    toast.addEventListener("hide.bs.toast", function () {
+
+        toast.classList.add("hide");
+
+    }, { once:true });
+
+
+
+    toast.addEventListener("hidden.bs.toast", function () {
+
+        toast.classList.remove("hide");
+
+    }, { once:true });
+
+
+
+    const instancia = bootstrap.Toast.getOrCreateInstance(toast, {
+        delay: 2000
+    });
+
+
+    instancia.show();
+
+};
+
 
 window.Traduccion = {
     language: {

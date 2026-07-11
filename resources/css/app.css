@@ -2,3 +2,326 @@
 /* @import url('./Tablas.css'); */
 @import url('./Modales.css');
 @import url('./Btn-Toggle.css');
+
+.toast-container {
+    z-index: 9999;
+    right: 20px !important;
+    top: 20px !important;
+}
+
+
+/* ===========================
+   TOAST PRINCIPAL
+=========================== */
+
+.toast-custom {
+    min-width: 360px;
+    max-width: 420px;
+    background: #ffffff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.12);
+    overflow: hidden;
+    position: relative;
+
+    opacity: 0;
+}
+
+
+/* Entrada */
+.toast-custom.showing,
+.toast-custom.show {
+    animation: toastShow .25s cubic-bezier(.21,1.02,.73,1) forwards;
+}
+
+
+/* Salida */
+.toast-custom.hide {
+    animation: toastHide .25s ease forwards !important;
+}
+
+
+/* ===========================
+   ANIMACIONES
+=========================== */
+
+@keyframes toastShow {
+
+    from {
+        opacity: 0;
+        transform: translateX(80px) scale(.95);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateX(-8px) scale(1.02);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+
+}
+
+
+@keyframes toastHide {
+
+    from {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(80px) scale(.95);
+    }
+
+}
+
+
+/* ===========================
+   BARRA LATERAL
+=========================== */
+
+.toast-custom::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 6px;
+    height: 100%;
+}
+
+
+/* ===========================
+   CONTENIDO
+=========================== */
+
+.toast-content {
+
+    display: flex;
+    align-items: center;
+
+    padding: 10px 14px;
+
+    gap: 8px;
+}
+
+
+/* Icono */
+
+.toast-icon {
+
+    width: 36px;
+    height: 36px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+
+    flex-shrink: 0;
+}
+
+
+/* Texto */
+
+.toast-text {
+    flex: 1;
+}
+
+
+.toast-title {
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    margin-bottom: 2px;
+
+}
+
+
+.toast-message {
+
+    font-size: 12.5px;
+
+    color: #6c757d;
+
+    line-height: 1.3;
+
+}
+
+
+/* Separador */
+
+.toast-divider {
+
+    width: 1px;
+
+    height: 40px;
+
+    background: #e9ecef;
+
+    flex-shrink: 0;
+
+}
+
+
+/* Botón cerrar */
+
+.toast-custom .btn-close {
+
+    width: 12px;
+
+    height: 12px;
+
+    opacity: .45;
+
+    margin-left: 5px;
+
+}
+
+
+.toast-custom .btn-close:hover {
+
+    opacity: .9;
+
+}
+
+
+/* ===========================
+   COLORES
+=========================== */
+
+
+/* SUCCESS */
+
+.toast-success::before {
+    background: #22c55e;
+}
+
+
+.toast-success .toast-icon {
+
+    background: rgba(34,197,94,.12);
+
+    color: #22c55e;
+
+}
+
+
+.toast-success .toast-title {
+
+    color: #16a34a;
+
+}
+
+
+
+/* ERROR */
+
+.toast-danger::before {
+
+    background: #ef4444;
+
+}
+
+
+.toast-danger .toast-icon {
+
+    background: rgba(239,68,68,.12);
+
+    color: #ef4444;
+
+}
+
+
+.toast-danger .toast-title {
+
+    color: #dc2626;
+
+}
+
+
+
+/* WARNING */
+
+.toast-warning::before {
+
+    background: #f59e0b;
+
+}
+
+
+.toast-warning .toast-icon {
+
+    background: rgba(245,158,11,.12);
+
+    color: #f59e0b;
+
+}
+
+
+.toast-warning .toast-title {
+
+    color: #d97706;
+
+}
+
+
+
+/* INFO */
+
+.toast-info::before {
+
+    background: #0ea5e9;
+
+}
+
+
+.toast-info .toast-icon {
+
+    background: rgba(14,165,233,.12);
+
+    color: #0ea5e9;
+
+}
+
+
+.toast-info .toast-title {
+
+    color: #0284c7;
+
+}
+
+
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:480px){
+
+    .toast-custom {
+
+        min-width: calc(100vw - 30px);
+
+        max-width: calc(100vw - 30px);
+
+    }
+
+
+    .toast-container {
+
+        right: 15px !important;
+
+        left: 15px !important;
+
+    }
+
+}

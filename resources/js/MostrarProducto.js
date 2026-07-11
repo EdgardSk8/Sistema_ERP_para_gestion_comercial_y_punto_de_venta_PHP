@@ -602,13 +602,13 @@ document.addEventListener("click", async function(e) {
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
 
-                        <div class="modal-body">
+                        <div class="modal-body p-2">
                             ¿Deseas cambiar el estado de este producto?
                         </div>
 
                         <div class="modal-footer">
-                            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button class="btn btn-danger" id="confirmarCambioEstadoProducto">Confirmar</button>
+                            <button class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            <button class="btn btn-success" id="confirmarCambioEstadoProducto">Confirmar</button>
                         </div>
 
                     </div>

@@ -154,7 +154,7 @@
                         <!-- BOTONES -->
                         <div class="mt-auto d-flex justify-content-end gap-2">
 
-                            <button class="btn btn-secondary btn-sm" id="btnLimpiar">
+                            <button class="btn btn-danger btn-sm" id="btnLimpiar">
                                 Limpiar
                             </button>
 

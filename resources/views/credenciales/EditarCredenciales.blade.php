@@ -93,16 +93,6 @@
           <button type="button" class="btn actualizar" id="btnActualizarEmpresa">Actualizar</button>
         </div>
 
-        <!-- TOAST -->
-        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
-          <div id="toastMensaje" class="toast text-bg-success border-0">
-            <div class="d-flex">
-              <div id="toastTexto" class="toast-body">Mensaje</div>
-              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-            </div>
-          </div>
-        </div>
-
       </div>
 
     </div>

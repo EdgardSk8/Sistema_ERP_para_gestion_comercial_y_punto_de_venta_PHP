@@ -620,7 +620,7 @@ const  PlantillaExcel = function (config = {}) {
             PlantillaPDF({ filename: nombre, title: nombre }),
             PlantillaCSV({ filename: nombre, title: nombre }),
 
-            { extend: 'copyHtml5', text: '📋 Copiar', className: 'btn btn-secondary' },
+            { extend: 'copyHtml5', text: '📋 Copiar', className: 'btn btn-danger' },
             { extend: 'print', text: '🖨️ Imprimir', className: 'btn btn-dark' }
 
         ];

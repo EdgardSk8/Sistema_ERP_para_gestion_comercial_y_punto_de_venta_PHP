@@ -86,7 +86,7 @@ export default function initFacturacion() {
     /* --- VALIDAR FACTURACION --- */
     function validarFactura(cliente, total, recibido, metodo) {
 
-        if (carrito.length === 0) { mostrarToast('Agregue productos', 'danger'); return false; }
+        if (carrito.length === 0) { mostrarToast('Agregue productos al carrito', 'danger'); return false; }
         if (!cliente) { mostrarToast('Seleccione cliente', 'danger'); return false; }
         if ( !imprimirProformaActivo && metodo == 1 && recibido < total) { mostrarToast('Pago insuficiente', 'danger'); return false; }
         for (let p of carrito) { if (p.cantidad > p.stock) { mostrarToast(`Stock insuficiente para ${p.nombre}`, 'danger'); return false; } }
@@ -131,7 +131,7 @@ export default function initFacturacion() {
                     render: function (data, type, row) {
 
                         let deshabilitado = row.stock_actual <= 0 ? 'disabled' : '';
-                        let clase = row.stock_actual <= 0 ? 'btn-secondary' : 'btn-dark';
+                        let clase = row.stock_actual <= 0 ? 'btn-danger' : 'btn-dark';
 
                         return `
                             <button class="${clase} agregarProducto"
@@ -168,7 +168,7 @@ export default function initFacturacion() {
                 $('#vueltoCordobas').prop('disabled', false);
                 $('#vueltoDolares').prop('disabled', false);
                 $('#btnFacturar').css('background', '#198754');
-                $('#btnFacturar').css('border', '1px solid #198754');
+                $('#btnFacturar').css('none');
                 $('#btnFacturar').text('Facturar');
             }
             calcularVueltos();
@@ -185,7 +185,8 @@ export default function initFacturacion() {
             $('#toggleFactura').prop('checked', false);
             imprimirFacturaActivo = false;
             $('#pagoCordobas, #pagoDolares, #vueltoCordobas, #vueltoDolares').prop('disabled', true);
-            $('#btnFacturar').css({ background: '#0d6efd', border: '1px solid #0d6efd' }).text('Imprimir Proforma');
+            $('#btnFacturar').css({ background: '#0d6efd' }).text('Imprimir Proformas');
+            $('#btnFacturar').css('none');
 
         } else {
 
@@ -194,6 +195,8 @@ export default function initFacturacion() {
             $('#vueltoCordobas, #vueltoDolares').prop('disabled', false);
             if (metodo === 1) { $('#pagoCordobas, #pagoDolares').prop('disabled', false); }
             $('#btnFacturar').css({ background: '#198754', border: '1px solid #198754' }).text('Facturar');
+            $('#btnFacturar').css({ border: 'none' }).text('Facturar');
+            $('#btnFacturar').text('Facturar');
         }
 
     });
@@ -210,7 +213,7 @@ export default function initFacturacion() {
 
         $('#clientes').val('1').trigger('change');
         $('#metodo_pago').val('1').trigger('change');
-        $('#btnFacturar').css({ background: '#198754', border: '1px solid #198754' }).text('Facturar');
+        $('#btnFacturar').css({ background: '#198754', border: 'none' }).text('Facturar');
 
         imprimirFacturaActivo = false;
         imprimirProformaActivo = false;
@@ -957,29 +960,144 @@ async function obtenerCredencialesEmpresa() {
 
     /*  ═════════ Creacion del Modal ══════════  */
 
-        $('body').append(`
-            <div class="modal fade" id="modalAbrirCaja" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Apertura de Caja</h5>
-                        </div>
-                        <div class="modal-body">
-                            <p>
-                                Usuario: <strong id="usuarioNombre"></strong><br>
-                                Rol: <strong id="usuarioRol"></strong>
-                            </p>
-                            <label>Monto de apertura</label>
-                            <input type="number" id="montoInicialCaja" placeholder="5000" min="0" class="form-control">
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button class="btn btn-success" id="confirmarAbrirCaja">Abrir</button>
-                        </div>
+    $('body').append(`
+        <div class="modal fade" id="modalAbrirCaja" tabindex="-1">
+
+            <div class="modal-dialog modal-dialog-centered">
+
+                <div class="modal-content">
+
+                    <div class="modal-header bg-success text-white py-2">
+
+                        <h6 class="modal-title mb-0">
+                            <i class="fa-solid fa-cash-register"></i>
+                            Apertura de Caja
+                        </h6>
+
                     </div>
+
+
+                    <div class="modal-body p-2">
+
+                        <div class="row g-2">
+
+
+                            <div class="col-md-6">
+
+                                <label class="form-label small fw-bold mb-1">
+                                    Usuario
+                                </label>
+
+                                <div class="form-control form-control-sm bg-light">
+                                    <span id="usuarioNombre"></span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <label class="form-label small fw-bold mb-1">
+                                    Rol
+                                </label>
+
+                                <div class="form-control form-control-sm bg-light">
+                                    <span id="usuarioRol"></span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <label class="form-label small fw-bold mb-1">
+                                    Caja
+                                </label>
+
+                                <div class="form-control form-control-sm bg-light">
+                                    <span id="nombreCaja">
+                                        Caja Principal
+                                    </span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <label class="form-label small fw-bold mb-1">
+                                    Fecha apertura
+                                </label>
+
+                                <div class="form-control form-control-sm bg-light">
+                                    ${formatearFechaDiaHora(new Date())}
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-12">
+
+                                <hr>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <label class="form-label small fw-bold mb-1">
+                                    Monto inicial
+                                </label>
+
+                                <div class="input-group input-group-sm">
+
+                                    <span class="input-group-text">
+                                        C$
+                                    </span>
+
+                                    <input 
+                                        type="number"
+                                        id="montoInicialCaja"
+                                        placeholder="5000"
+                                        min="0"
+                                        class="form-control">
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="modal-footer">
+
+                        <button 
+                            class="btn btn-danger btn-sm"
+                            data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+
+
+                        <button 
+                            class="btn btn-success btn-sm"
+                            id="confirmarAbrirCaja">
+
+                            <i class="fa-solid fa-lock-open"></i>
+                            Abrir Caja
+
+                        </button>
+
+                    </div>
+
                 </div>
+
             </div>
-        `);
+
+        </div>
+    `);
 
         verificarCajaEstado(); //Funcion verificar caja
 

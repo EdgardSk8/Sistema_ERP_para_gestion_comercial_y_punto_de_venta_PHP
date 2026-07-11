@@ -91,8 +91,16 @@ i{ font-size: var(--fs)}
     transition: all 0.15s ease;
 }
 
-#btnLimpiarCaja:hover{
-    background: rgb(168, 0, 0);
+#btnLimpiarCaja {
+    background: #dc3545;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    transition: .25s ease;
+}
+
+#btnLimpiarCaja:hover {
+    background: #ee0018;
     color: white;
 }
 
@@ -100,12 +108,13 @@ i{ font-size: var(--fs)}
 
 #btnFacturar{
     transition: all 0.15s ease;
-    background: #22C55E !important;
+    background: #22C55E;
     color: white;
+    border: none;
 }
 
 #btnFacturar:hover{
-    background: #1ca74f !important;
+    background: #1ca74f;
 }
 
 #btnFacturar:active{

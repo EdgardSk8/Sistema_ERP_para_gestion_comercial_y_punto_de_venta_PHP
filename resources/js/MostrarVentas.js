@@ -355,15 +355,15 @@ export default function initMostrarVentas() {
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="modal-body p-2">
                         ¿Seguro que deseas anular esta factura?
                     </div>
 
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">
+                        <button class="btn btn-danger" data-bs-dismiss="modal">
                             Cancelar
                         </button>
-                        <button class="btn btn-danger" id="btnConfirmarAnulacion">
+                        <button class="btn btn-success" id="btnConfirmarAnulacion">
                             Anular
                         </button>
                     </div>
@@ -460,8 +460,8 @@ export default function initMostrarVentas() {
 /* ════════════ CANCELAR ANULACIÓN Y VOLVER AL DETALLE ════════════ */
 
     $(document)
-    .off('click', '#modalAnularVenta .btn-secondary')
-    .on('click', '#modalAnularVenta .btn-secondary', function () {
+    .off('click', '#modalAnularVenta .btn-danger')
+    .on('click', '#modalAnularVenta .btn-danger', function () {
 
         const modal = bootstrap.Modal.getInstance(modalAnularVenta);
         modal?.hide();

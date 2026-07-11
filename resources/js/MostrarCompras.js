@@ -118,15 +118,15 @@ function crearModalAnularCompra() {
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
-                <div class="modal-body">
+                <div class="modal-body p-2">
                     ¿Seguro que deseas anular esta compra?
                 </div>
 
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+                    <button class="btn btn-danger" data-bs-dismiss="modal">
                         Cancelar
                     </button>
-                    <button class="btn btn-danger" id="btnConfirmarAnulacionCompra">
+                    <button class="btn btn-success" id="btnConfirmarAnulacionCompra">
                         Anular
                     </button>
                 </div>
@@ -236,8 +236,8 @@ $(document)
 /* ════════════ CANCELAR Y VOLVER AL DETALLE ════════════ */
 
 $(document)
-.off('click', '#modalAnularCompra .btn-secondary')
-.on('click', '#modalAnularCompra .btn-secondary', function () {
+.off('click', '#modalAnularCompra .btn-danger')
+.on('click', '#modalAnularCompra .btn-danger', function () {
 
     const modal = bootstrap.Modal.getInstance(modalAnularCompra);
     modal?.hide();

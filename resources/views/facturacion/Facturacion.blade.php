@@ -34,9 +34,10 @@
                         Imprimir Proforma
                     </label>
 
-                    <button id="btnLimpiarCaja" class="btn btn-sm btn-warning">
-                        <i class="bi bi-trash"></i> 
-                    </button>
+                    <label id="btnLimpiarCaja" class="btn btn-sm">
+                        <i class="bi bi-trash"> </i> 
+                        Borrar Filtros
+                    </label>
 
                 </div>
                 
