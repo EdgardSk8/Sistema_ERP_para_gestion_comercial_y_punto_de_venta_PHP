@@ -77,7 +77,7 @@
 
       <!-- Footer -->
       <div class="modal-footer">
-        <button type="button" class="btn cancelar btn-sm" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn cancelar btn-sm-modal" data-bs-dismiss="modal">Cerrar</button>
       </div>
 
     </div>

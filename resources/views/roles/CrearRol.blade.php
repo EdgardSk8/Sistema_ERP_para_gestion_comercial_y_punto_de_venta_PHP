@@ -66,7 +66,7 @@
             <div class="modal-footer">
 
                 <button
-                    class="btn cancelar"
+                    class="btn cancelar btn-sm-modal"
                     data-bs-dismiss="modal">
                     Cancelar
                 </button>
@@ -74,7 +74,7 @@
                 <button
                     id="btnGuardarRol"
                     type="button"
-                    class="btn guardar">
+                    class="btn guardar btn-sm-modal">
                     Guardar
                 </button>
 

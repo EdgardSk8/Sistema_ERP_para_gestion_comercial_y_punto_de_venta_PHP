@@ -88,6 +88,32 @@ export default function initCompras() {
         ]
     });
 
+$('#crear_medida_producto').select2({
+    ajax: {
+        url: '/medidas-compra/mostrar',
+        dataType: 'json',
+        delay: 250,
+
+        processResults: function (res) {
+
+            return {
+                results: res.data.map(med => ({
+                    id: med.id_medida,
+                    text: `${med.orden_medida}. ${med.nombre_medida} (${med.abreviatura_medida})`
+                }))
+            };
+
+        },
+
+        cache: true
+    },
+
+    width: '100%',
+    dropdownParent: $('#modalCrearProducto'),
+    placeholder: 'Seleccione medida',
+    allowClear: false
+});
+
     $('#cajacuentaselect').on('change', function () {
 
         const tipoPago = $(this).val();
@@ -344,37 +370,6 @@ function cargarCajasAbiertas(total = 0) {
         //actualizarCajas();
     }
 
-/* ------------------------------------------------------------------------------------------------------------------- */
-/* 🔥 CAJAS */
-/* ------------------------------------------------------------------------------------------------------------------- */
-
-    // function cargarCajasAbiertas(total = 0) {
-
-    //     $.get('/caja-compra/mostrar', function (res) {
-
-    //         let html = '<option disabled selected>Seleccione caja</option>';
-
-    //         if (!res.data?.length) {
-    //             $('#caja_select').html('<option>No hay cajas</option>');
-    //             return;
-    //         }
-
-    //         html += res.data.map(c => {
-
-    //             let ok = c.saldo_actual >= total;
-
-    //             return `<option value="${c.id}" ${ok ? '' : 'disabled'}>
-    //                 ${c.text} ${ok ? '' : '(Saldo insuficiente)'}
-    //             </option>`;
-    //         }).join('');
-
-    //         $('#caja_select').html(html);
-    //     });
-    // }
-
-    // function actualizarCajas() {
-    //     cargarCajasAbiertas(parseFloat($('#total').val()) || 0);
-    // }
 
 /* ------------------------------------------------------------------------------------------------------------------- */
 /* 🔥 LIMPIAR */
@@ -444,48 +439,78 @@ function cargarCajasAbiertas(total = 0) {
 /* ------------------------------------------------------------------------------------------------------------------- */
 
     function crearcompra() {
-
-        // 🚀 Cargar selects (categoría, ubicación, impuesto)
+                
         function cargarSelects() {
+
             $.get('/productos/formulario?solo_activos=1', function(res){
 
                 const data = res.data;
 
-                // 🏷 Categorías
-                $('#crear_id_categoria').empty().append('<option value="">Seleccione</option>');
-                data.categorias.forEach(cat => {
-                    $('#crear_id_categoria').append(
-                        `<option value="${cat.id_categoria}">${cat.nombre_categoria}</option>`
-                    );
-                });
+                // SELECTORES
+                const selectCategoria = $('#crear_id_categoria');
+                const selectUbicacion = $('#crear_id_ubicacion');
+                const selectImpuesto = $('#crear_id_impuesto');
+                const selectMedida = $('#crear_medida_producto');
 
-                // 📍 Ubicaciones
-                $('#crear_id_ubicacion').empty().append('<option value="">Seleccione</option>');
+                // DESTRUIR SELECT2 SI YA EXISTE
+                [ selectCategoria, selectUbicacion, selectImpuesto, selectMedida
+                ].forEach(select => { if(select.hasClass('select2-hidden-accessible')){ select.select2('destroy'); } });
+
+                // INICIALIZAR SELECT2
+                [ selectCategoria, selectUbicacion, selectImpuesto, selectMedida]
+                .forEach(select => { select.select2({ width: '100%', dropdownParent: $('#modalCrearProducto'), allowClear: false }); });
+
+                selectCategoria.empty().append('<option value="" disabled selected>Seleccione</option>');
+                selectUbicacion.empty().append('<option value="" disabled selected>Seleccione</option>');
+                selectImpuesto.empty().append('<option value="" disabled selected>Seleccione</option>');
+                selectMedida.empty().append('<option value="" disabled selected>Seleccione</option>');
+
+                data.categorias.forEach(cat => { selectCategoria.append(` <option value="${cat.id_categoria}"> ${cat.nombre_categoria} </option> `); });
+
                 data.ubicaciones.forEach(ubi => {
-                    $('#crear_id_ubicacion').append(
-                        `<option value="${ubi.id_ubicacion}">${ubi.nombre_ubicacion}</option>`
-                    );
+                    selectUbicacion.append(` <option value="${ubi.id_ubicacion}"> ${ubi.nombre_ubicacion} </option> `);
                 });
 
-                // 💰 Impuestos
-                $('#crear_id_impuesto').empty().append('<option value="">Seleccione</option>');
                 data.impuestos.forEach(imp => {
-                    $('#crear_id_impuesto').append(
-                        `<option value="${imp.id_impuesto}" data-iva="${imp.porcentaje_impuesto}">
-                            ${imp.nombre_impuesto} (${parseFloat(imp.porcentaje_impuesto)}%)
-                        </option>`
-                    );
+                    selectImpuesto.append(`
+                        <option value="${imp.id_impuesto}"
+                            data-iva="${imp.porcentaje_impuesto}"> ${imp.nombre_impuesto} (${parseFloat(imp.porcentaje_impuesto)}%)
+                        </option>
+                    `);
                 });
 
-            }).fail(function(){
-                mostrarToast('Error al cargar datos del formulario', 'danger');
-            });
-        }
+                //MEDIDAS   
+                const grupos = {};
 
-        // Ejecutar al cargar
-        cargarSelects();
+                data.medidas.forEach(med => {
+                    const tipo = med.tipomedida.nombre_tipo_medida;
+                    if(!grupos[tipo]){ grupos[tipo] = []; }
+                    grupos[tipo].push(med);
+                });
 
-        // 🖼 PREVIEW DE IMAGEN
+                Object.keys(grupos).forEach(tipo => {
+
+                    grupos[tipo].sort((a,b)=>{ return a.orden_medida - b.orden_medida; });
+                    const optgroup = $(` <optgroup label="${tipo}"> </optgroup> `);
+
+                    grupos[tipo].forEach(med => {
+                        optgroup.append(`
+                            <option value="${med.id_medida}"> ${med.orden_medida}.${med.nombre_medida} (${med.abreviatura_medida}) </option>
+                        `);
+                    });
+
+                    selectMedida.append(optgroup);
+                });
+
+                [ selectCategoria, selectUbicacion, selectImpuesto, selectMedida
+                ].forEach(select => { select.trigger('change'); });
+
+
+
+            }).fail(function(){ mostrarToast('Error al cargar datos del formulario', 'danger'); });
+
+        } cargarSelects();
+
         $('#crear_imagen_producto').on('change', function(e){
 
             const file = e.target.files[0];
@@ -493,199 +518,198 @@ function cargarCajasAbiertas(total = 0) {
 
             if(file){
                 const reader = new FileReader();
-
-                reader.onload = function(e){
-                    preview.attr('src', e.target.result);
-                    preview.removeClass('d-none');
-                };
-
+                reader.onload = function(e){ preview.attr('src', e.target.result); preview.removeClass('d-none'); };
                 reader.readAsDataURL(file);
             }
+
         });
+
+function calcularGananciaProducto() {
+
+    const precioCompra = parseFloat($('#crear_precio_compra').val()) || 0;
+    const precioVenta = parseFloat($('#crear_precio_venta').val()) || 0;
+
+    $('#crear_ganancia_producto').val(
+        (precioVenta - precioCompra).toFixed(2)
+    );
+
+}
+
+
+// Escuchar cambios
+$('#crear_precio_compra, #crear_precio_venta, #crear_porcentaje_venta')
+.on('input change', function(){
+
+    calcularGananciaProducto();
+
+});
 
 
     /* ---------------------------------------------------------------------------------------------------- */
 
-    function inicializarCrearVenta() {
+        function inicializarCrearVenta() {
 
-        const checkVenta = $('#crear_check_venta'); 
-        const checkRedondeo = $('#crear_redondeo_venta');
+            const checkVenta = $('#crear_check_venta'); 
+            const checkRedondeo = $('#crear_redondeo_venta');
 
-        const inputPorcentaje = $('#crear_porcentaje_venta');
-        const inputPrecioCompra = $('#crear_precio_compra');
-        const inputPrecioVenta = $('#crear_precio_venta'); 
-        const inputPrecioTotal = $('#crear_precio_venta_TOTAL');
-        const selectImpuesto = $('#crear_id_impuesto');
+            const inputPorcentaje = $('#crear_porcentaje_venta');
+            const inputPrecioCompra = $('#crear_precio_compra');
+            const inputPrecioVenta = $('#crear_precio_venta'); 
+            const inputPrecioTotal = $('#crear_precio_venta_TOTAL');
+            const selectImpuesto = $('#crear_id_impuesto');
 
-        let porcentajeOriginal = parseFloat(inputPorcentaje.val()) || 0;
-        let bloqueando = false;
-        let modoRedondeo = false;
+            let porcentajeOriginal = parseFloat(inputPorcentaje.val()) || 0;
+            let bloqueando = false;
+            let modoRedondeo = false;
 
-        // 🔹 Habilitar / deshabilitar inputs
-        function toggleInputs() {
-            if (checkVenta.is(':checked')) {
-                inputPorcentaje.prop('disabled', false);
-                inputPrecioVenta.prop('disabled', true);
-                inputPrecioTotal.prop('disabled', true);
-            } else {
-                inputPorcentaje.prop('disabled', true);
-                inputPrecioVenta.prop('disabled', false);
-                inputPrecioTotal.prop('disabled', false);
+            // Habilitar / deshabilitar inputs
+            function toggleInputs() {
+                if (checkVenta.is(':checked')) {
+                    inputPorcentaje.prop('disabled', false);
+                    inputPrecioVenta.prop('disabled', true);
+                    inputPrecioTotal.prop('disabled', true);
+                } else {
+                    inputPorcentaje.prop('disabled', true);
+                    inputPrecioVenta.prop('disabled', false);
+                    inputPrecioTotal.prop('disabled', false);
+                }
             }
-        }
 
-        // 🔹 Calcular desde % o precio base
-        function calcularTodo() {
-            if (bloqueando || modoRedondeo) return;
-            bloqueando = true;
+            function calcularGanancia() {
+                let compra = parseFloat(inputPrecioCompra.val()) || 0;
+                let venta = parseFloat(inputPrecioVenta.val()) || 0;
 
-            let precioCompra = parseFloat(inputPrecioCompra.val()) || 0;
-            let iva = parseFloat(selectImpuesto.find(':selected').data('iva')) || 0;
+                $('#crear_ganancia_producto').val((venta - compra).toFixed(2));
+            }
 
-            if (checkVenta.is(':checked')) {
-                let porcentaje = parseFloat(inputPorcentaje.val()) || 0;
+            // 🔹 Calcular desde % o precio base
+            function calcularTodo() {
+                if (bloqueando || modoRedondeo) return;
+                bloqueando = true;
 
-                let precioBase = precioCompra * (1 + porcentaje / 100);
-                let precioTotal = precioBase * (1 + iva / 100);
+                let precioCompra = parseFloat(inputPrecioCompra.val()) || 0;
+                let iva = parseFloat(selectImpuesto.find(':selected').data('iva')) || 0;
+
+                if (checkVenta.is(':checked')) {
+                    let porcentaje = parseFloat(inputPorcentaje.val()) || 0;
+
+                    let precioBase = precioCompra * (1 + porcentaje / 100);
+                    let precioTotal = precioBase * (1 + iva / 100);
+
+                    inputPrecioVenta.val(precioBase.toFixed(2));
+                    inputPrecioTotal.val(precioTotal.toFixed(2));
+
+                    porcentajeOriginal = porcentaje;
+
+                } else {
+                    let precioBase = parseFloat(inputPrecioVenta.val()) || 0;
+
+                    let precioTotal = precioBase * (1 + iva / 100);
+                    inputPrecioTotal.val(precioTotal.toFixed(2));
+                }
+                calcularGanancia();
+                bloqueando = false;
+            }
+
+            // 🔥 Calcular desde TOTAL
+            function calcularDesdeTotal() {
+                if (bloqueando) return;
+                bloqueando = true;
+
+                modoRedondeo = false;
+
+                let precioCompra = parseFloat(inputPrecioCompra.val()) || 0;
+                let total = parseFloat(inputPrecioTotal.val()) || 0;
+                let iva = parseFloat(selectImpuesto.find(':selected').data('iva')) || 0;
+
+                if (precioCompra <= 0 || total <= 0) { bloqueando = false; return;}
+
+                let precioBase = total / (1 + iva / 100);
+                let porcentaje = ((precioBase / precioCompra) - 1) * 100;
 
                 inputPrecioVenta.val(precioBase.toFixed(2));
-                inputPrecioTotal.val(precioTotal.toFixed(2));
+                inputPorcentaje.val(porcentaje.toFixed(2));
+
+                calcularGanancia();
 
                 porcentajeOriginal = porcentaje;
 
-            } else {
-                let precioBase = parseFloat(inputPrecioVenta.val()) || 0;
-
-                let precioTotal = precioBase * (1 + iva / 100);
-                inputPrecioTotal.val(precioTotal.toFixed(2));
-            }
-
-            bloqueando = false;
-        }
-
-        // 🔥 Calcular desde TOTAL
-        function calcularDesdeTotal() {
-            if (bloqueando) return;
-            bloqueando = true;
-
-            modoRedondeo = false;
-
-            let precioCompra = parseFloat(inputPrecioCompra.val()) || 0;
-            let total = parseFloat(inputPrecioTotal.val()) || 0;
-            let iva = parseFloat(selectImpuesto.find(':selected').data('iva')) || 0;
-
-            if (precioCompra <= 0 || total <= 0) {
                 bloqueando = false;
-                return;
             }
 
-            let precioBase = total / (1 + iva / 100);
-            let porcentaje = ((precioBase / precioCompra) - 1) * 100;
+            // FUNCION DE REDONDEO
+            function redondearTotal() {
 
-            inputPrecioVenta.val(precioBase.toFixed(2));
-            inputPorcentaje.val(porcentaje.toFixed(2));
+                modoRedondeo = true;
 
-            porcentajeOriginal = porcentaje;
+                let iva = parseFloat(selectImpuesto.find(':selected').data('iva')) || 0;
 
-            bloqueando = false;
-        }
+                if (checkVenta.is(':checked')) {
 
-        // 🔹 Redondeo PRO
-        function redondearTotal() {
+                    let precioCompra = parseFloat(inputPrecioCompra.val()) || 0;
 
-            modoRedondeo = true;
+                    let totalConIva = precioCompra * (1 + porcentajeOriginal / 100) * (1 + iva / 100);
+                    let totalRedondeado = Math.ceil(totalConIva);
 
-            let iva = parseFloat(selectImpuesto.find(':selected').data('iva')) || 0;
+                    let baseRedondeada = totalRedondeado / (1 + iva / 100);
+                    let nuevoPorcentaje = ((baseRedondeada / precioCompra) - 1) * 100;
 
-            if (checkVenta.is(':checked')) {
+                    porcentajeOriginal = nuevoPorcentaje;
 
-                let precioCompra = parseFloat(inputPrecioCompra.val()) || 0;
+                    inputPorcentaje.val(nuevoPorcentaje.toFixed(3));
+                    inputPrecioVenta.val(baseRedondeada.toFixed(2));
+                    inputPrecioTotal.val(totalRedondeado);
+                    calcularGanancia();
 
-                let totalConIva = precioCompra * (1 + porcentajeOriginal / 100) * (1 + iva / 100);
-                let totalRedondeado = Math.ceil(totalConIva);
+                } else {
 
-                let baseRedondeada = totalRedondeado / (1 + iva / 100);
-                let nuevoPorcentaje = ((baseRedondeada / precioCompra) - 1) * 100;
+                    let precioBase = parseFloat(inputPrecioVenta.val()) || 0;
 
-                porcentajeOriginal = nuevoPorcentaje;
+                    let totalConIva = precioBase * (1 + iva / 100);
+                    let totalRedondeado = Math.ceil(totalConIva);
 
-                inputPorcentaje.val(nuevoPorcentaje.toFixed(3));
-                inputPrecioVenta.val(baseRedondeada.toFixed(2));
-                inputPrecioTotal.val(totalRedondeado);
+                    let nuevoPrecioVenta = totalRedondeado / (1 + iva / 100);
 
-            } else {
-
-                let precioBase = parseFloat(inputPrecioVenta.val()) || 0;
-
-                let totalConIva = precioBase * (1 + iva / 100);
-                let totalRedondeado = Math.ceil(totalConIva);
-
-                let nuevoPrecioVenta = totalRedondeado / (1 + iva / 100);
-
-                inputPrecioVenta.val(nuevoPrecioVenta.toFixed(2));
-                inputPrecioTotal.val(totalRedondeado);
+                    inputPrecioVenta.val(nuevoPrecioVenta.toFixed(2));
+                    inputPrecioTotal.val(totalRedondeado);
+                    calcularGanancia();
+                }
             }
-        }
 
-        // 🔹 Inicial
-        toggleInputs();
-        calcularTodo();
-
-        // 🔄 Eventos
-        checkVenta.on('change', () => { 
-            modoRedondeo = false;
-            toggleInputs(); 
-            calcularTodo(); 
-        });
-
-        inputPrecioCompra.on('input', () => {
-            modoRedondeo = false;
-            calcularTodo();
-        });
-
-        inputPorcentaje.on('input', () => {
-            modoRedondeo = false;
-            calcularTodo();
-        });
-
-        inputPrecioVenta.on('input', () => {
-            modoRedondeo = false;
-            calcularTodo();
-        });
-
-        selectImpuesto.on('change', () => {
-            modoRedondeo = false;
-            calcularTodo();
-        });
-
-        inputPrecioTotal.on('input', calcularDesdeTotal);
-
-        // 🔹 Botón redondeo
-        checkRedondeo.on('click', function(e) {
-            e.preventDefault();
-            redondearTotal();
-            checkRedondeo.prop('checked', false);
-        });
-
-        // 🔹 Modal crear
-        $('#modalCrearProducto').on('shown.bs.modal', function () {
-            modoRedondeo = false;
             toggleInputs();
             calcularTodo();
-        });
-    }
 
-    // 🚀 INICIALIZAR
-    inicializarCrearVenta();
+            // 🔄 Eventos
+            checkVenta.on('change', () => { modoRedondeo = false; toggleInputs(); calcularTodo(); });
+            inputPrecioCompra.on('input', () => { modoRedondeo = false; calcularTodo(); });
+            inputPorcentaje.on('input', () => { modoRedondeo = false; calcularTodo(); });
+            inputPrecioVenta.on('input', () => { modoRedondeo = false; calcularTodo(); });
+            selectImpuesto.on('change', () => { modoRedondeo = false; calcularTodo(); });
+
+            inputPrecioTotal.on('input', calcularDesdeTotal);
+
+            // BTN DE REDONDEO
+            checkRedondeo.on('click', function(e) { e.preventDefault(); redondearTotal(); checkRedondeo.prop('checked', false); });
+
+            // CREACION DE MODAL
+            $('#modalCrearProducto').on('shown.bs.modal', function () {
+                modoRedondeo = false;
+                toggleInputs();
+                calcularTodo();
+            });
+        }
+
+        inicializarCrearVenta();
 
     /* ---------------------------------------------------------------------------------------------------- */
 
-        // 🟢 Guardar producto
+        // EVENTO GUARDAR PRODUCTO
         $('#btnGuardarProducto').click(function() {
 
             const nombre = $('#crear_nombre_producto').val().trim();
             const descripcion = $('#crear_descripcion_producto').val().trim();
             const categoria = $('#crear_id_categoria').val();
+            const medida = $('#crear_medida_producto').val();
             const ubicacion = $('#crear_id_ubicacion').val();
             const impuesto = $('#crear_id_impuesto').val();
             const precioCompra = $('#crear_precio_compra').val();
@@ -693,18 +717,13 @@ function cargarCajasAbiertas(total = 0) {
             const stock = $('#crear_stock_actual').val();
             const imagen = $('#crear_imagen_producto')[0].files[0];
 
-            // 🔎 Validaciones
-            if(nombre === ''){
-                mostrarToast('El nombre del producto es obligatorio', 'danger');
+            if(nombre === ''){ mostrarToast('El nombre del producto es obligatorio', 'danger'); return; }
+
+            if(!categoria || !ubicacion || !impuesto || !medida){
+                mostrarToast('Debe seleccionar categoría, ubicación, impuesto y medida', 'danger');
                 return;
             }
 
-            if(!categoria || !ubicacion || !impuesto){
-                mostrarToast('Debe seleccionar categoría, ubicación e impuesto', 'danger');
-                return;
-            }
-
-            // 📦 FormData
             const formData = new FormData();
 
             formData.append('nombre_producto', nombre);
@@ -715,20 +734,13 @@ function cargarCajasAbiertas(total = 0) {
             formData.append('precio_compra', precioCompra);
             formData.append('precio_venta', precioVenta);
             formData.append('stock_actual', stock);
+            formData.append('id_medida', medida);
 
-            if(imagen){
-                formData.append('imagen_producto', imagen);
-            }
+            if(imagen){ formData.append('imagen_producto', imagen); }
 
             formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
 
-            // 🚀 AJAX
-            $.ajax({
-                url: '/productos/crear',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
+            $.ajax({ url: '/productos/crear', type: 'POST', data: formData, processData: false, contentType: false,
 
             success: function(res) {
 
@@ -736,22 +748,20 @@ function cargarCajasAbiertas(total = 0) {
 
                 let producto = res.producto;
 
-                if (!producto) {
-                    console.log("No vino producto");
-                    return;
-                }
+                if (!producto) { console.log("No vino producto"); return; }
 
                 let cantidad = parseFloat($('#crear_stock_actual').val()) || 1;
                 let precio = parseFloat($('#crear_precio_compra').val()) || 0;
 
-                // 🔥 EVENTO DIRECTO AL CARRITO
+                // EVENTO DIRECTO AL CARRITO
                 $(document).trigger('producto-creado', {
                     id: producto.id,
                     nombre: producto.text,
-                    cantidad: cantidad, // ✔️ FIX
+                    cantidad: cantidad,
                     precio: precio,
                     precio_compra: precio,
-                    impuesto: impuesto
+                    impuesto: impuesto,
+                    id_medida: medida
                 });
 
                 // 🔥 Agregar al select2 (solo UI)
@@ -770,38 +780,33 @@ function cargarCajasAbiertas(total = 0) {
             },
 
                 error: function(err){
+
                     console.error(err);
 
                     if(err.status === 422){
+
                         const errores = err.responseJSON.errors;
                         let mensaje = '';
-
-                        for(let campo in errores){
-                            mensaje = errores[campo][0];
-                            break;
-                        }
-
+                        for(let campo in errores){ mensaje = errores[campo][0]; break; }
                         mostrarToast(mensaje, 'danger');
+
                     } 
                     else if(err.responseJSON && err.responseJSON.mensaje){
+
                         mostrarToast(err.responseJSON.mensaje, 'danger');
-                    } 
-                    else {
-                        mostrarToast('Error inesperado del servidor', 'danger');
-                    }
+
+                    }  else { mostrarToast('Error inesperado del servidor', 'danger'); }
+
                 }
 
             });
 
         });
 
-        // 🧼 Limpiar modal
+        // LIMPIAR MODAL
         $('#modalCrearProducto').on('hidden.bs.modal', function () {
             $('#formCrearProducto')[0].reset();
-
-            $('#preview_imagen_producto')
-                .attr('src', '')
-                .addClass('d-none');
+            $('#preview_imagen_producto').attr('src', '').addClass('d-none');
         });
 
     }; crearcompra();

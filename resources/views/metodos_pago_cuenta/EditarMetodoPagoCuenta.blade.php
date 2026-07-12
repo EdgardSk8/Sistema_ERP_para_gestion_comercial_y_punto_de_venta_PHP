@@ -83,7 +83,7 @@
             <div class="modal-footer">
 
                 <button
-                    class="btn cancelar"
+                    class="btn cancelar btn-sm-modal"
                     data-bs-dismiss="modal">
                     Cancelar
                 </button>
@@ -92,7 +92,7 @@
                 <button
                     id="btnActualizarMetodoPagoCuenta"
                     type="button"
-                    class="btn actualizar">
+                    class="btn actualizar btn-sm-modal">
                     Guardar cambios
                 </button>
 

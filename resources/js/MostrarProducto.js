@@ -147,23 +147,23 @@ export default function initMostrarProductos() {
 
 /* ════════════════ ACCIÓN: ABRIR MODAL DE DETALLES DE PRODUCTO ════════════════ */
 
-$('#TablaMostrarProductos').on('click', '.detallesProducto', function () {
+    $('#TablaMostrarProductos').on('click', '.detallesProducto', function () {
 
-    const btn = $(this);
+        const btn = $(this);
 
-    if (btn.prop('disabled')) return;
+        if (btn.prop('disabled')) return;
 
-    btn.prop('disabled', true);
+        btn.prop('disabled', true);
 
-    const id = btn.data('id');
+        const id = btn.data('id');
 
-    abrirModalDetalles(id);
+        abrirModalDetalles(id);
 
-    setTimeout(() => {
-        btn.prop('disabled', false);
-    }, 1000); // tiempo en ms
+        setTimeout(() => {
+            btn.prop('disabled', false);
+        }, 1000); // tiempo en ms
 
-});
+    });
 
 /* ════════════════ ACCIÓN: MOSTRAR IMAGEN CON CURSOR: POINTER ════════════════ */
 
@@ -222,18 +222,11 @@ $('#TablaMostrarProductos').on('click', '.detallesProducto', function () {
         const precio_venta = $('#editar_precio_venta').val();
         const stock = $('#editar_stock_actual').val();
         const imagen = $('#editar_imagen_producto')[0].files[0]; // archivo seleccionado
+        const id_medida = $('#editar_medida_producto').val();
 
         // Validaciones básicas
-        if(nombre === ''){
-            mostrarToast('El nombre del producto es obligatorio', 'danger');
-            return;
-        }
-        /*
-        if(!id_categoria || !id_ubicacion || !id_impuesto){
-            mostrarToast('Seleccione categoría, ubicación e impuesto', 'danger');
-            return;
-        }
-*/
+        if(nombre === ''){ mostrarToast('El nombre del producto es obligatorio', 'danger'); return; }
+    
         // FormData para enviar datos + archivo
         const formData = new FormData();
         formData.append('nombre_producto', nombre);
@@ -244,6 +237,7 @@ $('#TablaMostrarProductos').on('click', '.detallesProducto', function () {
         formData.append('precio_compra', precio_compra);
         formData.append('precio_venta', precio_venta);
         formData.append('stock_actual', stock);
+        formData.append('id_medida', id_medida);
         if(imagen) formData.append('imagen_producto', imagen);
 
         // Spoofing PUT para Laravel
@@ -346,12 +340,29 @@ $('#TablaMostrarProductos').on('click', '.detallesProducto', function () {
             const selectCat = $('#editar_id_categoria');
             const selectUbic = $('#editar_id_ubicacion');
             const selectImp = $('#editar_id_impuesto');
+            const selectMed = $('#editar_medida_producto');
 
             /* ══════════════════════════════════════════ */
+
+            [selectCat, selectUbic, selectImp, selectMed].forEach(select => {
+                if (select.hasClass('select2-hidden-accessible')) {
+                    select.select2('destroy');
+                }
+            });
+
+            [selectCat, selectUbic, selectImp, selectMed].forEach(select => {
+                select.select2({
+                    width: '100%',
+                    dropdownParent: $('#modalEditarProducto'),
+                    placeholder: 'Seleccione',
+                    allowClear: false
+                });
+            });
 
             selectCat.empty().append('<option value="" disabled selected>Seleccione</option>');
             selectUbic.empty().append('<option value="">Seleccione</option>');
             selectImp.empty().append('<option value="" disabled selected>Seleccione</option>');
+            selectMed.empty().append('<option value="" disabled selected>Seleccione</option>');
 
             /* ══════════════════════════════════════════════════════════════════════════════════════════ */
             
@@ -364,6 +375,25 @@ $('#TablaMostrarProductos').on('click', '.detallesProducto', function () {
                         ${imp.nombre_impuesto} (${parseFloat(imp.porcentaje_impuesto)}%)
                     </option>
                 `);
+            });
+
+            const grupos = {};
+
+            data.medidas.forEach(med => {
+                const tipo = med.tipomedida.nombre_tipo_medida; if (!grupos[tipo]) { grupos[tipo] = []; } grupos[tipo].push(med);
+            });
+
+            Object.keys(grupos).forEach(tipo => {
+
+                // ORDENAR POR ORDEN_MEDIDA
+                grupos[tipo].sort((a, b) => a.orden_medida - b.orden_medida);
+                const optgroup = $(`<optgroup label="${tipo}"></optgroup>`);
+
+                grupos[tipo].forEach(med => {
+                    optgroup.append(` <option value="${med.id_medida}"> ${med.orden_medida}. ${med.nombre_medida} (${med.abreviatura_medida}) </option> `);
+                });
+
+                selectMed.append(optgroup);
             });
 
            /* ══════════════════════════════════════════════════════════════════════════════════════════ */
@@ -380,11 +410,13 @@ $('#TablaMostrarProductos').on('click', '.detallesProducto', function () {
                 $('#editar_precio_compra').val(producto.precio_compra);
                 $('#editar_precio_venta').val(producto.precio_venta);
                 $('#editar_stock_actual').val(producto.stock_actual);
+                $('#editar_ganancia_producto').val( (producto.precio_venta - producto.precio_compra).toFixed(2) );
 
                 // Seleccionar los valores correctos en los selects
-                selectCat.val(producto.id_categoria);
-                selectUbic.val(producto.id_ubicacion);
-                selectImp.val(producto.id_impuesto);
+                selectCat.val(producto.id_categoria).trigger('change');
+                selectUbic.val(producto.id_ubicacion).trigger('change');
+                selectImp.val(producto.id_impuesto).trigger('change');
+                selectMed.val(producto.id_medida).trigger('change'); // si aplica
 
                 // Preview de la imagen
                 if(producto.imagen_producto){
@@ -419,6 +451,12 @@ $('#TablaMostrarProductos').on('click', '.detallesProducto', function () {
         const inputPrecioTotal = $('#editar_precio_venta_TOTAL');
         const selectImpuesto = $('#editar_id_impuesto');
 
+        function calcularGanancia() {
+            let compra = parseFloat(inputPrecioCompra.val()) || 0;
+            let venta = parseFloat(inputPrecioVenta.val()) || 0;
+            $('#editar_ganancia_producto').val((venta - compra).toFixed(2));
+        }
+
         let porcentajeOriginal = parseFloat(inputPorcentaje.val()) || 0;
         let bloqueando = false;
         let modoRedondeo = false; // 🔥 NUEVO
@@ -452,16 +490,16 @@ $('#TablaMostrarProductos').on('click', '.detallesProducto', function () {
 
                 inputPrecioVenta.val(precioBase.toFixed(2));
                 inputPrecioTotal.val(precioTotal.toFixed(2));
+                calcularGanancia();
 
                 porcentajeOriginal = porcentaje;
 
             } else {
                 let precioBase = parseFloat(inputPrecioVenta.val()) || 0;
-
                 let precioTotal = precioBase * (1 + iva / 100);
                 inputPrecioTotal.val(precioTotal.toFixed(2));
             }
-
+            calcularGanancia();
             bloqueando = false;
         }
 
@@ -476,17 +514,14 @@ $('#TablaMostrarProductos').on('click', '.detallesProducto', function () {
             let total = parseFloat(inputPrecioTotal.val()) || 0;
             let iva = parseFloat(selectImpuesto.find(':selected').data('iva')) || 0;
 
-            if (precioCompra <= 0 || total <= 0) {
-                bloqueando = false;
-                return;
-            }
+            if (precioCompra <= 0 || total <= 0) { bloqueando = false; return; }
 
             let precioBase = total / (1 + iva / 100);
             let porcentaje = ((precioBase / precioCompra) - 1) * 100;
 
             inputPrecioVenta.val(precioBase.toFixed(2));
             inputPorcentaje.val(porcentaje.toFixed(2));
-
+            calcularGanancia();
             porcentajeOriginal = porcentaje;
 
             bloqueando = false;
@@ -514,7 +549,7 @@ $('#TablaMostrarProductos').on('click', '.detallesProducto', function () {
                 inputPorcentaje.val(nuevoPorcentaje.toFixed(3));
                 inputPrecioVenta.val(baseRedondeada.toFixed(2));
                 inputPrecioTotal.val(totalRedondeado);
-
+                calcularGanancia();
             } else {
 
                 let precioBase = parseFloat(inputPrecioVenta.val()) || 0;
@@ -526,55 +561,26 @@ $('#TablaMostrarProductos').on('click', '.detallesProducto', function () {
 
                 inputPrecioVenta.val(nuevoPrecioVenta.toFixed(2));
                 inputPrecioTotal.val(totalRedondeado);
+                calcularGanancia();
             }
         }
 
-        // 🔹 Inicial
         toggleInputs();
         calcularTodo();
 
-        // 🔄 Eventos
-        checkVenta.on('change', () => { 
-            modoRedondeo = false;
-            toggleInputs(); 
-            calcularTodo(); 
-        });
-
-        inputPrecioCompra.on('input', () => {
-            modoRedondeo = false;
-            calcularTodo();
-        });
-
-        inputPorcentaje.on('input', () => {
-            modoRedondeo = false;
-            calcularTodo();
-        });
-
-        inputPrecioVenta.on('input', () => {
-            modoRedondeo = false;
-            calcularTodo();
-        });
-
-        selectImpuesto.on('change', () => {
-            modoRedondeo = false;
-            calcularTodo();
-        });
-
+        // EVENTOS
+        checkVenta.on('change', () => {  modoRedondeo = false; toggleInputs(); calcularTodo(); });
+        inputPrecioCompra.on('input', () => { modoRedondeo = false; calcularTodo(); });
+        inputPorcentaje.on('input', () => { modoRedondeo = false; calcularTodo(); });
+        inputPrecioVenta.on('input', () => { modoRedondeo = false; calcularTodo(); });
+        selectImpuesto.on('change', () => { modoRedondeo = false; calcularTodo(); });
         inputPrecioTotal.on('input', calcularDesdeTotal);
 
-        // 🔹 Botón redondeo
-        checkRedondeo.on('click', function(e) {
-            e.preventDefault();
-            redondearTotal();
-            checkRedondeo.prop('checked', false);
-        });
+        // BTN DE REDONDEO
+        checkRedondeo.on('click', function(e) { e.preventDefault(); redondearTotal(); checkRedondeo.prop('checked', false); });
 
-        // 🔹 Modal
-        $('#modalEditarProducto').on('shown.bs.modal', function () {
-            modoRedondeo = false;
-            toggleInputs();
-            calcularTodo();
-        });
+        // MODAL
+        $('#modalEditarProducto').on('shown.bs.modal', function () { modoRedondeo = false; toggleInputs(); calcularTodo(); });
     }
 
     inicializarEdicionVenta();
@@ -655,13 +661,6 @@ document.addEventListener("click", async function(e) {
     }
 });
 
-/* ════════════════════════════════════════════════════════════════════════════════════════════════════════════════ */
-
-
-/* ════════════════════════════════════════════════════════════════════════════════════════════════════════════════ */
-
-
-/* ════════════════════════════════════════════════════════════════════════════════════════════════════════════════ */
 
 
 

@@ -103,5 +103,36 @@
 
     </div>
 
+
+    <div class="toast-container position-fixed top-0 end-0">
+
+        <div id="toastMensaje" class="toast toast-custom fade" role="alert">
+
+            <div class="toast-content">
+
+                <div class="toast-icon" id="toastIcon"></div>
+
+                <div class="toast-divider"></div>
+
+                <div class="toast-text">
+
+                    <div class="toast-title" id="toastTitulo"></div>
+
+                    <div class="toast-message" id="toastTexto"></div>
+
+                </div>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="toast">
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
 </body>
 </html>

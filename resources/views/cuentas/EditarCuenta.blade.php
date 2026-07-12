@@ -86,14 +86,14 @@
 
             <div class="modal-footer">
 
-                <button class="btn cancelar" data-bs-dismiss="modal">
+                <button class="btn cancelar btn-sm-modal" data-bs-dismiss="modal">
                     Cancelar
                 </button>
 
                 <button
                     id="btnActualizarCuenta"
                     type="button"
-                    class="btn actualizar">
+                    class="btn actualizar btn-sm-modal">
                     Actualizar
                 </button>
 

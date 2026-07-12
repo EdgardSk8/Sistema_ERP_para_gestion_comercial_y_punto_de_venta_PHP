@@ -167,9 +167,9 @@ export default function initFacturacion() {
                 $('#pagoDolares').prop('disabled', false);
                 $('#vueltoCordobas').prop('disabled', false);
                 $('#vueltoDolares').prop('disabled', false);
-                $('#btnFacturar').css('background', '#198754');
+                $('#btnFacturar').css('background', '#22C55E');
                 $('#btnFacturar').css('none');
-                $('#btnFacturar').text('Facturar');
+                $('#btnFacturar').text('Facturar e Imprimir Factura');
             }
             calcularVueltos();
         }
@@ -194,7 +194,7 @@ export default function initFacturacion() {
 
             $('#vueltoCordobas, #vueltoDolares').prop('disabled', false);
             if (metodo === 1) { $('#pagoCordobas, #pagoDolares').prop('disabled', false); }
-            $('#btnFacturar').css({ background: '#198754', border: '1px solid #198754' }).text('Facturar');
+            $('#btnFacturar').css({ background: '#22C55E'});
             $('#btnFacturar').css({ border: 'none' }).text('Facturar');
             $('#btnFacturar').text('Facturar');
         }
@@ -213,7 +213,7 @@ export default function initFacturacion() {
 
         $('#clientes').val('1').trigger('change');
         $('#metodo_pago').val('1').trigger('change');
-        $('#btnFacturar').css({ background: '#198754', border: 'none' }).text('Facturar');
+        $('#btnFacturar').css({ background: '#22C55E', border: 'none' }).text('Facturar');
 
         imprimirFacturaActivo = false;
         imprimirProformaActivo = false;

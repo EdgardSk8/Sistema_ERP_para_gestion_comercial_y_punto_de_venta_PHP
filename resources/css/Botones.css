@@ -1,19 +1,13 @@
 /* ══════════════════════════════════════════════════════════════════════════════════════ */
 
 /* BOTÓN GUARDAR */
-.guardar { background-color: #2172f5; transition: background-color 0.2s ease; transition: all 0.15s ease; color: white; }
-.btn.guardar:hover { background-color: #1139ee; color: white; }
-.btn.guardar:active { background-color: #1139ee; color:white; transform: scale(0.90); }
+
 
 /* BOTÓN ACTUALIZAR */
-.actualizar { background-color: #2172f5; transition: background-color 0.2s ease; transition: all 0.15s ease; color: white; }
-.actualizar:hover { background-color: #1139ee; color: white; }
-.btn.actualizar:active { background-color: #1139ee; color:white; transform: scale(0.90); }
+
 
 /* BOTÓN CANCELAR */
-.cancelar { background-color: #f74242; transition: background-color 0.2s ease; transition: all 0.15s ease; color: white; }
-.btn.cancelar:hover { background-color: #fc0000; color: white; }
-.btn.cancelar:active { background-color: #fc0000; color:white; transform: scale(0.90); }
+
 
 /* ══════════════════════════════════════════════════════════════════════════════════════ */
 

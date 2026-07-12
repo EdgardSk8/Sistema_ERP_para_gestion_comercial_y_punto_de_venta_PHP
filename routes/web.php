@@ -309,6 +309,7 @@ Route::get('/tipo-factura-compra/mostrar', [CompraController::class, 'MostrarTip
 Route::get('/metodo-pago-compra/mostrar', [CompraController::class, 'MostrarMetodosPagoCompras']);
 Route::get('/cuenta-compra/mostrar', [CompraController::class, 'MostrarCuentasCompras']);
 Route::get('/caja-compra/mostrar', [CompraController::class, 'mostrarCajasAbiertas']);
+Route::get('/medidas-compra/mostrar', [CompraController::class, 'MostrarMedidasCompras']);
 Route::get('/compras/{id}/detalle', [CompraController::class, 'MostrarDetalleCompra'])->middleware('permiso:mostrar_detalle_compras');
 
 /*  ╔════════════ Endpoint Permisos ═════════════╗ 

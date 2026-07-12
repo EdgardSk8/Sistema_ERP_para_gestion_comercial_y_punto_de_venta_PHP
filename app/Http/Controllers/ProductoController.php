@@ -29,6 +29,7 @@ class ProductoController extends Controller
                     'precio_compra' => $request->precio_compra,
                     'precio_venta' => $request->precio_venta,
                     'stock_actual' => $request->stock_actual,
+                    'id_medida' => $request->id_medida,
                 ],
                 [
                     'nombre_producto' => 'required|max:150',
@@ -41,7 +42,8 @@ class ProductoController extends Controller
 
                     'precio_compra' => 'nullable|numeric|min:0',
                     'precio_venta' => 'nullable|numeric|min:0',
-                    'stock_actual' => 'nullable|integer|min:0'
+                    'stock_actual' => 'nullable|integer|min:0',
+                    'id_medida' => 'required|exists:medidas,id_medida',
                 ],
                 [
                     'required' => 'El campo :attribute es obligatorio.',
@@ -92,6 +94,8 @@ class ProductoController extends Controller
             'precio_compra' => $request->precio_compra,
             'precio_venta' => $request->precio_venta,
             'stock_actual' => 0,
+            'id_medida' => $request->id_medida,
+            
         ]);
 
         return response()->json([
@@ -123,7 +127,8 @@ class ProductoController extends Controller
         $producto = Producto::with([
             'categoria',
             'ubicacion',
-            'impuesto'
+            'impuesto',
+            'medida'
         ])->find($id);
 
             if (!$producto) {
@@ -155,13 +160,7 @@ class ProductoController extends Controller
         try {
 
             $producto = Producto::find($id);
-
-            if (!$producto) {
-                return response()->json([
-                    'success' => false,
-                    'mensaje' => 'Producto no encontrado'
-                ], 404);
-            }
+            if (!$producto) { return response()->json([ 'success' => false, 'mensaje' => 'Producto no encontrado' ], 404); }
 
             $validator = Validator::make(
                 [
@@ -174,6 +173,7 @@ class ProductoController extends Controller
                     'precio_compra' => $request->precio_compra,
                     'precio_venta' => $request->precio_venta,
                     'stock_actual' => $request->stock_actual,
+                    'id_medida' => $request->id_medida,
                 ],
                 [
                     'nombre_producto' => 'required|max:150',
@@ -186,60 +186,41 @@ class ProductoController extends Controller
 
                     'precio_compra' => 'required|numeric|min:0',
                     'precio_venta' => 'required|numeric|min:0',
-                    'stock_actual' => 'nullable|integer|min:0'
+                    'stock_actual' => 'nullable|integer|min:0',
+                    'id_medida' => 'nullable|exists:medidas,id_medida',
                 ]
             );
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => $validator->errors()
-                ], 422);
-            }
+            if ($validator->fails()) { return response()->json([ 'success' => false, 'errors' => $validator->errors()], 422); }
 
             if ($request->hasFile('imagen_producto')) {
 
                 $ruta = public_path('Imagenes/Productos');
 
-                // Crear carpeta si no existe
-                if (!file_exists($ruta)) {
-                    mkdir($ruta, 0777, true);
-                }
+                // CREAR CARPETA SI NO EXISTE
+                if (!file_exists($ruta)) { mkdir($ruta, 0777, true); }
 
-                // Eliminar imagen anterior si existe
-                if (
-                    $producto->imagen_producto &&
-                    file_exists($ruta . '/' . $producto->imagen_producto)
-                ) {
-                    unlink($ruta . '/' . $producto->imagen_producto);
-                }
+                // ELIMINAR IMAGEN ANTERIOR SI EXISTE
+                if ( $producto->imagen_producto && file_exists($ruta . '/' . $producto->imagen_producto) ) 
+                { unlink($ruta . '/' . $producto->imagen_producto); }
 
                 $archivo = $request->file('imagen_producto');
 
                 // Generar nombre secuencial SIEMPRE PNG
                 $contador = 1;
-
                 do {
-
                     $nombreImagen = 'ImagenProducto' . $contador . '.png';
-
                     $rutaCompleta = $ruta . '/' . $nombreImagen;
-
                     $contador++;
-
                 } while (file_exists($rutaCompleta));
 
                 // Convertir a PNG y guardar
                 $imagen = Image::make($archivo)->encode('png', 100);
-
                 $imagen->save($rutaCompleta);
-
-                // Guardar nombre en BD
                 $producto->imagen_producto = $nombreImagen;
             }
 
             /* ACTUALIZAR DATOS */
-
             $producto->nombre_producto = $request->nombre_producto;
             $producto->descripcion_producto = $request->descripcion_producto;
             $producto->id_categoria = $request->id_categoria;
@@ -248,21 +229,14 @@ class ProductoController extends Controller
             $producto->precio_compra = $request->precio_compra;
             $producto->precio_venta = $request->precio_venta;
             $producto->stock_actual = $request->stock_actual ?? $producto->stock_actual;
+            $producto->id_medida = $request->id_medida;
 
             $producto->save();
 
-            return response()->json([
-                'success' => true,
-                'mensaje' => 'Producto actualizado correctamente'
-            ], 200);
+            return response()->json([ 'success' => true, 'mensaje' => 'Producto actualizado correctamente'], 200);
 
         } catch (\Exception $e) {
-
-            return response()->json([
-                'error' => true,
-                'mensaje' => 'Error al actualizar producto',
-                'detalle' => $e->getMessage()
-            ], 500);
+            return response()->json([ 'error' => true, 'mensaje' => 'Error al actualizar producto', 'detalle' => $e->getMessage() ], 500);
         }
     }
 
@@ -344,18 +318,21 @@ class ProductoController extends Controller
             $categorias = \App\Models\Categoria::query();
             $ubicaciones = \App\Models\Ubicacion::query();
             $impuestos = \App\Models\Impuesto::query();
+            $medidas = \App\Models\Medida::with('tipomedida');
 
             // 🔘 Filtro opcional (estado = 1)
             if ($request->has('solo_activos') && $request->solo_activos) {
                 $categorias->where('estado_categoria', 1);
                 $ubicaciones->where('estado_ubicacion', 1);
                 $impuestos->where('estado_impuesto', 1);
+                $medidas->where('estado_medida', 1);
             }
 
             // 📊 Ejecutar consultas
             $categorias = $categorias->orderBy('id_categoria', 'asc')->get();
             $ubicaciones = $ubicaciones->orderBy('id_ubicacion', 'asc')->get();
             $impuestos = $impuestos->orderBy('id_impuesto', 'asc')->get();
+            $medidas = $medidas->orderBy('orden_medida')->get();
 
             // 📤 Respuesta
             return response()->json([
@@ -363,7 +340,8 @@ class ProductoController extends Controller
                 'data' => [
                     'categorias' => $categorias,
                     'ubicaciones' => $ubicaciones,
-                    'impuestos' => $impuestos
+                    'impuestos' => $impuestos,
+                    'medidas' => $medidas
                 ]
             ], 200);
 

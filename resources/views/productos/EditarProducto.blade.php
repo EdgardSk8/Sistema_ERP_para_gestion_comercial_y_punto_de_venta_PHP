@@ -1,127 +1,198 @@
 <div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-hidden="true">
 
-  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
 
-    <div class="modal-content">
+        <div class="modal-content">
 
-      <div class="modal-header">
+            <!-- HEADER -->
+            <div class="modal-header d-flex justify-content-between align-items-center">
 
-        <h5 class="modal-title">Editar Producto</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title">
+                    Editar Producto
+                </h5>
 
-      </div>
+                <div class="d-flex align-items-center gap-2">
 
-      <div class="modal-body">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 
-        <form id="formEditarProducto" class="row g-3">
+                </div>
 
-          <!-- ID oculto -->
-          <input type="hidden" id="editar_id_producto">
+            </div>
 
-          <!-- Nombre -->
-          <div class="col-md-3">
-            <label class="form-label">Nombre del Producto</label>
-            <input type="text" id="editar_nombre_producto" class="form-control form-control-sm" placeholder="Nombre del producto" maxlength="100" required>
-          </div>
+            <!-- BODY -->
+            <div class="modal-body">
 
-          <!-- Descripción -->
-          <div class="col-md-3">
-            <label class="form-label">Descripción</label>
-            <input type="text" id="editar_descripcion_producto" placeholder="Descripcion del producto" class="form-control form-control-sm" maxlength="150">
-          </div>
+                <div class="card-responsive">
 
-          <!-- Categoría -->
-          <div class="col-md-2">
-            <label class="form-label">Categoría</label>
-            <select id="editar_id_categoria" class="form-select form-select-sm">
-            </select>
-          </div>
+                    <form id="formEditarProducto" class="row g-3">
 
-          <!-- Ubicación -->
-          <div class="col-md-2">
-            <label class="form-label">Ubicación</label>
-            <select id="editar_id_ubicacion" class="form-select form-select-sm">
-            </select>
-          </div>
+                        <!-- ID -->
+                        <input type="hidden" id="editar_id_producto">
 
-          <!-- Impuesto -->
-          <div class="col-md-2">
-            <label class="form-label">Impuesto</label>
-            <select id="editar_id_impuesto" class="form-select form-select-sm" required>
-            </select>
-          </div>
+                        <!-- ================= DATOS GENERALES ================= -->
 
-          <!-- Precio compra -->
-          <div class="col-md-2">
-            <label class="form-label">Precio Compra</label>
-            <input type="number" id="editar_precio_compra" placeholder="100.65" class="form-control form-control-sm" step="0.01" required>
-          </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Nombre del Producto</label>
+                            <input type="text"
+                                   id="editar_nombre_producto"
+                                   class="form-control form-control-sm"
+                                   placeholder="Nombre del producto"
+                                   maxlength="100"
+                                   required>
+                        </div>
 
-          <div class="col-md-1 d-flex align-items-center justify-content-between">
-            <small class="mb-0">V/R</small>
-            <input type="checkbox" id="editar_check_venta" title="% de ganancia de venta">
-            <input type="checkbox" id="editar_redondeo_venta" title="Redondeo total al impuesto">
-          </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Descripción</label>
+                            <textarea id="editar_descripcion_producto"
+                              class="form-control form-control-sm"
+                              placeholder="Descripción del producto"
+                              maxlength="150"
+                              rows="1"></textarea>
+                        </div>
 
-          <!-- % venta -->
-          <div class="col-md-1">
-            <label class="form-label">% Venta</label>
-            <input type="number" id="editar_porcentaje_venta" placeholder="25" class="form-control form-control-sm" step="0.1" >
-          </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Categoría</label>
+                            <select id="editar_id_categoria" class="form-select form-select-sm">
+                            </select>
+                        </div>
 
-          <!-- Precio venta -->
-          <div class="col-md-2">
-            <label class="form-label">Precio de Venta</label>
-            <input type="number" id="editar_precio_venta" placeholder="100.65" class="form-control form-control-sm" step="0.01" required>
-          </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Medida</label>
+                            <select id="editar_medida_producto" class="form-select form-select-sm">
+                            </select>
+                        </div>
 
-          <!-- Precio incluye IVA -->
-          <div class="col-md-2">
-            <label class="form-label">Precio Total (+IVA)</label>
-            <input type="number" id="editar_precio_venta_TOTAL" placeholder="126" class="form-control form-control-sm">
-          </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Ubicación</label>
+                            <select id="editar_id_ubicacion" class="form-select form-select-sm">
+                            </select>
+                        </div>
 
-          <!-- Stock -->
-          <div class="col-md-1">
-            <label class="form-label">Stock</label>
-            <input type="number" id="editar_stock_actual" placeholder="50" class="form-control form-control-sm" min="0" disabled>
-          </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Impuesto</label>
+                            <select id="editar_id_impuesto"
+                                    class="form-select form-select-sm"
+                                    required>
+                            </select>
+                        </div>
 
-          <!-- Imagen -->
-          <div class="col-md-3">
-            <label class="form-label">Imagen del Producto</label>
-            <input type="file" id="editar_imagen_producto" class="form-control form-control-sm" accept="image/*">
-          </div>
+                        <!-- ================= PRECIOS ================= -->
 
-          <!-- Preview -->
-          <div class="mt-2 text-center">
-            <img id="preview_editar_imagen_producto" 
-                 src="" 
-                 alt="Vista previa" 
-                 class="img-thumbnail d-none" 
-                 style="max-height: 120px;">
-          </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Precio Compra</label>
+                            <input type="number"
+                                   id="editar_precio_compra"
+                                   class="form-control form-control-sm"
+                                   placeholder="100.65"
+                                   step="0.01"
+                                   required>
+                        </div>
 
-        </form>
+                        <div class="col-md-3 d-flex flex-column justify-content-end">
 
-      </div>
+                            <div class="form-check mb-2">
 
-      <div class="modal-footer d-flex align-items-center justify-content-between">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="editar_check_venta">
 
-        <div class="text-start">
-          <div><strong>Nombre:</strong> máx. 100 caracteres</div>
-          <div><strong>Descripción:</strong> máx. 150 caracteres</div>
+                                <label class="form-check-label small"
+                                       for="editar_check_venta">
+                                    % Venta
+                                </label>
+
+                            </div>
+
+                            <div class="form-check">
+
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="editar_redondeo_venta">
+
+                                <label class="form-check-label small"
+                                       for="editar_redondeo_venta">
+                                    Redondeo
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">% Venta</label>
+                            <input type="number"
+                                   id="editar_porcentaje_venta"
+                                   class="form-control form-control-sm"
+                                   placeholder="25"
+                                   step="0.1">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Precio Venta</label>
+                            <input type="number"
+                                   id="editar_precio_venta"
+                                   class="form-control form-control-sm"
+                                   placeholder="100.65"
+                                   step="0.01"
+                                   required>
+                        </div>
+
+                        <div class="col-md-3">
+                          <label class="form-label">Ganancia</label>
+                          <input type="number"
+                                id="editar_ganancia_producto"
+                                class="form-control form-control-sm"
+                                placeholder="0.00"
+                                step="0.01"
+                                readonly>
+                      </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Precio Total (+IVA)</label>
+                            <input type="number"
+                                   id="editar_precio_venta_TOTAL"
+                                   class="form-control form-control-sm"
+                                   placeholder="126">
+                        </div>
+
+                        <div class="col-md-1">
+                            <label class="form-label">Stock</label>
+                            <input type="text"
+                              id="editar_stock_actual"
+                              class="form-control form-control-sm text-center"
+                              readonly>
+                        </div>
+
+                        <!-- ================= IMAGEN ================= -->
+
+                        <div class="col-md-5">
+                            <label class="form-label">Imagen del Producto</label>
+                            <input type="file" id="editar_imagen_producto" class="form-control form-control-sm" accept="image/*">
+                        </div>
+
+                        <div class=" text-center justify-content-center">
+                            <!-- <label class="form-label"> Vista previa </label> -->
+                            <img id="preview_editar_imagen_producto" src="" alt="Sin imagen del producto" class="img-thumbnail d-none" style="max-height:120px;">
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer d-flex justify-content-end">
+
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn cancelar btn-sm-modal" data-bs-dismiss="modal"> Cancelar </button>
+                    <button type="button" class="btn guardar btn-sm-modal" id="btnActualizarProducto"> Actualizar </button>
+                </div>
+
+            </div>
+
         </div>
-
-        <div>
-          <button class="btn cancelar" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn guardar" id="btnActualizarProducto">Actualizar</button>
-        </div>
-
-      </div>
 
     </div>
-
-  </div>
 
 </div>

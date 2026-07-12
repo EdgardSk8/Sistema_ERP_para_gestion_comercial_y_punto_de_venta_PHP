@@ -89,8 +89,8 @@
         </div>
 
         <div>
-          <button class="btn cancelar" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn actualizar" id="btnActualizarEmpresa">Actualizar</button>
+          <button class="btn cancelar btn-sm-modal" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn actualizar btn-sm-modal" id="btnActualizarEmpresa">Actualizar</button>
         </div>
 
       </div>

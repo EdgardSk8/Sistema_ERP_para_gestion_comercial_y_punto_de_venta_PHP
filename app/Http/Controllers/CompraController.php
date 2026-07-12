@@ -16,6 +16,7 @@ use App\Models\Cuenta;
 use App\Models\Proveedor;
 use App\Models\TipoFactura;
 use App\Models\MetodoPago;
+use App\Models\Medida;
 
 
 
@@ -360,6 +361,33 @@ class CompraController extends Controller
             return response()->json([
                 'success' => false,
                 'mensaje' => 'Error al obtener cuentas'
+            ], 500);
+        }
+    }
+
+/*  ╔════════════ Mostrar Medidas ════════════╗ 
+    ╚═════════════════════════════════════════╝ */
+
+    public function MostrarMedidasCompras()
+    {
+        try {
+
+            $medidas = Medida::with('tipomedida')
+                ->where('estado_medida', 1)
+                ->orderBy('orden_medida', 'asc')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $medidas
+            ], 200);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'error' => true,
+                'mensaje' => 'Error al obtener medidas',
+                'detalle' => $e->getMessage()
             ], 500);
         }
     }

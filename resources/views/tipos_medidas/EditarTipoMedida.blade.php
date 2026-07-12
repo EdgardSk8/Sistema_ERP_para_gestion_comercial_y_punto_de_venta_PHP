@@ -63,8 +63,8 @@
 
             <div class="modal-footer">
 
-                <button class="btn cancelar" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn actualizar" id="btnActualizarTipoMedida">
+                <button class="btn cancelar btn-sm-modal" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn actualizar btn-sm-modal" id="btnActualizarTipoMedida">
                     Actualizar
                 </button>
 

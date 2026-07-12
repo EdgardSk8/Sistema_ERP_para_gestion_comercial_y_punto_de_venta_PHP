@@ -348,19 +348,21 @@ td:last-child{  white-space: nowrap; }/* Btn horizontales */
 .dataTables_length, .dataTables_filter, .dataTables_info{ font-size: var(--fs-sm);  }
 .form-select{ padding: 2px 20px 2px 6px;}
 
+/* ESTILO SELECT2 */
 
 .select2-results__options { font-size: var(--fs-m);}
-
-.select2-results__option--highlighted{
-    background: var(--verde) !important;
-    transition: 0;
-
+.select2-results__option--highlighted{ background: var(--verde) !important; transition: 0; }
+.select2-container--default .select2-results > .select2-results__options {
+    max-height: 40vh;
+    scrollbar-width: thin;
+    scrollbar-color:var(--text-soft) transparent;
 }
 
+.select2-search__field{ outline: none !important; border-radius: 4px; }
 
+/* ---------------------------------------------------------------------- */
 
 .dataTables_filter .form-control{ font-size: var(--fs-sm); }
-
 
 .dataTables_info{
     justify-content: center;
@@ -592,7 +594,6 @@ table.dataTable tfoot select{
 
 .togglecheck:checked + .toggle-btn {
     background: var(--verde);
-    border-color: var(--verde-hover);
     color: var(--surface);
     justify-content: center;
 }
@@ -679,3 +680,23 @@ button i{
 .estado-inactivo i{ color: var(--rojo); font-size: var(--fs-xlg);  }
 .estado-activo{ color: var(--verde); }
 .estado-inactivo{ color: var(--rojo); }
+
+
+/* BOTONES DE MODALES */
+.btn-sm-modal{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px;
+    font-size: var(--fs-m);
+}
+
+.btn-sm-modal i{ font-size: var(--fs-lg); }
+
+.guardar, .actualizar { background-color: var(--verde); transition: background-color 0.2s ease; transition: all 0.15s ease; color: var(--bg); }
+.btn.guardar:hover, .btn.actualizar:hover { background-color: var(--verde-hover); color: var(--bg); }
+.btn.guardar:active, .btn.actualizar:active { background-color: var(--verde); color: var(--bg); transform: scale(0.90); }
+
+.cancelar { background-color: var(--rojo); transition: background-color 0.2s ease; transition: all 0.15s ease; color: white; }
+.btn.cancelar:hover { background-color: var(--rojo-hover); color: white; }
+.btn.cancelar:active { background-color: var(--rojo); color:white; transform: scale(0.90); }

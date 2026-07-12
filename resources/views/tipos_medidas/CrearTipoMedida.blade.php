@@ -43,8 +43,8 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn cancelar" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn guardar" id="btnGuardarTipoMedida">Guardar</button>
+                <button class="btn cancelar btn-sm-modal" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn guardar btn-sm-modal" id="btnGuardarTipoMedida">Guardar</button>
             </div>
 
         </div>

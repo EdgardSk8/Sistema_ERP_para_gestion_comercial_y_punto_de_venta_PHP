@@ -13,11 +13,11 @@
 
                 <div class="btns-right d-flex align-items-center gap-2">
 
-                <button type="button" class="btn btn-success btn-sm" id="btnImprimir">
+                <button type="button" class="btn btn-success btn-sm-modal" id="btnImprimir">
                     <i class="bi bi-printer"></i> Imprimir Factura
                 </button>
 
-                <button type="button" data-id="" class="btn btn-danger btn-sm" id="btnAnular">
+                <button type="button" data-id="" class="btn btn-danger btn-sm-modal" id="btnAnular">
                     <i class="bi bi-x-circle"></i> Anular Factura
                 </button>
 

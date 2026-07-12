@@ -62,9 +62,9 @@
 
             <div class="modal-footer">
 
-                <button class="btn cancelar" data-bs-dismiss="modal">Cancelar</button>
+                <button class="btn cancelar btn-sm-modal" data-bs-dismiss="modal">Cancelar</button>
 
-                <button class="btn guardar" id="btnGuardarMedida">
+                <button class="btn guardar btn-sm-modal" id="btnGuardarMedida">
                     Guardar
                 </button>
 
