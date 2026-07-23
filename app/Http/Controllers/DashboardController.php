@@ -19,16 +19,9 @@ class DashboardController extends Controller
         $inicio = $request->inicio;
         $fin = $request->fin;
 
-        $anio = $request->anio;
-        $mes = $request->mes;
-        $dia = $request->dia;
+        $query = Venta::query()->where('estado_venta', 1);
 
-        $query = Venta::query()
-            ->where('estado_venta', 1);
-
-        /* ════════════════
-        FILTROS
-        ════════════════ */
+        // FILTROS
 
         // rango fechas
         if ($inicio && $fin) {
@@ -39,260 +32,283 @@ class DashboardController extends Controller
             ]);
         }
 
-        // jerárquicos
-        if ($anio) {
-            $query->whereYear('fecha_venta', $anio);
-        }
-
-        if ($mes) {
-            $query->whereMonth('fecha_venta', $mes);
-        }
-
-        if ($dia) {
-            $query->whereDay('fecha_venta', $dia);
-        }
-
-        /* ════════════════
-        GRÁFICA PRINCIPAL
-        ════════════════ */
+        // GRÁFICA PRINCIPAL
 
         switch ($tipo) {
 
+            // FILTRO DIA
             case 'dia':
 
-                $grafica = (clone $query)    
-                    // ->whereDate( 'fecha_venta', '>=', Carbon::now()->subDays(60))
-                    ->whereDate( 'fecha_venta', '>=', Carbon::now()->subDays(1000))
-                    ->selectRaw("DATE_FORMAT(fecha_venta, '%Y-%m-%d') as label")
+               $ventas = (clone $query)
+                    ->selectRaw('DAYOFWEEK(fecha_venta) as orden')
                     ->selectRaw('COUNT(*) as cantidad')
                     ->selectRaw('SUM(total_venta) as total')
-                    ->groupBy(DB::raw("DATE_FORMAT(fecha_venta, '%Y-%m-%d')"))
-                    ->orderBy('label')
+                    ->groupBy('orden')
+                    ->orderBy('orden')
                     ->get();
 
-                break;
-
-            case 'mes':
-
-                $grafica = (clone $query)
-                    ->selectRaw("DATE_FORMAT(fecha_venta, '%Y-%m') as label")
-                    ->selectRaw('COUNT(*) as cantidad')
-                    ->selectRaw('SUM(total_venta) as total')
-                    ->groupBy(DB::raw("DATE_FORMAT(fecha_venta, '%Y-%m')"))
-                    ->orderBy('label')
-                    ->get();
-
-                break;
-
-            case 'anio':
-
-                $grafica = (clone $query)
-                    ->selectRaw('YEAR(fecha_venta) as label')
-                    ->selectRaw('COUNT(*) as cantidad')
-                    ->selectRaw('SUM(total_venta) as total')
-                    ->groupBy(DB::raw('YEAR(fecha_venta)'))
-                    ->orderBy('label')
-                    ->get();
-
-                break;
-
-            case 'hora':
-
-                $grafica = (clone $query)
-                    ->selectRaw("DATE_FORMAT(fecha_venta, '%H:00') as label")
-                    ->selectRaw('COUNT(*) as cantidad')
-                    ->selectRaw('SUM(total_venta) as total')
-                    ->groupBy(DB::raw("DATE_FORMAT(fecha_venta, '%H:00')"))
-                    ->orderBy('label')
-                    ->get();
-
-                break;
-
-            default:
+                $dias = [ 2 => 'Lunes', 3 => 'Martes', 4 => 'Miércoles', 5 => 'Jueves', 6 => 'Viernes', 7 => 'Sábado', 1 => 'Domingo', ];
 
                 $grafica = collect();
 
-                break;
-        }
+                foreach ($dias as $orden => $nombre) { $venta = $ventas->firstWhere('orden', $orden);
 
-        /* ════════════════
-        RESPUESTA
-        ════════════════ */
+                    $grafica->push([
+                        'label' => $nombre,
+                        'cantidad' => (int)($venta->cantidad ?? 0),
+                        'total' => round((float)($venta->total ?? 0), 2)
+                    ]);
+                }
 
-        return response()->json([
 
-            /* 🔹 gráfica */
-            'grafica' => $grafica,
+            break;
 
-            /* 🔹 KPIs */
-            'kpis' => [
+            // FILTRO MES
+            case 'mes':
 
-            /* 🧾 total de ventas */
-            'total_ventas' => (clone $query)->count(),
-
-            /* 💰 ingresos totales */
-            'ingresos' => round(
-                (float) ((clone $query)->sum('total_venta') ?? 0),
-                2
-            ),
-
-            /* 📦 unidades vendidas */
-            'unidades_vendidas' => (clone $query)
-                ->join('detalle_ventas', 'ventas.id_venta', '=', 'detalle_ventas.id_venta')
-                ->sum('detalle_ventas.cantidad_venta'),
-
-            /* 📊 promedio por venta */
-            'promedio_venta' => round(
-                (float) ((clone $query)->avg('total_venta') ?? 0),
-                2
-            ),
-
-            /* 🔥 ticket más alto */
-            'venta_maxima' => round(
-                (float) ((clone $query)->max('total_venta') ?? 0),
-                2
-            ),
-
-            /* 💸 promedio de impuesto */
-            'impuestos' => round(
-                (float) ((clone $query)->sum('impuesto_venta') ?? 0),
-                2
-            ),
-        ],
-
-            /* 🔹 clientes */
-            'clientes' => (clone $query)
-
-                ->leftJoin(
-                    'clientes',
-                    'ventas.id_cliente',
-                    '=',
-                    'clientes.id_cliente'
-                )
-
-                ->selectRaw("
-                    COALESCE(
-                        clientes.nombre_cliente,
-                        'Sin cliente'
-                    ) as label
-                ")
-
-                ->selectRaw('COUNT(*) as ventas')
-                ->selectRaw('SUM(total_venta) as total')
-
-                ->groupBy(
-                    'clientes.id_cliente',
-                    'clientes.nombre_cliente'
-                )
-
-                ->orderByDesc('total')
-
-                ->get(),
-
-            /* 🔹 usuarios */
-            'usuarios' => (clone $query)
-
-                ->leftJoin(
-                    'usuarios',
-                    'ventas.id_usuario',
-                    '=',
-                    'usuarios.id_usuario'
-                )
-
-                ->selectRaw("
-                    COALESCE(
-                        usuarios.nombre_usuario,
-                        'Sin usuario'
-                    ) as label
-                ")
-
-                ->selectRaw('COUNT(*) as ventas')
-                ->selectRaw('SUM(total_venta) as total')
-
-                ->groupBy(
-                    'usuarios.id_usuario',
-                    'usuarios.nombre_usuario'
-                )
-
-                ->orderByDesc('total')
-
-                ->get(),
-
-            /* 🔹 métodos pago */
-            'metodos_pago' => (clone $query)
-
-                ->leftJoin(
-                    'metodos_pago',
-                    'ventas.id_metodo_pago',
-                    '=',
-                    'metodos_pago.id_metodo_pago'
-                )
-
-                ->selectRaw("
-                    COALESCE(
-                        metodos_pago.nombre_metodo_pago,
-                        'Sin método'
-                    ) as label
-                ")
-
-                ->selectRaw('COUNT(*) as ventas')
-                ->selectRaw('SUM(total_venta) as total')
-
-                ->groupBy(
-                    'metodos_pago.id_metodo_pago',
-                    'metodos_pago.nombre_metodo_pago'
-                )
-
-                ->orderByDesc('total')
-
-                ->get(),
-
-            /* 🔹 estado */
-            'estado' => Venta::query()
-
-                ->selectRaw("
-                    CASE
-                        WHEN estado_venta = 1
-                        THEN 'Activa'
-                        ELSE 'Anulada'
-                    END as label
-                ")
-
-                ->selectRaw('COUNT(*) as cantidad')
-                ->selectRaw('SUM(total_venta) as total')
-
-                ->groupBy('estado_venta')
-
-                ->get(),
-
-            /* 🔹 días fuertes */
-                'dias_fuertes' => (clone $query)
-
-                    ->selectRaw('DAYOFWEEK(fecha_venta) as orden')
-
-                    ->selectRaw("
-                        CASE DAYOFWEEK(fecha_venta)
-                            WHEN 1 THEN 'Domingo'
-                            WHEN 2 THEN 'Lunes'
-                            WHEN 3 THEN 'Martes'
-                            WHEN 4 THEN 'Miércoles'
-                            WHEN 5 THEN 'Jueves'
-                            WHEN 6 THEN 'Viernes'
-                            WHEN 7 THEN 'Sábado'
-                        END as label
-                    ")
-
+                $ventas = (clone $query)
+                    ->selectRaw('MONTH(fecha_venta) as mes')
                     ->selectRaw('COUNT(*) as cantidad')
                     ->selectRaw('SUM(total_venta) as total')
-
-                    ->groupBy('orden', 'label')
-
-                    ->orderBy('orden')
-
+                    ->groupBy('mes')
                     ->get()
+                    ->keyBy('mes');
 
-                        ]);
-    }
+                $meses = [
+                    1 => 'Enero',
+                    2 => 'Febrero',
+                    3 => 'Marzo',
+                    4 => 'Abril',
+                    5 => 'Mayo',
+                    6 => 'Junio',
+                    7 => 'Julio',
+                    8 => 'Agosto',
+                    9 => 'Septiembre',
+                    10 => 'Octubre',
+                    11 => 'Noviembre',
+                    12 => 'Diciembre',
+                ];
+
+                $grafica = collect();
+
+                foreach ($meses as $numero => $nombre) { $venta = $ventas->get($numero);
+
+                    $grafica->push([
+                        'label' => $nombre,
+                        'cantidad' => $venta->cantidad ?? 0,
+                        'total' => round((float)($venta->total ?? 0), 2),
+                    ]);
+                }
+
+            break;
+
+            // FILTRO ANIO
+            case 'anio':
+
+            $grafica = (clone $query)
+                ->selectRaw('YEAR(fecha_venta) as label')
+                ->selectRaw('COUNT(*) as cantidad')
+                ->selectRaw('SUM(total_venta) as total')
+                ->groupBy(DB::raw('YEAR(fecha_venta)'))
+                ->orderBy('label')
+                ->get();
+
+            break;
+
+            default: $grafica = collect(); break;
+        }
+
+        // RESPUESTA
+        return response()->json([
+
+            'grafica' => $grafica,
+
+            //KPIS
+            'kpis' => [
+
+                //TOTAL DE VENTAS
+                'total_ventas' => [
+                    'titulo' => 'Ventas Totales:',
+                    'valor' => number_format((clone $query)->count(), 0, ',', '.'),
+                    'tooltip' => 'Total de Ventas Registradas',
+                ],
+
+                // INGRESOS TOTALES
+                'ingresos' => [
+                    'titulo' => 'Ingresos',
+                    'valor' => 'C$ ' . number_format(round((float) ((clone $query)->sum('total_venta') ?? 0), 2), 2, ',', '.'),
+                    'tooltip' => 'Ingresos totales generados',
+                ],
+
+                // UNIDADES VENDIDAS
+                'unidades_vendidas' => [
+                    'titulo' => 'Unidades',
+                    'valor' => number_format((clone $query)
+                        ->join('detalle_ventas', 'ventas.id_venta', '=', 'detalle_ventas.id_venta')
+                        ->sum('detalle_ventas.cantidad_venta'), 0, ',', '.'),
+                    'tooltip' => 'Unidades vendidas en total',
+                ],
+
+                // PROMEDIO POR VENTA
+                'promedio_venta' => [
+                    'titulo' => 'Promedio',
+                    'valor' => 'C$ ' . number_format(round((float) ((clone $query)->avg('total_venta') ?? 0), 2), 2, ',', '.'),
+                    'tooltip' => 'Promedio por cada venta',
+                ],
+
+                // VENTA MÁXIMA
+                'venta_maxima' => [
+                    'titulo' => 'Venta Máxima',
+                    'valor' => 'C$ ' . number_format(round((float) ((clone $query)->max('total_venta') ?? 0), 2), 2, ',', '.'),
+                    'tooltip' => 'Venta máxima registrada',
+                ],
+
+                // TOTAL DE IMPUESTOS
+                'impuestos' => [
+                    'titulo' => 'Impuestos',
+                    'valor' => 'C$ ' . number_format(round((float) ((clone $query)->sum('impuesto_venta') ?? 0), 2), 2, ',', '.'),
+                    'tooltip' => 'Impuestos recaudados',
+                ],
+
+            ],
+
+            /* 🔹 clientes */
+            // 'clientes' => (clone $query)
+
+            //     ->leftJoin(
+            //         'clientes',
+            //         'ventas.id_cliente',
+            //         '=',
+            //         'clientes.id_cliente'
+            //     )
+
+            //     ->selectRaw("
+            //         COALESCE(
+            //             clientes.nombre_cliente,
+            //             'Sin cliente'
+            //         ) as label
+            //     ")
+
+            //     ->selectRaw('COUNT(*) as ventas')
+            //     ->selectRaw('SUM(total_venta) as total')
+
+            //     ->groupBy(
+            //         'clientes.id_cliente',
+            //         'clientes.nombre_cliente'
+            //     )
+
+            //     ->orderByDesc('total')
+
+            //     ->get(),
+
+            // /* 🔹 usuarios */
+            // 'usuarios' => (clone $query)
+
+            //     ->leftJoin(
+            //         'usuarios',
+            //         'ventas.id_usuario',
+            //         '=',
+            //         'usuarios.id_usuario'
+            //     )
+
+            //     ->selectRaw("
+            //         COALESCE(
+            //             usuarios.nombre_usuario,
+            //             'Sin usuario'
+            //         ) as label
+            //     ")
+
+            //     ->selectRaw('COUNT(*) as ventas')
+            //     ->selectRaw('SUM(total_venta) as total')
+
+            //     ->groupBy(
+            //         'usuarios.id_usuario',
+            //         'usuarios.nombre_usuario'
+            //     )
+
+            //     ->orderByDesc('total')
+
+            //     ->get(),
+
+            // /* 🔹 métodos pago */
+            // 'metodos_pago' => (clone $query)
+
+            //     ->leftJoin(
+            //         'metodos_pago',
+            //         'ventas.id_metodo_pago',
+            //         '=',
+            //         'metodos_pago.id_metodo_pago'
+            //     )
+
+            //     ->selectRaw("
+            //         COALESCE(
+            //             metodos_pago.nombre_metodo_pago,
+            //             'Sin método'
+            //         ) as label
+            //     ")
+
+            //     ->selectRaw('COUNT(*) as ventas')
+            //     ->selectRaw('SUM(total_venta) as total')
+
+            //     ->groupBy(
+            //         'metodos_pago.id_metodo_pago',
+            //         'metodos_pago.nombre_metodo_pago'
+            //     )
+
+            //     ->orderByDesc('total')
+
+            //     ->get(),
+
+            // /* 🔹 estado */
+            // 'estado' => Venta::query()
+
+            //     ->selectRaw("
+            //         CASE
+            //             WHEN estado_venta = 1
+            //             THEN 'Activa'
+            //             ELSE 'Anulada'
+            //         END as label
+            //     ")
+
+            //     ->selectRaw('COUNT(*) as cantidad')
+            //     ->selectRaw('SUM(total_venta) as total')
+
+            //     ->groupBy('estado_venta')
+
+            //     ->get(),
+
+            // /* 🔹 días fuertes */
+            //     'dias_fuertes' => (clone $query)
+
+            //         ->selectRaw('DAYOFWEEK(fecha_venta) as orden')
+
+            //         ->selectRaw("
+            //             CASE DAYOFWEEK(fecha_venta)
+            //                 WHEN 1 THEN 'Domingo'
+            //                 WHEN 2 THEN 'Lunes'
+            //                 WHEN 3 THEN 'Martes'
+            //                 WHEN 4 THEN 'Miércoles'
+            //                 WHEN 5 THEN 'Jueves'
+            //                 WHEN 6 THEN 'Viernes'
+            //                 WHEN 7 THEN 'Sábado'
+            //             END as label
+            //         ")
+
+            //         ->selectRaw('COUNT(*) as cantidad')
+            //         ->selectRaw('SUM(total_venta) as total')
+
+            //         ->groupBy('orden', 'label')
+
+            //         ->orderBy('orden')
+
+            //         ->get()
+
+        ]); }
+
+
+
+
+    
 
     public function ganancias(Request $request)
     {

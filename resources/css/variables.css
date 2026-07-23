@@ -19,6 +19,8 @@
     --celeste-soft: #e1ebfa;
     --celeste-soft-border: #cbd7e9;
 
+    --blanco: white;
+
     --gris: #CBD5E1;
     --gris-hover: #94A3B8;
     --gris-soft: #eeeeee;
@@ -37,6 +39,7 @@
     --surface:#FFFFFF;
 
     --text:#111827;
+    --text-white: white;
     --text-soft:#6B7280;
     --border:#E5E7EB;
     --radius:10px;

@@ -79,7 +79,7 @@ class LoginController extends Controller
 
             return response()->json([
                 'success' => true,
-                'mensaje' => 'Login correcto'
+                'mensaje' => '¡Bienvenido, ' . $usuario->nombre_usuario . '!'
             ]);
 
         } catch (\Exception $e) {

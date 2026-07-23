@@ -398,7 +398,7 @@ class ReporteController extends Controller
 
             ->orderByDesc('id_producto')
 
-            ->limit($limite)
+            // ->limit($limite)
 
             ->get();
 

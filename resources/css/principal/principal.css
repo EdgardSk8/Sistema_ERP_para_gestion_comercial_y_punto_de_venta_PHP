@@ -241,7 +241,7 @@ hr{ height: 0px; margin: 0 0; } /* Espaciador */
     min-height: 0;
     overflow-y: auto !important;
     scrollbar-color:#c8d1dc transparent;
-    scrollbar-width:thin;
+    scrollbar-width: thin;
 }
 
 .dataTables_scrollFoot{
@@ -604,7 +604,7 @@ table.dataTable tfoot select{
 .togglecheck:checked + .toggle-btn:hover { background: var(--verde-hover); border-color: var(--verde-hover); }
 .togglecheck:not(:checked) + .toggle-btn:hover { background: var(--rojo-hover); border-color: var(--rojo-hover); }
 
-/* ################################################################################################################################# *//* ################################################################################################################################# */
+/* ################################################################################################################################# */
 /* ################################################################################################################################# */
 /* ################################################################################################################################# */
 
@@ -663,9 +663,9 @@ button i{ pointer-events:none; }
 
 
 
+/* CLASE PERZONALIZADA */
 .agregarProducto:active{ transform: scale(0.85); color: var(--azul);}
 .agregarProducto:hover{ color: var(--azul); }
-
 
 .estado{ display: flex; justify-content: center; transition: all 0.15s ease; cursor: pointer; }
 .estado-inactivo i{ color: var(--rojo); font-size: var(--fs-xlg);  }
@@ -691,3 +691,92 @@ button i{ pointer-events:none; }
 .cancelar { background-color: var(--rojo); transition: background-color 0.2s ease; transition: all 0.15s ease; color: white; }
 .btn.cancelar:hover { background-color: var(--rojo-hover); color: white; }
 .btn.cancelar:active { background-color: var(--rojo); color:white; transform: scale(0.90); }
+
+
+
+
+
+
+
+
+/* ################################################################################################################################# */
+/* ################################################################################################################################# */
+/* ################################################################################################################################# */
+
+/* [TOAST.CSS] */
+
+.toast-container {
+    z-index: 9999;
+    right: 20px !important;
+    top: 20px !important;
+}
+
+.toast-custom {
+    min-width: 360px;
+    max-width: 420px;
+    background: #ffffff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.12);
+    overflow: hidden;
+    position: relative;
+    opacity: 0;
+}
+
+/* ENTRADA Y SALIDA */
+.toast-custom.showing, .toast-custom.show { animation: toastShow .25s cubic-bezier(.21,1.02,.73,1) forwards; }
+.toast-custom.hide { animation: toastHide .25s ease forwards !important; }
+
+/* ANIMACIONES */
+@keyframes toastShow {
+    from { opacity: 0; transform: translateX(80px) scale(.95); }
+    70% { opacity: 1; transform: translateX(-8px) scale(1.02); }
+    to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes toastHide {
+    from { opacity: 1; transform: translateX(0) scale(1); }
+    to { opacity: 0; transform: translateX(80px) scale(.95); }
+}
+
+/* BARRA LATERAL */
+.toast-custom::before { content: ""; position: absolute; left: 0; top: 0; width: 6px; height: 100%; }
+
+/* CONTENIDO */
+.toast-content { display: flex; align-items: center; padding: 10px 14px; gap: 8px; }
+
+/* ICONO */
+.toast-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; 
+    align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+
+/* TEXTO */
+.toast-text { flex: 1; }
+.toast-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+.toast-message { font-size: 12.5px; color: #6c757d; line-height: 1.3; }
+
+/* SEPARADOR */
+.toast-divider { width: 1px; height: 40px; background: #e9ecef; flex-shrink: 0; }
+
+/* BOTON CERRAR */
+.toast-custom .btn-close { width: 12px; height: 12px; opacity: .45; margin-left: 5px; }
+.toast-custom .btn-close:hover { opacity: .9; }
+
+/* SUCCESS COLOR */
+.toast-success::before { background: #22c55e; }
+.toast-success .toast-icon { background: rgba(34,197,94,.12); color: #22c55e; }
+.toast-success .toast-title { color: #16a34a; }
+
+/* ERROR COLOR */
+.toast-danger::before { background: #ef4444; }
+.toast-danger .toast-icon { background: rgba(239,68,68,.12); color: #ef4444; }
+.toast-danger .toast-title { color: #dc2626; }
+
+/* WARNING COLOR */
+.toast-warning::before { background: #f59e0b; }
+.toast-warning .toast-icon { background: rgba(245,158,11,.12); color: #f59e0b; }
+.toast-warning .toast-title { color: #d97706; }
+
+/* INFO COLOR */
+.toast-info::before { background: #0ea5e9; }
+.toast-info .toast-icon { background: rgba(14,165,233,.12); color: #0ea5e9; }
+.toast-info .toast-title { color: #0284c7; }

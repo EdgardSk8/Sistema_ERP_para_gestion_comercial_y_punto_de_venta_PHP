@@ -74,7 +74,6 @@ function crearToast() {
     `);
 }
 
-
 window.mostrarToast = function (mensaje, tipo = "success") {
 
     crearToast();

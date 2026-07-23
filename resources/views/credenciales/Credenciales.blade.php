@@ -1,52 +1,54 @@
 <turbo-frame id="contenido-dinamico">
 
+    <link rel="stylesheet" href="{{ Vite::asset('resources/css/credenciales/Credenciales.css') }}">
+
     <!-- ╔════════════ CARD ════════════╗ -->
     <!-- ╚══════════════════════════════╝ -->
 
-        <div class="card">
+    <div class="card h-auto">
 
-            <div style="background-color: #111827" class="card-header d-flex justify-content-between align-items-center">
-                <h6 class="mb-0"  style="color: #f4f6f9">
-                    <i class="bi bi-building"></i> Configuración de la Empresa
-                </h6>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h6 class="mb-0">Configuración de la Empresa</h6>
 
-                <button class="btn btn-primary btn-sm" id="btnEditar">
-                    <i class="bi bi-pencil"></i> Editar
-                </button>
-            </div>
+            <button class="btn guardar btn-sm-modal" id="btnEditar">
+                Editar
+            </button>
+        </div>
 
-            <div class="card-body">
+        <div class="card-body">
 
-                <div class="row">
+            <div class="card-responsive">
 
-                    <div class="col-md-6 mb-2">
+                <div class="row g-2">
+
+                    <div class="col-md-6">
                         <strong>Nombre:</strong>
-                        <div id="nombre_empresa">-</div>
+                        <span id="nombre_empresa"></span>
                     </div>
 
-                    <div class="col-md-6 mb-2">
+                    <div class="col-md-6">
                         <strong>RUC:</strong>
-                        <div id="ruc_empresa">-</div>
+                        <span id="ruc_empresa"></span>
                     </div>
 
-                    <div class="col-md-6 mb-2">
+                    <div class="col-md-6">
                         <strong>Dirección:</strong>
-                        <div id="direccion_empresa">-</div>
+                        <span id="direccion_empresa"></span>
                     </div>
 
-                    <div class="col-md-6 mb-2">
+                    <div class="col-md-6">
                         <strong>Teléfono:</strong>
-                        <div id="telefono_empresa">-</div>
+                        <span id="telefono_empresa"></span>
                     </div>
 
-                    <div class="col-md-6 mb-2">
+                    <div class="col-md-6">
                         <strong>Correo:</strong>
-                        <div id="correo_empresa">-</div>
+                        <span id="correo_empresa"></span>
                     </div>
 
-                    <div class="col-md-6 mb-2">
+                    <div class="col-md-6">
                         <strong>Tasa de Cambio:</strong>
-                        <div id="tipo_cambio">-</div>
+                        <span id="tipo_cambio"></span>
                     </div>
 
                 </div>
@@ -54,6 +56,8 @@
             </div>
 
         </div>
+
+    </div>
         
 
     @include('credenciales.EditarCredenciales')

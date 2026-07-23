@@ -11,128 +11,115 @@
     @vite(['resources/css/login/login.css'])
 
     <script src="{{ Vite::asset('resources/js/Login.js') }}"></script>
+    <script src="{{ Vite::asset('resources/js/FuncionesGlobales.js') }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>
 
 <body class="bg-light">
 
-    <!-- BACKGROUND DECORATIVO (opcional mantener tu CSS) -->
+    <!-- Fondo -->
     <div class="position-fixed top-0 start-0 w-100 h-100 overflow-hidden" style="z-index:0;">
         <div class="bg-shape bg-1"></div>
         <div class="bg-shape bg-2"></div>
     </div>
 
-    <!-- CENTRADO BOOTSTRAP -->
     <div class="container min-vh-100 d-flex justify-content-center align-items-center position-relative" style="z-index:1;">
 
-        <div class="card shadow-lg border-0 rounded-4 p-4" style="width: 100%; max-width: 420px;">
+        <div class="card login-card">
 
-            <!-- HEADER -->
-            <div class="text-center">
+            <div class="card-body p-4">
 
-                <img src="{{ asset('img/icono.png') }}"
-                     class="login-logo"
-                     alt="Logo">
+                <!-- Logo -->
+                <div class="text-center mb-4">
 
-                <h4 class="mb-0 fw-bold">Tellez S.A</h4>
-                <small class="text-muted">Sistema POS</small>
+                    <img src="{{ asset('img/icono.png') }}"
+                         class="login-logo"
+                         alt="Logo">
 
-            </div>
+                    <h4 class="fw-bold mt-3 mb-1">
+                        Tellez S.A
+                    </h4>
 
-            <!-- FORM -->
-            <form id="formLogin">
+                    <p class="text-muted small mb-0">
+                        Sistema POS
+                    </p>
 
-                @csrf
+                </div>
 
-                <!-- Usuario -->
-                <div class="mb-3">
+                <form id="formLogin">
 
-                    <label class="form-label">Usuario</label>
+                    @csrf
 
-                    <div class="input-group">
-                        <span class="input-group-text">
-                            <i class="bi bi-person"></i>
-                        </span>
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Usuario
+                        </label>
 
-                        <input type="text"
-                               name="nombre_usuario"
-                               class="form-control"
-                               placeholder="Usuario"
-                               required>
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-person"></i>
+                            </span>
+
+                            <input
+                                type="text"
+                                name="nombre_usuario"
+                                class="form-control"
+                                placeholder="Ingrese su usuario"
+                                required>
+
+                        </div>
                     </div>
 
-                </div>
+                    <div class="mb-4">
 
-                <!-- Password -->
-                <div class="mb-3">
+                        <label class="form-label">
+                            Contraseña
+                        </label>
 
-                    <label class="form-label">Contraseña</label>
+                        <div class="input-group">
 
-                    <div class="input-group">
-                        <span class="input-group-text">
-                            <i class="bi bi-lock"></i>
-                        </span>
+                            <span class="input-group-text">
+                                <i class="bi bi-lock"></i>
+                            </span>
 
-                        <input type="password"
-                               name="password"
-                               class="form-control"
-                               placeholder="Contraseña"
-                               required>
+                            <input
+                                type="password"
+                                name="password"
+                                class="form-control"
+                                placeholder="Ingrese su contraseña"
+                                required>
+
+                        </div>
+
                     </div>
 
-                </div>
+                    <button
+                        class="btn guardar w-100"
+                        type="submit">
 
-                <!-- BOTÓN -->
-                <button type="submit"
-                        class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>
+                        Ingresar
 
-                    <i class="bi bi-box-arrow-in-right"></i>
-                    Ingresar
+                    </button>
 
-                </button>
+                </form>
 
-            </form>
+                <div class="text-center mt-4">
 
-            <!-- FOOTER -->
-            <div class="text-center mt-3 small text-muted">
-                © {{ date('Y') }} Tellez S.A
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="toast-container position-fixed top-0 end-0">
-
-        <div id="toastMensaje" class="toast toast-custom fade" role="alert">
-
-            <div class="toast-content">
-
-                <div class="toast-icon" id="toastIcon"></div>
-
-                <div class="toast-divider"></div>
-
-                <div class="toast-text">
-
-                    <div class="toast-title" id="toastTitulo"></div>
-
-                    <div class="toast-message" id="toastTexto"></div>
+                    <small class="text-muted">
+                        © {{ date('Y') }} Tellez S.A
+                    </small>
 
                 </div>
-
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="toast">
-                </button>
 
             </div>
 
         </div>
 
     </div>
-
 
 </body>
+
 </html>
