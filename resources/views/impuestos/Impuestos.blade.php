@@ -6,7 +6,7 @@
 
     <div class="card">
 
-        <table id="tablaImpuestos" class="table  table-bordered">
+        <table id="tablaImpuestos" class="table table-bordered">
 
             <thead>
                 <tr>

@@ -123,6 +123,32 @@ class DashboardController extends Controller
 
             'grafica' => $grafica,
 
+            'horas' => (clone $query)
+                ->selectRaw('HOUR(fecha_venta) as hora')
+                ->selectRaw('COUNT(*) as cantidad')
+                ->selectRaw('SUM(total_venta) as total')
+                ->groupBy('hora')
+                ->orderBy('hora')
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'label' => sprintf('%02d:00', $item->hora),
+                        'cantidad' => (int) $item->cantidad,
+                        'total' => round((float) $item->total, 2),
+                    ];
+                }),
+
+            'productos' => (clone $query)
+            ->join('detalle_ventas', 'ventas.id_venta', '=', 'detalle_ventas.id_venta')
+            ->join('productos', 'detalle_ventas.id_producto', '=', 'productos.id_producto')
+            ->selectRaw('productos.nombre_producto as label')
+            ->selectRaw('SUM(detalle_ventas.cantidad_venta) as cantidad')
+            ->selectRaw('SUM(detalle_ventas.subtotal_detalle_venta) as total')
+            ->groupBy('productos.id_producto', 'productos.nombre_producto')
+            ->orderByDesc('cantidad')
+            ->limit(5)
+            ->get(),
+
             //KPIS
             'kpis' => [
 
@@ -172,138 +198,11 @@ class DashboardController extends Controller
 
             ],
 
-            /* 🔹 clientes */
-            // 'clientes' => (clone $query)
+           
 
-            //     ->leftJoin(
-            //         'clientes',
-            //         'ventas.id_cliente',
-            //         '=',
-            //         'clientes.id_cliente'
-            //     )
-
-            //     ->selectRaw("
-            //         COALESCE(
-            //             clientes.nombre_cliente,
-            //             'Sin cliente'
-            //         ) as label
-            //     ")
-
-            //     ->selectRaw('COUNT(*) as ventas')
-            //     ->selectRaw('SUM(total_venta) as total')
-
-            //     ->groupBy(
-            //         'clientes.id_cliente',
-            //         'clientes.nombre_cliente'
-            //     )
-
-            //     ->orderByDesc('total')
-
-            //     ->get(),
-
-            // /* 🔹 usuarios */
-            // 'usuarios' => (clone $query)
-
-            //     ->leftJoin(
-            //         'usuarios',
-            //         'ventas.id_usuario',
-            //         '=',
-            //         'usuarios.id_usuario'
-            //     )
-
-            //     ->selectRaw("
-            //         COALESCE(
-            //             usuarios.nombre_usuario,
-            //             'Sin usuario'
-            //         ) as label
-            //     ")
-
-            //     ->selectRaw('COUNT(*) as ventas')
-            //     ->selectRaw('SUM(total_venta) as total')
-
-            //     ->groupBy(
-            //         'usuarios.id_usuario',
-            //         'usuarios.nombre_usuario'
-            //     )
-
-            //     ->orderByDesc('total')
-
-            //     ->get(),
-
-            // /* 🔹 métodos pago */
-            // 'metodos_pago' => (clone $query)
-
-            //     ->leftJoin(
-            //         'metodos_pago',
-            //         'ventas.id_metodo_pago',
-            //         '=',
-            //         'metodos_pago.id_metodo_pago'
-            //     )
-
-            //     ->selectRaw("
-            //         COALESCE(
-            //             metodos_pago.nombre_metodo_pago,
-            //             'Sin método'
-            //         ) as label
-            //     ")
-
-            //     ->selectRaw('COUNT(*) as ventas')
-            //     ->selectRaw('SUM(total_venta) as total')
-
-            //     ->groupBy(
-            //         'metodos_pago.id_metodo_pago',
-            //         'metodos_pago.nombre_metodo_pago'
-            //     )
-
-            //     ->orderByDesc('total')
-
-            //     ->get(),
-
-            // /* 🔹 estado */
-            // 'estado' => Venta::query()
-
-            //     ->selectRaw("
-            //         CASE
-            //             WHEN estado_venta = 1
-            //             THEN 'Activa'
-            //             ELSE 'Anulada'
-            //         END as label
-            //     ")
-
-            //     ->selectRaw('COUNT(*) as cantidad')
-            //     ->selectRaw('SUM(total_venta) as total')
-
-            //     ->groupBy('estado_venta')
-
-            //     ->get(),
-
-            // /* 🔹 días fuertes */
-            //     'dias_fuertes' => (clone $query)
-
-            //         ->selectRaw('DAYOFWEEK(fecha_venta) as orden')
-
-            //         ->selectRaw("
-            //             CASE DAYOFWEEK(fecha_venta)
-            //                 WHEN 1 THEN 'Domingo'
-            //                 WHEN 2 THEN 'Lunes'
-            //                 WHEN 3 THEN 'Martes'
-            //                 WHEN 4 THEN 'Miércoles'
-            //                 WHEN 5 THEN 'Jueves'
-            //                 WHEN 6 THEN 'Viernes'
-            //                 WHEN 7 THEN 'Sábado'
-            //             END as label
-            //         ")
-
-            //         ->selectRaw('COUNT(*) as cantidad')
-            //         ->selectRaw('SUM(total_venta) as total')
-
-            //         ->groupBy('orden', 'label')
-
-            //         ->orderBy('orden')
-
-            //         ->get()
-
-        ]); }
+        ]);
+    
+    }
 
 
 

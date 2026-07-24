@@ -740,20 +740,19 @@ window.FlatPickr = function (elemento) {
     return flatpickr(elemento, {
         locale: 'es',
         dateFormat: 'Y-m-d',
+        altInput: true,
+        altFormat: 'j \\d\\e F \\d\\e\\l Y',
         allowInput: true
     });
+
 };
 
 /* -------------------------------------------------------------------------------- */
 
 window.ResetearInputs = function (...elementos) {
-
     elementos.forEach(elemento => {
-
         if (elemento) {
-
             elemento.value = '';
-
         }
     });
 };

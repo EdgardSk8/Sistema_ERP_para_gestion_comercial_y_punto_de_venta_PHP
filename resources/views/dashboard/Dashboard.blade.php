@@ -100,17 +100,17 @@
                         <div class="btn-group btn-group-sm" role="group" aria-label="Filtro de ventas">
 
                             <input type="radio" class="btn-check" name="Filtro-Ventas" id="ventas-dia" value="dia">
-                            <label class="btn btn-outline-primary" for="ventas-dia">
+                            <label class="btn btn-outline-secondary" for="ventas-dia">
                                 Día
                             </label>
 
                             <input type="radio" class="btn-check" name="Filtro-Ventas" id="ventas-mes" value="mes" checked>
-                            <label class="btn btn-outline-primary" for="ventas-mes">
+                            <label class="btn btn-outline-secondary" for="ventas-mes">
                                 Mes
                             </label>
 
                             <input type="radio" class="btn-check" name="Filtro-Ventas" id="ventas-anio" value="anio">
-                            <label class="btn btn-outline-primary" for="ventas-anio">
+                            <label class="btn btn-outline-secondary" for="ventas-anio">
                                 Año
                             </label>
 
@@ -123,6 +123,10 @@
                     </div>
 
                     <div class="dashboard-chart card-responsive"> <canvas id="chartVentas"></canvas> </div>
+                    
+                    <div class="card-responsive"> <canvas id="chartHoras"></canvas>
+
+                </div>
 
                 </div>
 
@@ -134,11 +138,7 @@
                     <canvas id="chartCantidadVentas"></canvas>
                 </div>
 
-                <div class="card-responsive">
-
-                    hola
-
-                </div>
+                <div class="card-responsive"><table id="DashboardProductos" class="table table-bordered"></table> </div>
 
             </div>
 

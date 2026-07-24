@@ -79,48 +79,32 @@
     flex:1;
     min-height:0;
     min-width:0;
-
     display:flex;
     flex-direction:row;
-
     overflow:hidden;
 }
-
-
 
 /* ================= GRAFICA GRANDE ================= */
 
 .Contenedor_graficas_1{
     flex:7;
-
     min-width:0;
     min-height:0;
-
     display:flex;
     flex-direction:column;
-
     overflow:hidden;
 }
-
-
 
 .Contenedor_graficas_2{
     flex:3;
-
     min-width:0;
     min-height:0;
-
     /* padding:10px; */
-
     display:flex;
     flex-direction:column;
-
     gap:10px;
-
     overflow:hidden;
 }
-
-
 
 /* ================= KPIS ================= */
 
@@ -132,31 +116,25 @@
     flex-shrink:0;
 }
 
-
 .Contenedor_kpis .kpis{
-
     flex:1;
     min-width:0;
-
     display:flex;
     gap: 8px;
     padding: 10px;
-
     border:1px solid var(--border);
     border-radius:var(--radius);
-
     box-shadow:0 2px 8px rgba(17,24,39,.05);
-
     cursor:pointer;
     background-color:var(--blanco);
 }
-
-
 
 .kpis i{ font-size:var(--fs); margin-top:4px; color:var(--text-soft); }
 .kpis-info{ display:flex; flex-direction:column; }
 .kpis .kpis-info label{ margin:0; font-size:var(--fs-sm); color:var(--text-soft); cursor: pointer; }
 .kpis .kpis-info strong{ font-size:var(--fs-sm); color:var(--text); }
+
+/* TOAST DE LOS FILTROS GRAFICAS */
 
 .tooltip-inner{
     background: #1f2937;
@@ -189,6 +167,7 @@
     gap: 10px;
 }
 
+
 .btn-limpiar-filtro { white-space: nowrap; }
 
 
@@ -196,42 +175,31 @@
 
 /* ================= CHART ================= */
 
-
 .dashboard-chart,
 .cantidad{
-
     flex:1;
-
     width:100%;
     height:100%;
-
     min-width:0;
     min-height:0;
-
     position:relative;
-
     overflow:hidden;
-
     display:flex;
 }
 
-
-
 .dashboard-chart canvas,
 .cantidad canvas{
-
     width:100% !important;
     height:100% !important;
-
 }
+
+
 
 
 
 /* ================= CHART.JS ================= */
 
 canvas{ max-width:100%; }
-
-
 
 .GrupoBotones{
     display: inline-flex;
