@@ -134,7 +134,7 @@ body{
     background:var(--surface);
     border-right:1px solid var(--border);
     scrollbar-width:none; /* thin (pequenio) */
-    scrollbar-color:var(--text-soft) transparent;
+    scrollbar-color:var(--text-soft) transparent; /* Barra lateral*/
 }
 
 .sidebar-menu{
@@ -272,7 +272,7 @@ hr{ height: 0px; margin: 0 0; } /* Espaciador */
 
 /* elimina micro gaps por subpixel rendering */
 .dataTables_scrollBody { margin-top: -1px; }
-.table{ margin: 0 auto; white-space: nowrap;}
+.table{ margin: 0 auto; white-space: nowrap; }
 table.dataTable thead th::before, table.dataTable thead th::after{ display: none !important; }
 
 /* ---------------------------------------------------------------------- */
@@ -298,9 +298,7 @@ div.dataTables_processing > div:last-child { display: none !important; }
     animation: spin .3s linear infinite;
 }
 
-@keyframes spin{
-    to { transform: rotate(360deg); }
-}
+@keyframes spin{ to { transform: rotate(360deg); } }
 
 /* Columna th (Titulo )*/ 
 .table thead th{ 
@@ -310,11 +308,11 @@ div.dataTables_processing > div:last-child { display: none !important; }
     letter-spacing: var(--space-1);
     font-size: var(--fs);
     padding: 8px 2px !important;
+
     background: linear-gradient(
-    0deg,
-    color-mix(in srgb, var(--gris-hover) 30%, transparent),
-    var(--surface)
-);
+        0deg, color-mix(in srgb, var(--gris-hover) 30%, transparent), var(--surface)
+    );
+
     border: none;
     border-bottom: 1px solid rgb(204, 204, 204) !important;
 }
@@ -621,7 +619,6 @@ table.dataTable tfoot select{
 }
 
 button i{ pointer-events:none; }
-
 
 /* COLORES DE BTN */
 

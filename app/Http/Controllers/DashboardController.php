@@ -6,475 +6,1204 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Venta;
 use App\Models\MovimientoInventario;
+use App\Models\Compra;
 use Carbon\Carbon;
 use App\Models\Producto;
 use App\Models\DetalleVenta;
 
 class DashboardController extends Controller
 {
-    public function ventas(Request $request)
+
+    //  GRAFICA DE VENTAS
+    public function Ventas(Request $request)
     {
         $tipo = $request->get('tipo', 'dia');
-
-        $inicio = $request->inicio;
-        $fin = $request->fin;
-
+        $inicio = $request->inicio; $fin = $request->fin;
         $query = Venta::query()->where('estado_venta', 1);
 
-        // FILTROS
+        // FILTRO FECHAS
+        if ($inicio && $fin) { $query->whereBetween('fecha_venta', [ $inicio . ' 00:00:00', $fin . ' 23:59:59']); }
 
-        // rango fechas
-        if ($inicio && $fin) {
-
-            $query->whereBetween('fecha_venta', [
-                $inicio . ' 00:00:00',
-                $fin . ' 23:59:59'
-            ]);
-        }
-
-        // GRÁFICA PRINCIPAL
-
+        // DATASET PRINCIPAL (grafica 1 y grafica 2)
         switch ($tipo) {
 
-            // FILTRO DIA
             case 'dia':
 
-               $ventas = (clone $query)
+                $ventas = (clone $query)
                     ->selectRaw('DAYOFWEEK(fecha_venta) as orden')
                     ->selectRaw('COUNT(*) as cantidad')
                     ->selectRaw('SUM(total_venta) as total')
-                    ->groupBy('orden')
-                    ->orderBy('orden')
-                    ->get();
+                    ->groupBy('orden')->orderBy('orden')->get();
 
                 $dias = [ 2 => 'Lunes', 3 => 'Martes', 4 => 'Miércoles', 5 => 'Jueves', 6 => 'Viernes', 7 => 'Sábado', 1 => 'Domingo', ];
-
                 $grafica = collect();
 
-                foreach ($dias as $orden => $nombre) { $venta = $ventas->firstWhere('orden', $orden);
-
-                    $grafica->push([
-                        'label' => $nombre,
-                        'cantidad' => (int)($venta->cantidad ?? 0),
-                        'total' => round((float)($venta->total ?? 0), 2)
-                    ]);
+                foreach ($dias as $orden => $nombre) {
+                    $venta = $ventas->firstWhere('orden', $orden);
+                    $grafica->push(['label' => $nombre, 'cantidad' => (int)($venta->cantidad ?? 0), 'total' => round((float)($venta->total ?? 0), 2) ]);
                 }
-
 
             break;
 
-            // FILTRO MES
             case 'mes':
 
                 $ventas = (clone $query)
                     ->selectRaw('MONTH(fecha_venta) as mes')
                     ->selectRaw('COUNT(*) as cantidad')
                     ->selectRaw('SUM(total_venta) as total')
-                    ->groupBy('mes')
-                    ->get()
-                    ->keyBy('mes');
+                    ->groupBy('mes')->get()->keyBy('mes');
 
                 $meses = [
-                    1 => 'Enero',
-                    2 => 'Febrero',
-                    3 => 'Marzo',
-                    4 => 'Abril',
-                    5 => 'Mayo',
-                    6 => 'Junio',
-                    7 => 'Julio',
-                    8 => 'Agosto',
-                    9 => 'Septiembre',
-                    10 => 'Octubre',
-                    11 => 'Noviembre',
-                    12 => 'Diciembre',
+                    1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril', 5 => 'Mayo', 6 => 'Junio',
+                    7 => 'Julio', 8 => 'Agosto', 9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre',
                 ];
+
 
                 $grafica = collect();
 
-                foreach ($meses as $numero => $nombre) { $venta = $ventas->get($numero);
-
-                    $grafica->push([
-                        'label' => $nombre,
-                        'cantidad' => $venta->cantidad ?? 0,
-                        'total' => round((float)($venta->total ?? 0), 2),
-                    ]);
+                foreach ($meses as $numero => $nombre) {
+                    $venta = $ventas->get($numero);
+                    $grafica->push(['label' => $nombre, 'cantidad' => (int)($venta->cantidad ?? 0), 'total' => round((float)($venta->total ?? 0), 2), ]);
                 }
 
             break;
 
-            // FILTRO ANIO
-            case 'anio':
-
-            $grafica = (clone $query)
-                ->selectRaw('YEAR(fecha_venta) as label')
-                ->selectRaw('COUNT(*) as cantidad')
-                ->selectRaw('SUM(total_venta) as total')
-                ->groupBy(DB::raw('YEAR(fecha_venta)'))
-                ->orderBy('label')
-                ->get();
+           case 'anio':
+                
+                $grafica = (clone $query)
+                    ->selectRaw('YEAR(fecha_venta) as label')
+                    ->selectRaw('COUNT(*) as cantidad')
+                    ->selectRaw('SUM(total_venta) as total')
+                    ->groupBy(DB::raw('YEAR(fecha_venta)'))
+                    ->orderBy('label')
+                    ->get()
+                    ->map(function($item){
+                        return [
+                            'label' => $item->label,
+                            'cantidad' => (int)$item->cantidad,
+                            'total' => round((float)$item->total,2),
+                        ];
+                    });
 
             break;
 
             default: $grafica = collect(); break;
+
         }
 
-        // RESPUESTA
-        return response()->json([
+        $respuesta = [];
 
-            'grafica' => $grafica,
+        // GRAFICAS 1 Y 2 MISMO DATASET
+        $respuesta['grafica_1'] = $grafica;
+        $respuesta['grafica_2'] = $grafica;
 
-            'horas' => (clone $query)
-                ->selectRaw('HOUR(fecha_venta) as hora')
-                ->selectRaw('COUNT(*) as cantidad')
-                ->selectRaw('SUM(total_venta) as total')
-                ->groupBy('hora')
-                ->orderBy('hora')
-                ->get()
-                ->map(function ($item) {
-                    return [
-                        'label' => sprintf('%02d:00', $item->hora),
-                        'cantidad' => (int) $item->cantidad,
-                        'total' => round((float) $item->total, 2),
-                    ];
-                }),
+        // GRAFICA 3 VENTAS POR HORA
+        $respuesta['grafica_3'] = (clone $query)
+            ->selectRaw('HOUR(fecha_venta) as hora')
+            ->selectRaw('COUNT(*) as cantidad')
+            ->selectRaw('SUM(total_venta) as total')
+            ->groupBy('hora')->orderBy('hora')->get()
+            ->map(function ($item) {
+                return ['label' => sprintf('%02d:00', $item->hora), 'cantidad' => (int)$item->cantidad, 'total' => round((float)$item->total, 2), ];
+            });
 
-            'productos' => (clone $query)
-            ->join('detalle_ventas', 'ventas.id_venta', '=', 'detalle_ventas.id_venta')
-            ->join('productos', 'detalle_ventas.id_producto', '=', 'productos.id_producto')
+        // TABLA PRODUCTOS MAS VENDIDOS
+        $respuesta['tabla_1'] = (clone $query)
+            ->join('detalle_ventas', 'ventas.id_venta', '=', 'detalle_ventas.id_venta' )
+            ->join('productos', 'detalle_ventas.id_producto', '=', 'productos.id_producto' )
             ->selectRaw('productos.nombre_producto as label')
             ->selectRaw('SUM(detalle_ventas.cantidad_venta) as cantidad')
-            ->selectRaw('SUM(detalle_ventas.subtotal_detalle_venta) as total')
-            ->groupBy('productos.id_producto', 'productos.nombre_producto')
-            ->orderByDesc('cantidad')
-            ->limit(5)
-            ->get(),
+            ->selectRaw('SUM(detalle_ventas.subtotal_detalle_venta + detalle_ventas.monto_impuesto) as total ')
+            ->groupBy('productos.id_producto', 'productos.nombre_producto')->orderByDesc('cantidad')->limit(10)->get();
 
-            //KPIS
-            'kpis' => [
+        // KPIS (5 OBLIGATORIO)
+        $respuesta['kpis'] = [
 
-                //TOTAL DE VENTAS
-                'total_ventas' => [
-                    'titulo' => 'Ventas Totales:',
-                    'valor' => number_format((clone $query)->count(), 0, ',', '.'),
-                    'tooltip' => 'Total de Ventas Registradas',
-                ],
+            'ingresos' => [
+                'titulo' => 'INGRESO BRUTO',
+                'valor' => 'C$ ' . number_format(round((float)((clone $query)->sum('total_venta') ?? 0),2), 2, ',', '.'),
+                'tooltip' => 'Ingresos brutos totales generados',
+                'icono' => 'fas fa-dollar-sign',
+            ],
 
-                // INGRESOS TOTALES
-                'ingresos' => [
-                    'titulo' => 'Ingresos',
-                    'valor' => 'C$ ' . number_format(round((float) ((clone $query)->sum('total_venta') ?? 0), 2), 2, ',', '.'),
-                    'tooltip' => 'Ingresos totales generados',
-                ],
+            'total_ventas' => [
+                'titulo' => 'VENTAS TOTALES',
+                'valor' => number_format((clone $query)->count(),0,',','.'),
+                'tooltip' => 'Total de Ventas Registradas',
+                'icono' => 'fas fa-cash-register',
+            ],
 
-                // UNIDADES VENDIDAS
-                'unidades_vendidas' => [
-                    'titulo' => 'Unidades',
-                    'valor' => number_format((clone $query)
-                        ->join('detalle_ventas', 'ventas.id_venta', '=', 'detalle_ventas.id_venta')
+            'unidades_vendidas' => [
+                'titulo' => 'UNIDADES VENDIDAS',
+                'valor' => number_format(
+                    (clone $query)->join('detalle_ventas', 'ventas.id_venta', '=', 'detalle_ventas.id_venta')
                         ->sum('detalle_ventas.cantidad_venta'), 0, ',', '.'),
-                    'tooltip' => 'Unidades vendidas en total',
-                ],
+                'tooltip' => 'Unidades vendidas en total',
+                'icono' => 'fas fa-boxes',
+            ],
 
-                // PROMEDIO POR VENTA
-                'promedio_venta' => [
-                    'titulo' => 'Promedio',
-                    'valor' => 'C$ ' . number_format(round((float) ((clone $query)->avg('total_venta') ?? 0), 2), 2, ',', '.'),
-                    'tooltip' => 'Promedio por cada venta',
-                ],
+            'promedio_venta' => [
+                'titulo' => 'TICKET PROMEDIO',
+                'valor' => 'C$ ' . number_format(round((float)((clone $query)->avg('total_venta') ?? 0),2), 2, ',', '.'),
+                'tooltip' => 'Promedio por cada venta',
+                'icono' => 'fas fa-shopping-cart',
+            ],
 
-                // VENTA MÁXIMA
-                'venta_maxima' => [
-                    'titulo' => 'Venta Máxima',
-                    'valor' => 'C$ ' . number_format(round((float) ((clone $query)->max('total_venta') ?? 0), 2), 2, ',', '.'),
-                    'tooltip' => 'Venta máxima registrada',
-                ],
+        ];
 
-                // TOTAL DE IMPUESTOS
-                'impuestos' => [
-                    'titulo' => 'Impuestos',
-                    'valor' => 'C$ ' . number_format(round((float) ((clone $query)->sum('impuesto_venta') ?? 0), 2), 2, ',', '.'),
-                    'tooltip' => 'Impuestos recaudados',
+        // TEXTOS UI GRAFICAS Y TABLAS
+        $respuesta['ui'] = [
+
+            'grafica_1' => [
+                'titulo' => 'Ingreso por Ventas',
+                'dataset' => 'Ingresos (C$)',
+                'labels' => [
+                    'cantidad' => ' Ventas',
+                    'total' => ' Ingresos',
                 ],
+            ],
+
+            'grafica_2' => [
+                'titulo' => 'Número de Ventas',
+                'dataset' => 'Cantidad de Ventas',
+                'labels' => [
+                    'cantidad' => ' Ventas',
+                ],
+            ],
+
+            'grafica_3' => [
+                'titulo' => 'Ventas por Horas',
+                'dataset' => 'Ventas',
+                'labels' => [
+                    'cantidad' => ' Ventas',
+                    'total' => ' Ingresos',
+                ],
+            ],
+
+            'tabla_1' => [
+                'titulo' => 'Productos Más Vendidos',
+                'vacio' => 'Sin productos vendidos',
+                'columnas' => [
+                    'label' => 'Producto',
+                    'cantidad' => 'Cantidad',
+                    'total' => 'Ingresos',
+                ],
+            ],
+
+        ];
+
+        return response()->json($respuesta);
+
+    }
+
+    //GRAFICA DE GANANCIAS
+    public function Ganancias(Request $request) {
+
+        $tipo = $request->get('tipo', 'dia');
+        $inicio = $request->inicio; $fin = $request->fin;
+
+        $query = Venta::query()->where('estado_venta', 1);
+        // FILTRO FECHAS
+        if ($inicio && $fin) { $query->whereBetween('fecha_venta', [ $inicio . ' 00:00:00', $fin . ' 23:59:59']); }
+
+        // SQL GANANCIA
+        $gananciaSQL = "SUM( ( detalle_ventas.precio_unitario_venta - IFNULL(productos.precio_compra,0) ) * detalle_ventas.cantidad_venta)";
+
+        $margen = (clone $query)
+            ->join('detalle_ventas', 'ventas.id_venta', '=', 'detalle_ventas.id_venta')
+            ->join('productos', 'detalle_ventas.id_producto', '=', 'productos.id_producto')
+            ->selectRaw("$gananciaSQL AS ganancia, SUM(total_venta) AS ventas")->first();
+
+        $porcentaje = ($margen && $margen->ventas > 0) ? ($margen->ganancia / $margen->ventas) * 100 : 0;
+
+        // DATASET PRINCIPAL (grafica 1)
+        $graficaQuery = (clone $query)
+            ->join('detalle_ventas', 'ventas.id_venta', '=', 'detalle_ventas.id_venta')
+            ->join('productos', 'detalle_ventas.id_producto', '=', 'productos.id_producto');
+
+        switch ($tipo) {
+
+            case 'dia':
+
+                $ganancias = (clone $graficaQuery)
+                        ->selectRaw('DAYOFWEEK(fecha_venta) as orden')
+                        ->selectRaw('COUNT(*) as cantidad')
+                        ->selectRaw('SUM(total_venta) as total')
+                        ->selectRaw("$gananciaSQL as ganancia")
+                        ->groupBy('orden')
+                        ->orderBy('orden')
+                        ->get();
+
+
+                $dias = [
+                    2 => 'Lunes',
+                    3 => 'Martes',
+                    4 => 'Miércoles',
+                    5 => 'Jueves',
+                    6 => 'Viernes',
+                    7 => 'Sábado',
+                    1 => 'Domingo',
+                ];
+
+                $grafica = collect();
+
+                foreach ($dias as $orden => $nombre) {
+
+                    $venta = $ganancias->firstWhere('orden', $orden);
+
+                    $grafica->push([
+                        'label' => $nombre,
+                        'cantidad' => (int)($venta->cantidad ?? 0),
+                        'total' => round((float)($venta->ganancia ?? 0),2),
+                    ]);
+
+                }
+
+            break;
+
+            case 'mes':
+
+                $ganancias = (clone $graficaQuery)
+                    ->selectRaw("MONTH(fecha_venta) as mes, COUNT(*) as cantidad, SUM(total_venta) as total, $gananciaSQL as ganancia")
+                    ->groupBy('mes')
+                    ->orderBy('mes')
+                    ->get()
+                    ->keyBy('mes');
+
+                $meses = [
+                    1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril',
+                    5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto',
+                    9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre',
+                ];
+
+                $grafica = collect();
+
+                foreach ($meses as $numero => $nombre) {
+
+                    $venta = $ganancias->get($numero);
+
+                    $grafica->push([
+                        'label' => $nombre,
+                        'cantidad' => (int)($venta->cantidad ?? 0),
+                        'total' => round((float)($venta->total ?? 0),2),
+                    ]);
+
+                }
+
+            break;
+
+            case 'anio':
+
+                $grafica = (clone $graficaQuery)
+
+                    ->selectRaw('YEAR(fecha_venta) as label')
+                    ->selectRaw('COUNT(*) as cantidad')
+                    ->selectRaw('SUM(total_venta) as total')
+                    ->selectRaw("$gananciaSQL as ganancia")
+
+                    ->groupBy(DB::raw('YEAR(fecha_venta)'))
+                    ->orderBy('label')
+
+                    ->get();
+
+            break;
+
+            default: $grafica = collect(); break;
+
+        }
+
+        $respuesta = [];
+
+        $respuesta['grafica_1'] = $grafica;
+
+        $respuesta['grafica_2'] = (clone $query)
+            ->join('detalle_ventas', 'ventas.id_venta', '=', 'detalle_ventas.id_venta')
+            ->join('productos', 'detalle_ventas.id_producto', '=', 'productos.id_producto')
+            ->join('categoria', 'productos.id_categoria', '=', 'categoria.id_categoria')
+            ->selectRaw('
+                categoria.nombre_categoria as label,
+                SUM(detalle_ventas.cantidad_venta) as cantidad,
+                SUM(detalle_ventas.subtotal_detalle_venta + detalle_ventas.monto_impuesto) as total,
+                SUM((detalle_ventas.precio_unitario_venta - productos.precio_compra) * detalle_ventas.cantidad_venta) as ganancia
+            ')
+            ->groupBy('categoria.nombre_categoria')->orderByDesc('ganancia')->limit('10')->get()
+            ->map(function($item){
+
+                return [
+                    'label' => $item->label,
+                    'cantidad' => (int)$item->cantidad,
+                    'total' => round((float)$item->ganancia, 2),
+                ];
+
+            });
+
+        // GRAFICA 3 GANANCIA POR HORA
+        $respuesta['grafica_3'] = (clone $query)
+
+            ->join('detalle_ventas','ventas.id_venta','=','detalle_ventas.id_venta')
+            ->join('productos','detalle_ventas.id_producto','=','productos.id_producto')
+
+            ->selectRaw('HOUR(fecha_venta) as hora')
+            ->selectRaw('COUNT(*) as cantidad')
+            ->selectRaw('SUM(total_venta) as total')
+            ->selectRaw("$gananciaSQL as ganancia")->groupBy('hora')->orderBy('hora')->get()
+
+            ->map(function($item){
+
+                return [
+                    'label'=>sprintf('%02d:00',$item->hora),
+                    'cantidad'=>(int)$item->cantidad,
+                    'total'=>round((float)$item->ganancia,2),
+                ];
+
+            });
+
+        // TABLA PRODUCTOS MAYOR GANANCIA
+        $respuesta['tabla_1'] = (clone $query)
+
+            ->join('detalle_ventas','ventas.id_venta','=','detalle_ventas.id_venta')
+            ->join('productos','detalle_ventas.id_producto','=','productos.id_producto')
+
+            ->selectRaw('productos.nombre_producto as label')
+            ->selectRaw('SUM(detalle_ventas.cantidad_venta) as cantidad')
+            ->selectRaw('SUM(detalle_ventas.subtotal_detalle_venta + detalle_ventas.monto_impuesto) as total')
+            ->selectRaw("$gananciaSQL as ganancia")
+            ->groupBy('productos.id_producto', 'productos.nombre_producto')->orderByDesc('ganancia')->limit(10)->get()
+            ->map(function ($item) {
+                return [
+                    'label' => $item->label,
+                    'cantidad' => (int) $item->cantidad,
+                    'total' => round((float) $item->ganancia, 2),
+                    'total_venta' => round((float) $item->total, 2),
+                ];
+            });
+
+        // KPIS
+        $respuesta['kpis'] = [
+
+            'ganancia_total' => [
+                'titulo' => 'UTILIDAD BRUTA',
+                'valor' => 'C$ ' . number_format(
+                    round((float)((clone $query)
+                        ->join('detalle_ventas','ventas.id_venta','=','detalle_ventas.id_venta')
+                        ->join('productos','detalle_ventas.id_producto','=','productos.id_producto')
+                        ->selectRaw("$gananciaSQL as ganancia")
+                        ->value('ganancia') ?? 0),2),
+                    2,
+                    ',',
+                    '.'
+                ),
+                'tooltip' => 'Ganancia generada',
+                'icono' => 'fas fa-money-bill-wave',
+            ],
+
+            'margen_ganancia' => [
+                'titulo' => 'PORCENTAJE DE GANANCIA',
+                'valor' => number_format($porcentaje, 2, ',', '.') . ' %',
+                'tooltip' => 'Porcentaje de utilidad sobre las ventas',
+                'icono' => 'fas fa-percent',
+            ],
+
+            'ganancia_promedio' => [
+                'titulo' => 'GANANCIA PROMEDIO',
+                'valor' => 'C$ ' . number_format(
+                    round( ((clone $query)->count() > 0) ?
+                        (
+                            ((clone $query)
+                            ->join('detalle_ventas','ventas.id_venta','=','detalle_ventas.id_venta')
+                            ->join('productos','detalle_ventas.id_producto','=','productos.id_producto')
+                            ->selectRaw("$gananciaSQL as ganancia")
+                            ->value('ganancia') ?? 0) / (clone $query)->count()
+                        ) : 0, 2), 2, ',', '.'),
+                'tooltip' => 'Ganancia promedio por venta',
+                'icono' => 'fas fa-chart-line',
+            ],
+
+            'categoria_mas_rentable' => [
+
+                'titulo' => 'CATEGORÍA MÁS RENTABLE',
+
+                'valor' => (clone $query)
+                    ->join('detalle_ventas','ventas.id_venta','=','detalle_ventas.id_venta')
+                    ->join('productos','detalle_ventas.id_producto','=','productos.id_producto')
+                    ->join('categoria','productos.id_categoria','=','categoria.id_categoria')
+                    ->selectRaw("
+                        categoria.nombre_categoria,
+                        $gananciaSQL as ganancia
+                    ")
+                    ->groupBy(
+                        'categoria.id_categoria',
+                        'categoria.nombre_categoria'
+                    )
+                    ->orderByDesc('ganancia')
+                    ->first()
+                    ? 'C$ ' . number_format(
+                        (float)(clone $query)
+                            ->join('detalle_ventas','ventas.id_venta','=','detalle_ventas.id_venta')
+                            ->join('productos','detalle_ventas.id_producto','=','productos.id_producto')
+                            ->join('categoria','productos.id_categoria','=','categoria.id_categoria')
+                            ->selectRaw("
+                                $gananciaSQL as ganancia
+                            ")
+                            ->groupBy(
+                                'categoria.id_categoria',
+                                'categoria.nombre_categoria'
+                            )
+                            ->orderByDesc('ganancia')
+                            ->first()
+                            ->ganancia ?? 0,
+                        2,
+                        ',',
+                        '.'
+                    ) . ' (' .
+                        (clone $query)
+                            ->join('detalle_ventas','ventas.id_venta','=','detalle_ventas.id_venta')
+                            ->join('productos','detalle_ventas.id_producto','=','productos.id_producto')
+                            ->join('categoria','productos.id_categoria','=','categoria.id_categoria')
+                            ->select('categoria.nombre_categoria')
+                            ->selectRaw("$gananciaSQL as ganancia")
+                            ->groupBy(
+                                'categoria.id_categoria',
+                                'categoria.nombre_categoria'
+                            )
+                            ->orderByDesc('ganancia')
+                            ->first()
+                            ->nombre_categoria
+                        . ')'
+                    : 'Sin datos',
+
+                'tooltip' => 'Categoría que genera mayor utilidad',
+
+                'icono' => 'fas fa-crown',
 
             ],
 
-           
+        ];
 
-        ]);
-    
+        // TEXTOS UI
+        $respuesta['ui'] = [
+
+            'grafica_1' => [
+                'titulo'=>'Ganancias por Ventas',
+                'dataset'=>'Ganancia (C$)',
+                'labels'=>[
+                    'cantidad'=>' Ventas',
+                    'total'=>' Ganancias',
+                ],
+            ],
+
+            'grafica_2' => [
+                'titulo'=>'Categorias con mas Ventas',
+                'dataset'=>'Ventas',
+                'labels'=>[
+                    'cantidad'=>' Ventas',
+                ],
+            ],
+
+            'grafica_3' => [
+                'titulo'=>'Ganancias por Hora',
+                'dataset'=>'Ganancia',
+                'labels'=>[
+                    'cantidad'=>' Ventas',
+                    'total'=>'Ganancias',
+                ],
+            ],
+
+            'tabla_1' => [
+                'titulo' => 'Productos Mas Rentables',
+                'vacio' => 'Sin ganancias registradas',
+                'columnas' => [
+                    'label' => 'Producto',
+                    'cantidad' => 'Cantidad',
+                    'total' => 'Ganancias',
+                ],
+            ],
+
+        ];
+
+        return response()->json($respuesta);
+
     }
 
-
-
-
-    
-
-    public function ganancias(Request $request)
+    public function Compras(Request $request)
     {
         $tipo = $request->get('tipo', 'dia');
-
         $inicio = $request->inicio;
-        $fin    = $request->fin;
+        $fin = $request->fin;
 
-        $anio = $request->anio;
-        $mes  = $request->mes;
-        $dia  = $request->dia;
+        $query = Compra::query()->where('estado_compra', 1);
 
-        /* ════════════════
-        QUERY BASE (SOLO FILTROS)
-        ════════════════ */
-
-        $baseQuery = Venta::query()
-            ->where('estado_venta', 1);
-
+        // FILTRO FECHAS
         if ($inicio && $fin) {
-            $baseQuery->whereBetween('fecha_venta', [
+            $query->whereBetween('fecha_compra', [
                 $inicio . ' 00:00:00',
                 $fin . ' 23:59:59'
             ]);
         }
 
-        if ($anio) $baseQuery->whereYear('fecha_venta', $anio);
-        if ($mes)  $baseQuery->whereMonth('fecha_venta', $mes);
-        if ($dia)  $baseQuery->whereDay('fecha_venta', $dia);
 
-        /* ════════════════
-        QUERY CON JOINS (SOLO PARA GRÁFICA)
-        ════════════════ */
-
-        $query = (clone $baseQuery)
-            ->leftJoin('detalle_ventas', 'ventas.id_venta', '=', 'detalle_ventas.id_venta')
-            ->leftJoin('productos', 'detalle_ventas.id_producto', '=', 'productos.id_producto');
-
-        /* ════════════════
-        FÓRMULA GANANCIA
-        ════════════════ */
-
-        $gananciaSQL = " SUM( ( detalle_ventas.precio_unitario_venta - IFNULL(productos.precio_compra, 0) ) * detalle_ventas.cantidad_venta)";
-
-        /* ════════════════
-        GRÁFICA
-        ════════════════ */
+        /*
+        |--------------------------------------------------------------------------
+        | GRAFICA 1 - COMPRAS POR TIEMPO
+        |--------------------------------------------------------------------------
+        */
 
         switch ($tipo) {
 
             case 'dia':
+
                 $grafica = (clone $query)
-                    ->whereDate( 'fecha_venta', '>=', Carbon::now()->subDays(60))
-                    ->selectRaw("DATE_FORMAT(fecha_venta, '%Y-%m-%d') as label")
-                    ->selectRaw("$gananciaSQL as ganancia")
-                    ->groupBy(DB::raw("DATE_FORMAT(fecha_venta, '%Y-%m-%d')"))
-                    ->orderBy('label')
+                    ->selectRaw('DAYOFWEEK(fecha_compra) as orden')
+                    ->selectRaw('COUNT(*) as cantidad')
+                    ->selectRaw('SUM(total_compra) as total')
+                    ->groupBy('orden')
+                    ->orderBy('orden')
                     ->get();
-                break;
+
+
+                $dias = [
+                    2 => 'Lunes',
+                    3 => 'Martes',
+                    4 => 'Miércoles',
+                    5 => 'Jueves',
+                    6 => 'Viernes',
+                    7 => 'Sábado',
+                    1 => 'Domingo',
+                ];
+
+
+                $resultado = collect();
+
+                foreach ($dias as $orden => $nombre) {
+
+                    $item = $grafica->firstWhere('orden',$orden);
+
+                    $resultado->push([
+                        'label'=>$nombre,
+                        'cantidad'=>(int)($item->cantidad ?? 0),
+                        'total'=>round((float)($item->total ?? 0),2),
+                    ]);
+                }
+
+                $grafica = $resultado;
+
+            break;
+
 
             case 'mes':
-                $grafica = (clone $query)
-                    ->selectRaw("DATE_FORMAT(fecha_venta, '%Y-%m') as label")
-                    ->selectRaw("$gananciaSQL as ganancia")
-                    ->groupBy(DB::raw("DATE_FORMAT(fecha_venta, '%Y-%m')"))
-                    ->orderBy('label')
-                    ->get();
-                break;
+
+                $compras = (clone $query)
+                    ->selectRaw('MONTH(fecha_compra) as mes')
+                    ->selectRaw('COUNT(*) as cantidad')
+                    ->selectRaw('SUM(total_compra) as total')
+                    ->groupBy('mes')
+                    ->get()
+                    ->keyBy('mes');
+
+
+                $meses = [
+                    1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril', 5 => 'Mayo', 6 => 'Junio',
+                    7 => 'Julio', 8 => 'Agosto', 9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre',
+                ];
+
+
+                $grafica = collect();
+
+
+                foreach ($meses as $numero => $nombre) {
+
+                    $compra = $compras->get($numero);
+
+                    $grafica->push([
+                        'label' => $nombre,
+                        'cantidad' => (int)($compra->cantidad ?? 0),
+                        'total' => round((float)($compra->total ?? 0), 2),
+                    ]);
+
+                }
+
+            break;
+
 
             case 'anio':
-                $grafica = (clone $query)
-                    ->selectRaw("YEAR(fecha_venta) as label")
-                    ->selectRaw("$gananciaSQL as ganancia")
-                    ->groupBy(DB::raw("YEAR(fecha_venta)"))
-                    ->orderBy('label')
-                    ->get();
-                break;
 
-            case 'hora':
                 $grafica = (clone $query)
-                    ->selectRaw("DATE_FORMAT(fecha_venta, '%H:00') as label")
-                    ->selectRaw("$gananciaSQL as ganancia")
-                    ->groupBy(DB::raw("DATE_FORMAT(fecha_venta, '%H:00')"))
+                    ->selectRaw('YEAR(fecha_compra) as label')
+                    ->selectRaw('COUNT(*) as cantidad')
+                    ->selectRaw('SUM(total_compra) as total')
+                    ->groupBy(DB::raw('YEAR(fecha_compra)'))
                     ->orderBy('label')
                     ->get();
-                break;
+
+            break;
+
 
             default:
+
                 $grafica = collect();
-                break;
+
+            break;
         }
 
-        /* ════════════════
-        KPIs (SIN DUPLICAR JOINS)
-        ════════════════ */
 
-        $gananciaTotal = (clone $query)
-            ->selectRaw("$gananciaSQL as ganancia")
-            ->value('ganancia');
 
-        $totalUnidades = (clone $baseQuery)
-            ->join('detalle_ventas', 'ventas.id_venta', '=', 'detalle_ventas.id_venta')
-            ->sum('detalle_ventas.cantidad_venta');
+        $respuesta = [];
 
-        $ingresos = (clone $baseQuery)
-            ->sum('total_venta');
 
-        $ventasTotales = (clone $baseQuery)
-            ->count('ventas.id_venta');
+        $respuesta['grafica_1'] = $grafica;
 
-        $margenPorVenta = $ingresos > 0
-            ? round(($gananciaTotal / $ingresos) * 100, 2)
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | GRAFICA 2 - CATEGORIAS CON MAYOR INVERSION
+        |--------------------------------------------------------------------------
+        */
+
+        $respuesta['grafica_2'] = (clone $query)
+
+            ->join(
+                'detalle_compras',
+                'compras.id_compra',
+                '=',
+                'detalle_compras.id_compra'
+            )
+
+            ->join(
+                'productos',
+                'detalle_compras.id_producto',
+                '=',
+                'productos.id_producto'
+            )
+
+            ->join(
+                'categoria',
+                'productos.id_categoria',
+                '=',
+                'categoria.id_categoria'
+            )
+
+            ->selectRaw('
+                categoria.nombre_categoria as label,
+                SUM(detalle_compras.cantidad_compra) as cantidad,
+                SUM(detalle_compras.subtotal_detalle_compra) as total
+            ')
+
+            ->groupBy('categoria.nombre_categoria')
+            ->orderByDesc('total')
+            ->limit(10)
+            ->get();
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | GRAFICA 3 - PRODUCTOS COMPRADOS POR CANTIDAD
+        |--------------------------------------------------------------------------
+        */
+
+        $respuesta['grafica_3'] = (clone $query)
+
+            ->join(
+                'detalle_compras',
+                'compras.id_compra',
+                '=',
+                'detalle_compras.id_compra'
+            )
+
+            ->join(
+                'productos',
+                'detalle_compras.id_producto',
+                '=',
+                'productos.id_producto'
+            )
+
+            ->selectRaw('
+                productos.nombre_producto as label,
+                SUM(detalle_compras.cantidad_compra) as cantidad,
+                SUM(detalle_compras.subtotal_detalle_compra) as total
+            ')
+
+            ->groupBy(
+                'productos.id_producto',
+                'productos.nombre_producto'
+            )
+
+            ->orderByDesc('cantidad')
+            ->limit(10)
+            ->get();
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | TABLA PRODUCTOS MAS COMPRADOS
+        |--------------------------------------------------------------------------
+        */
+
+        $respuesta['tabla_1'] = (clone $query)
+
+            ->join(
+                'detalle_compras',
+                'compras.id_compra',
+                '=',
+                'detalle_compras.id_compra'
+            )
+
+            ->join(
+                'productos',
+                'detalle_compras.id_producto',
+                '=',
+                'productos.id_producto'
+            )
+
+            ->selectRaw('
+                productos.nombre_producto as label,
+                SUM(detalle_compras.cantidad_compra) as cantidad,
+                SUM(detalle_compras.subtotal_detalle_compra) as total
+            ')
+
+            ->groupBy(
+                'productos.id_producto',
+                'productos.nombre_producto'
+            )
+
+            ->orderByDesc('cantidad')
+            ->limit(10)
+
+            ->get()
+
+            ->map(function($item){
+
+                return [
+                    'label'=>$item->label,
+                    'cantidad'=>(int)$item->cantidad,
+                    'total'=>round((float)$item->total,2)
+                ];
+
+            });
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | KPIS
+        |--------------------------------------------------------------------------
+        */
+
+        $totalCompras = (clone $query)
+            ->sum('total_compra');
+
+
+        $cantidadCompras = (clone $query)
+            ->count();
+
+
+        $promedioCompra = $cantidadCompras > 0
+            ? $totalCompras / $cantidadCompras
             : 0;
 
-        /* ════════════════
-        RESPUESTA
-        ════════════════ */
 
-        return response()->json([
 
-            'grafica' => $grafica,
+        $proveedor = (clone $query)
 
-            'kpis' => [
+            ->join(
+                'proveedores',
+                'compras.id_proveedor',
+                '=',
+                'proveedores.id_proveedor'
+            )
 
-                // 💰 Ganancia total real
-                'ganancia_total' => round($gananciaTotal ?? 0, 2),
+            ->selectRaw('
+                proveedores.nombre_proveedor,
+                SUM(compras.total_compra) as total
+            ')
 
-                // 💵 Ingresos totales
-                'ingresos' => round($ingresos ?? 0, 2),
+            ->groupBy('proveedores.nombre_proveedor')
 
-                // 📦 Ganancia promedio por unidad
-                'ganancia_por_unidad' => $totalUnidades > 0
-                    ? round($gananciaTotal / $totalUnidades, 2)
-                    : 0,
+            ->orderByDesc('total')
 
-                // 📊 % de ganancia por venta (MARGEN REAL)
-                'margen_por_venta' => $margenPorVenta,
+            ->first();
 
-                // 🧾 Total de ventas realizadas
-                'ventas_totales' => $ventasTotales,
+
+
+        $respuesta['kpis'] = [
+
+            'total_comprado'=>[
+                'titulo'=>'TOTAL COMPRADO',
+                'valor'=>'C$ '.number_format($totalCompras,2,',','.'),
+                'tooltip'=>'Monto total invertido en compras',
+                'icono'=>'fas fa-shopping-cart'
             ],
-        ]);
+
+
+            'cantidad_compras'=>[
+                'titulo'=>'CANTIDAD DE COMPRAS',
+                'valor'=>$cantidadCompras,
+                'tooltip'=>'Número de compras realizadas',
+                'icono'=>'fas fa-file-invoice'
+            ],
+
+
+            'compra_promedio'=>[
+                'titulo'=>'COMPRA PROMEDIO',
+                'valor'=>'C$ '.number_format($promedioCompra,2,',','.'),
+                'tooltip'=>'Promedio gastado por compra',
+                'icono'=>'fas fa-chart-line'
+            ],
+
+
+            'proveedor_principal'=>[
+                'titulo'=>'PROVEEDOR PRINCIPAL',
+                'valor'=>$proveedor
+                    ? 'C$ '.number_format($proveedor->total,2,',','.')
+                    .' ('.$proveedor->nombre_proveedor.')'
+                    : 'Sin datos',
+                'tooltip'=>'Proveedor con mayor inversión',
+                'icono'=>'fas fa-truck'
+            ]
+
+        ];
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | TEXTOS UI
+        |--------------------------------------------------------------------------
+        */
+
+        $respuesta['ui'] = [
+
+            'grafica_1'=>[
+                'titulo'=>'Compras por periodo',
+                'dataset'=>'Compras (C$)',
+                'labels'=>[
+                    'cantidad'=>' Compras',
+                    'total'=>' Inversion'
+                ]
+            ],
+
+            'grafica_2'=>[
+                'titulo'=>'Categorías con mayor inversión',
+                'dataset'=>'Compras',
+                'labels'=>[
+                    'cantidad'=>' Cantidad',
+                    'total'=>' Total'
+                ]
+            ],
+
+
+            'grafica_3'=>[
+                'titulo'=>'Productos más comprados',
+                'dataset'=>'Cantidad',
+                'labels'=>[
+                    'cantidad'=>' Unidades',
+                    'total'=>' Inversión'
+                ]
+            ],
+
+
+            'tabla_1'=>[
+                'titulo'=>'Productos más comprados',
+                'vacio'=>'Sin compras registradas',
+                'columnas'=>[
+                    'label'=>'Producto',
+                    'cantidad'=>'Cantidad',
+                    'total'=>'Total'
+                ]
+            ]
+
+        ];
+
+
+        return response()->json($respuesta);
     }
 
     public function Movimientoinventario(Request $request)
     {
-        $tipo = $request->get('tipo', 'dia');
+        $tipo  = $request->get('tipo', 'dia');
+        $vista = $request->get('vista', 'todo');
 
         $inicio = $request->inicio;
         $fin    = $request->fin;
-
-        $anio = $request->anio;
-        $mes  = $request->mes;
-        $dia  = $request->dia;
-
-        /* ═══════════════ BASE QUERY ═══════════════ */
+        /* ═══════════════
+        QUERY BASE
+        ═══════════════ */
 
         $baseQuery = MovimientoInventario::query();
 
+
         if ($inicio && $fin) {
-            $baseQuery->whereBetween('fecha_movimiento', [
+
+             $baseQuery->whereBetween('fecha_movimiento', [
                 $inicio . ' 00:00:00',
                 $fin . ' 23:59:59'
             ]);
+
         }
 
-        if ($anio) $baseQuery->whereYear('fecha_movimiento', $anio);
-        if ($mes)  $baseQuery->whereMonth('fecha_movimiento', $mes);
-        if ($dia)  $baseQuery->whereDay('fecha_movimiento', $dia);
 
-        // if (!$inicio && !$fin && !$anio && !$mes && !$dia) {
-        //     $baseQuery->where('fecha_movimiento', '>=', now()->subDays(30));
-        // }
 
-        /* ═══════════════ GRÁFICA PRINCIPAL ═══════════════ */
+        $respuesta = [];
 
-        switch ($tipo) {
 
-            case 'dia':
 
-                $grafica = (clone $baseQuery)
-                    ->whereDate('fecha_movimiento', '>=', now()->subDays(99))
-                    ->selectRaw("DATE_FORMAT(fecha_movimiento, '%Y-%m-%d') as label")
-                    ->selectRaw("
-                        SUM(CASE WHEN tipo_movimiento = 'ENTRADA' THEN cantidad_movimiento ELSE 0 END) as entradas,
-                        SUM(CASE WHEN tipo_movimiento = 'SALIDA' THEN cantidad_movimiento ELSE 0 END) as salidas,
-                        SUM(CASE WHEN tipo_movimiento = 'AJUSTE' THEN cantidad_movimiento ELSE 0 END) as ajustes
-                    ")
-                    ->groupBy(DB::raw("DATE_FORMAT(fecha_movimiento, '%Y-%m-%d')"))
-                    ->orderBy('label')
-                    ->get();
+        /* ═══════════════
+        GRÁFICA PRINCIPAL
+        ═══════════════ */
+
+        if ($vista == 'grafica' || $vista == 'todo') {
+
+
+            switch ($tipo) {
+
+
+                case 'dia':
+
+                    $grafica = (clone $baseQuery)
+
+                        ->whereDate(
+                            'fecha_movimiento',
+                            '>=',
+                            now()->subDays(99)
+                        )
+
+                        ->selectRaw(
+                            "DATE_FORMAT(fecha_movimiento,'%Y-%m-%d') as label"
+                        )
+
+                        ->selectRaw("
+                            SUM(CASE 
+                                WHEN tipo_movimiento='ENTRADA'
+                                THEN cantidad_movimiento 
+                                ELSE 0 END
+                            ) as entradas,
+
+                            SUM(CASE 
+                                WHEN tipo_movimiento='SALIDA'
+                                THEN cantidad_movimiento 
+                                ELSE 0 END
+                            ) as salidas,
+
+                            SUM(CASE 
+                                WHEN tipo_movimiento='AJUSTE'
+                                THEN cantidad_movimiento 
+                                ELSE 0 END
+                            ) as ajustes
+                        ")
+
+                        ->groupBy(
+                            DB::raw(
+                                "DATE_FORMAT(fecha_movimiento,'%Y-%m-%d')"
+                            )
+                        )
+
+                        ->orderBy('label')
+                        ->get();
 
                 break;
 
-            case 'mes':
 
-                $grafica = (clone $baseQuery)
-                    ->selectRaw("DATE_FORMAT(fecha_movimiento, '%Y-%m') as label")
-                    ->selectRaw("
-                        SUM(CASE WHEN tipo_movimiento = 'ENTRADA' THEN cantidad_movimiento ELSE 0 END) as entradas,
-                        SUM(CASE WHEN tipo_movimiento = 'SALIDA' THEN cantidad_movimiento ELSE 0 END) as salidas,
-                        SUM(CASE WHEN tipo_movimiento = 'AJUSTE' THEN cantidad_movimiento ELSE 0 END) as ajustes
-                    ")
-                    ->groupBy(DB::raw("DATE_FORMAT(fecha_movimiento, '%Y-%m')"))
-                    ->orderBy('label')
-                    ->get();
+
+                case 'mes':
+
+                    $grafica = (clone $baseQuery)
+
+                        ->selectRaw(
+                            "DATE_FORMAT(fecha_movimiento,'%Y-%m') as label"
+                        )
+
+                        ->selectRaw("
+                            SUM(CASE WHEN tipo_movimiento='ENTRADA'
+                                THEN cantidad_movimiento ELSE 0 END) as entradas,
+
+                            SUM(CASE WHEN tipo_movimiento='SALIDA'
+                                THEN cantidad_movimiento ELSE 0 END) as salidas,
+
+                            SUM(CASE WHEN tipo_movimiento='AJUSTE'
+                                THEN cantidad_movimiento ELSE 0 END) as ajustes
+                        ")
+
+                        ->groupBy(
+                            DB::raw(
+                                "DATE_FORMAT(fecha_movimiento,'%Y-%m')"
+                            )
+                        )
+
+                        ->orderBy('label')
+                        ->get();
 
                 break;
 
-            case 'anio':
 
-                $grafica = (clone $baseQuery)
-                    ->selectRaw('YEAR(fecha_movimiento) as label')
-                    ->selectRaw("
-                        SUM(CASE WHEN tipo_movimiento = 'ENTRADA' THEN cantidad_movimiento ELSE 0 END) as entradas,
-                        SUM(CASE WHEN tipo_movimiento = 'SALIDA' THEN cantidad_movimiento ELSE 0 END) as salidas,
-                        SUM(CASE WHEN tipo_movimiento = 'AJUSTE' THEN cantidad_movimiento ELSE 0 END) as ajustes
-                    ")
-                    ->groupBy(DB::raw('YEAR(fecha_movimiento)'))
-                    ->orderBy('label')
-                    ->get();
+
+                case 'anio':
+
+                    $grafica = (clone $baseQuery)
+
+                        ->selectRaw(
+                            "YEAR(fecha_movimiento) as label"
+                        )
+
+                        ->selectRaw("
+                            SUM(CASE WHEN tipo_movimiento='ENTRADA'
+                                THEN cantidad_movimiento ELSE 0 END) as entradas,
+
+                            SUM(CASE WHEN tipo_movimiento='SALIDA'
+                                THEN cantidad_movimiento ELSE 0 END) as salidas,
+
+                            SUM(CASE WHEN tipo_movimiento='AJUSTE'
+                                THEN cantidad_movimiento ELSE 0 END) as ajustes
+                        ")
+
+                        ->groupBy(
+                            DB::raw(
+                                'YEAR(fecha_movimiento)'
+                            )
+                        )
+
+                        ->orderBy('label')
+                        ->get();
 
                 break;
 
-            default:
 
-                $grafica = collect();
+
+                default:
+
+                    $grafica = collect();
+
                 break;
+
+            }
+
+
+            $respuesta['grafica'] = $grafica;
+
         }
 
-        /* ═══════════════ KPIS (SIN CAMBIOS) ═══════════════ */
 
-        $totalMovimientos = (clone $baseQuery)->count();
 
-        $entradas = (clone $baseQuery)
-            ->where('tipo_movimiento', 'ENTRADA')
-            ->sum('cantidad_movimiento');
 
-        $salidas = (clone $baseQuery)
-            ->where('tipo_movimiento', 'SALIDA')
-            ->sum('cantidad_movimiento');
 
-        $ajustes = (clone $baseQuery)
-            ->where('tipo_movimiento', 'AJUSTE')
-            ->sum('cantidad_movimiento');
+        /* ═══════════════
+        KPIS
+        ═══════════════ */
 
-        $balance = ($entradas + $ajustes) - $salidas;
+        if ($vista == 'kpis' || $vista == 'todo') {
 
-        $promedioMovimiento = $totalMovimientos > 0
-            ? round(($entradas + $salidas + $ajustes) / $totalMovimientos, 2)
-            : 0;
 
-        /* ═══════════════ RESPUESTA ═══════════════ */
+            $totalMovimientos = (clone $baseQuery)
+                ->count();
 
-        return response()->json([
-            'grafica' => $grafica,
-            'kpis' => [
-                'total_movimientos' => $totalMovimientos,
-                'entradas' => $entradas,
-                'salidas' => $salidas,
-                'ajustes' => $ajustes,
-                'balance' => $balance,
-                'promedio_movimiento' => $promedioMovimiento,
-            ],
-        ]);
+
+            $entradas = (clone $baseQuery)
+
+                ->where(
+                    'tipo_movimiento',
+                    'ENTRADA'
+                )
+
+                ->sum('cantidad_movimiento');
+
+
+
+            $salidas = (clone $baseQuery)
+
+                ->where(
+                    'tipo_movimiento',
+                    'SALIDA'
+                )
+
+                ->sum('cantidad_movimiento');
+
+
+
+            $ajustes = (clone $baseQuery)
+
+                ->where(
+                    'tipo_movimiento',
+                    'AJUSTE'
+                )
+
+                ->sum('cantidad_movimiento');
+
+
+
+            $balance = ($entradas + $ajustes) - $salidas;
+
+
+
+            $promedioMovimiento = $totalMovimientos > 0
+
+                ? round(
+                    ($entradas + $salidas + $ajustes) 
+                    / $totalMovimientos,
+                    2
+                )
+
+                : 0;
+
+
+
+            $respuesta['kpis'] = [
+
+
+                'total_movimientos'=>[
+                    'titulo'=>'Movimientos',
+                    'valor'=>number_format($totalMovimientos,0,',','.'),
+                    'tooltip'=>'Total de movimientos registrados',
+                    'icono'=>'fas fa-exchange-alt'
+                ],
+
+
+                'entradas'=>[
+                    'titulo'=>'Entradas',
+                    'valor'=>number_format($entradas,0,',','.'),
+                    'tooltip'=>'Productos ingresados',
+                    'icono'=>'fas fa-arrow-down'
+                ],
+
+
+                'salidas'=>[
+                    'titulo'=>'Salidas',
+                    'valor'=>number_format($salidas,0,',','.'),
+                    'tooltip'=>'Productos retirados',
+                    'icono'=>'fas fa-arrow-up'
+                ],
+
+
+                'ajustes'=>[
+                    'titulo'=>'Ajustes',
+                    'valor'=>number_format($ajustes,0,',','.'),
+                    'tooltip'=>'Ajustes de inventario',
+                    'icono'=>'fas fa-sliders-h'
+                ],
+
+
+                'balance'=>[
+                    'titulo'=>'Balance',
+                    'valor'=>number_format($balance,0,',','.'),
+                    'tooltip'=>'Balance neto de inventario',
+                    'icono'=>'fas fa-boxes'
+                ],
+
+
+                'promedio'=>[
+                    'titulo'=>'Promedio',
+                    'valor'=>number_format($promedioMovimiento,2,',','.'),
+                    'tooltip'=>'Promedio por movimiento',
+                    'icono'=>'fas fa-chart-line'
+                ]
+
+            ];
+
+        }
+
+
+
+        return response()->json($respuesta);
     }
-
-
 
 }

@@ -185,7 +185,7 @@ import initMostrarMedidas from './MostrarMedidas'
 */
 
 const modulos = [
-    ['#chartVentas', initDashboard],
+    ['#Chart_1', initDashboard],
     ['#btnFacturar', initFacturacion],
     ['#tablaVentas', initMostrarVentas],
     ['#tablaClientes', initMostrarCliente],

@@ -97,9 +97,10 @@ Route::view('/error', 'errors.sin_permiso')->name('error');
 /*  ╔═══════════ Endpoint DASHBOARD ═════════════╗ 
     ╚════════════════════════════════════════════╝ */
 
-Route::get('/dashboard/ventas', [DashboardController::class, 'ventas'])->middleware('permiso:mostrar_dashboard_ventas');
+Route::get('/dashboard/ventas', [DashboardController::class, 'Ventas'])->middleware('permiso:mostrar_dashboard_ventas');
 Route::get('/dashboard/movimiento-inventario', [DashboardController::class, 'movimientoinventario'])->middleware('permiso:mostrar_dashboard_movimiento_inventario');
 Route::get('/dashboard/ganancias', [DashboardController::class, 'Ganancias'])->middleware('permiso:mostrar_dashboard_ganancias');
+Route::get('/dashboard/compras', [DashboardController::class, 'Compras']);
 
 /*  ╔════════════ Endpoint Empresa ══════════════╗ 
     ╚════════════════════════════════════════════╝ */

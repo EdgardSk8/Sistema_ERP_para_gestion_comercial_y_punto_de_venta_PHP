@@ -4,9 +4,10 @@ export default function initDashboard() {
 
     document.querySelectorAll('input[name="dashboard"]').forEach(radio => {
 
-        radio.addEventListener('change', async () => {
+        radio.addEventListener('change', () => {
             moduloActual = radio.value;
-            try { await ObtenerDatos(); } catch (error) { console.error(error); mostrarToast('No se pudieron cargar los datos.', 'danger'); }
+            // mostrarToast(radio.value, 'success');
+            ObtenerDatos();
         });
 
     });
@@ -15,13 +16,6 @@ export default function initDashboard() {
     let Chart_Grafica_2 = null;
     let Chart_Grafica_3 = null;
     let Chart_Tabla_1 = null;
-
-    let Datos_Grafica_1 = [];
-    let UI_Grafica_1 = {};
-    let Datos_Grafica_2 = [];
-    let UI_Grafica_2 = {};
-    let Datos_Grafica_3 = [];
-    let UI_Grafica_3 = {};
 
     let moduloActual = 'ventas';
 
@@ -32,13 +26,15 @@ export default function initDashboard() {
         Movimiento_inventario: '/dashboard/movimiento-inventario'
     };
     
+
     const $ = id => document.getElementById(id);
 
     /* ══════════════════ [ELEMENTOS] ═══════════════════ */
 
-    const Fecha_Ini = $('Fecha_Inicio');
-    const Fecha_Fin = $('Fecha_Fin');
+    const Fecha_Inicio   = $('Fecha_Inicio');
+    const Fecha_Fin      = $('Fecha_Fin');
 
+    // const Btn_Limpiar_Filtros    = $('Btn_Limpiar_Filtros');
     const Btn_Limpiar_Filtros = document.getElementById('Btn_Limpiar_Filtros');
 
     const ctx_Grafica_1 = document.getElementById('Chart_1').getContext('2d');
@@ -49,71 +45,24 @@ export default function initDashboard() {
 
     function Obtener_Filtros() { return document.querySelector('input[name="Radio_Filtro"]:checked').value; }
 
-    //SIRVE PARA PONER LA FECHA DE FIN EN EL DIA DE HOY Y FIN HACE 3 MESES
-    function InicializarFechasGraficas() {
-        const hoy = new Date();
-        const fechaFin = hoy.toISOString().split('T')[0];
-        const fechaInicio = new Date();
-        fechaInicio.setMonth(fechaInicio.getMonth() - 3);
-        const fechaInicioFormato = fechaInicio.toISOString().split('T')[0];
-        Fecha_Ini.value = fechaInicioFormato;
-        Fecha_Fin.value = fechaFin;
-    }
-
-    // PARA APLICAR EL FILTRO DEBEN DE TENER DATOS LOS INPUT DE FECHA
-    function ValidarFechas() { if (!Fecha_Ini.value || !Fecha_Fin.value) { return; } ObtenerDatos(); }
-
-    // FUNCION PARA OBTENER DATOS
+    //FUNCION PARA OBTENER LOS DATOS DE LAS GRAFICAS
     async function ObtenerDatos() {
 
-        const params = new URLSearchParams({ tipo: Obtener_Filtros(), inicio: Fecha_Ini.value, fin: Fecha_Fin.value });
+        const params = new URLSearchParams({ tipo: Obtener_Filtros(), inicio: Fecha_Inicio.value, fin: Fecha_Fin.value });
+
         const response = await fetch(`${rutasDashboard[moduloActual]}?${params}`);
         const data = await response.json();
+
         let datos = [];
+
         switch (Obtener_Filtros()) { default: datos = data.grafica; break; }
 
         Render_Kpis(data.kpis);
+// console.log(data.ui.tabla_1);
         Render_Grafica_1( data.grafica_1, data.ui.grafica_1 );
         Render_Grafica_2( data.grafica_2, data.ui.grafica_2 );
         Render_Grafica_3( data.grafica_3, data.ui.grafica_3 );
         Render_Tabla_1( data.tabla_1, data.ui.tabla_1 );
-
-    }
-
-    async function ObtenerDatossinkpis() {
-
-        const params = new URLSearchParams({ tipo: Obtener_Filtros(), inicio: Fecha_Ini.value, fin: Fecha_Fin.value });
-        const response = await fetch(`${rutasDashboard[moduloActual]}?${params}`);
-        const data = await response.json();
-        let datos = [];
-        switch (Obtener_Filtros()) { default: datos = data.grafica; break; }
-
-        // Render_Kpis(data.kpis);
-        Render_Grafica_1( data.grafica_1, data.ui.grafica_1 );
-        Render_Grafica_2( data.grafica_2, data.ui.grafica_2 );
-        Render_Grafica_3( data.grafica_3, data.ui.grafica_3 );
-        Render_Tabla_1( data.tabla_1, data.ui.tabla_1 );
-
-    }
-
-    // ANIMACION DE TEXTO PARA KPIS
-    function AnimarTexto(elemento, texto, icono) {
-
-        if (!elemento) return;
-
-        elemento.animate(
-            [{ opacity: 0 }, { opacity: 1 }],
-            { duration: 500, easing: 'ease-in' }
-        );
-
-        elemento.textContent = texto ?? '';
-
-        if (icono) {
-            icono.animate(
-                [{ opacity: 0 }, { opacity: 1 }],
-                { duration: 500, easing: 'ease-in' }
-            );
-        }
 
     }
 
@@ -122,57 +71,83 @@ export default function initDashboard() {
 
         if (!chart) return false;
 
+
         chart.data.labels = labels;
+
         chart.data.datasets[0].data = valores;
 
-        if (opciones.dataset !== undefined) { chart.data.datasets[0].label = opciones.dataset; }
-        if (opciones.titulo !== undefined) { chart.options.plugins.title.text = opciones.titulo; }
-        chart.update({ duration: opciones.duration ?? 1000, easing: opciones.easing ?? 'easeOutQuart' });
+
+        if (opciones.dataset !== undefined) {
+            chart.data.datasets[0].label = opciones.dataset;
+        }
+
+
+        if (opciones.titulo !== undefined) {
+            chart.options.plugins.title.text = opciones.titulo;
+        }
+
+
+        chart.update({
+            duration: opciones.duration ?? 1000,
+            easing: opciones.easing ?? 'easeOutQuart'
+        });
+
+
         return true;
     }
 
+    // ANIMACION DE TEXTO PARA KPIS
+    function AnimarTexto(elemento, texto) {
+        if (!elemento) return;
+        elemento.animate( [ { opacity: 0 }, { opacity: 1 } ], { duration: 500, easing: 'ease-in' } );
+        elemento.textContent = texto ?? '';
+    }
+
     // ANIMACION DE TABLA
-    function ActualizarTablaAnimada(tabla, datos, ui = {}) {
+    function ActualizarTablaAnimada(tabla, datos) {
+
         if (!tabla) return false;
-        const headers = tabla.columns().header();
-        headers[1].textContent = ui.columnas?.label ?? '';
-        headers[2].textContent = ui.columnas?.cantidad ?? '';
-        headers[3].textContent = ui.columnas?.total ?? '';
-        tabla.clear(); tabla.rows.add(datos); tabla.draw(false);
         const contenedor = document.querySelector('.Tabla_1');
-        if (contenedor) { contenedor.animate( [ { opacity: 0 }, { opacity: 1 } ], { duration: 500, easing: 'ease-out' } ); }
+        tabla.clear();
+        tabla.rows.add(datos);
+        tabla.draw(false);
+        if (contenedor) {
+
+            contenedor.animate(
+                [
+                    {
+                        opacity: 0,
+                    },
+                    {
+                        opacity: 1,
+                    }
+                ],
+                {
+                    duration: 500,
+                    easing: 'ease-out'
+                }
+            );
+
+        }
+
+
         return true;
     }
 
     /* ═════════════════ [KPIs] ═════════════════ */
 
+    // RENDERIZADO DE KPIS
     function Render_Kpis(kpis) {
 
         if (!kpis) return;
-
         Object.values(kpis).forEach((item, index) => {
 
             const contenedor = document.getElementById(`kpis_${index + 1}`);
             if (!contenedor) return;
-
-            const card = contenedor.closest('.Card_Kpis');
-            if (!card) return;
-
-            const icono = card.querySelector('i');
-            if (icono && item.icono) {
-                icono.className = item.icono;
-            }
-
             const titulo = contenedor.querySelector('label');
             const valor = contenedor.querySelector('strong');
-
-            AnimarTexto(titulo, item.titulo, icono);
+            AnimarTexto(titulo, item.titulo);
             AnimarTexto(valor, item.valor);
-
-            card.setAttribute('data-bs-toggle', 'tooltip');
-            card.setAttribute('data-bs-title', item.tooltip ?? '');
-
-            bootstrap.Tooltip.getOrCreateInstance(card);
 
         });
 
@@ -181,9 +156,6 @@ export default function initDashboard() {
     /* ═════════════════ [RENDER GRAFICA] ═════════════════ */
 
     function Render_Grafica_1(datos = [], ui = {}) {
-
-        Datos_Grafica_1 = datos;
-        UI_Grafica_1 = ui;
 
         const labels = datos.map(item => item.label);
         const valores = datos.map(item => Number(item.total ?? 0));
@@ -194,47 +166,38 @@ export default function initDashboard() {
         gradient.addColorStop(0, 'rgba(34, 197, 94, 1)');
         gradient.addColorStop(0.45, 'rgba(34, 197, 94, 0)');
 
-        Chart_Grafica_1 = new Chart(ctx_Grafica_1, { type: 'line',
+        Chart_Grafica_1 = new Chart(ctx_Grafica_1, {
 
+            type: 'line',
             data: { labels,
                 datasets: [
                     {
-                        label: ui.dataset ?? '',
                         data: datos.map(item => Number(item.total ?? 0)),
                         backgroundColor: gradient,
                         borderColor: '#22c55e',
                         borderWidth: 1,
                         tension: 0.5,
-                        yAxisID: 'y',
-                        fill: true,
-                        pointRadius: 3,
-                        pointBackgroundColor: '#22c55e',
+                        fill: true, // COLOR DEL AREA DE ABAJO
+                        pointRadius: 3, // TAMANIO DE PUNTOS
+                        pointBackgroundColor: '#22c55e', // COLOR DE PUNTOS
                     },
                 ]
             },
 
-            options: {
-
+            options:{
                 scales: { x: { ticks: { callback: function(value) { const label = this.getLabelForValue(value); return EjeXDashboard(label); } } } },
-                responsive: true,
-                maintainAspectRatio: false,
+                responsive: true, maintainAspectRatio: false,
 
                 plugins: {
-
                     legend: { display: false },
                     title: { display: true, text: ui.titulo ?? '', font: { size: 12, weight: 'bold' }, padding: { top: 0, bottom: 5 } },
-                    
+
                     tooltip: {
 
-                        callbacks: { 
-                            
-                            title(context) { const item = Datos_Grafica_1[context[0].dataIndex]; return formatearFechaDashboard(item.label); },
-
-                            label(context) {
-                                const item = Datos_Grafica_1[context.dataIndex]; const total = Number(item.total ?? 0);
-                                return `${UI_Grafica_1.labels?.total ?? ''}: ${moneda(total)}`;
-                            }
-
+                        callbacks: {
+                            title: function(context) { const item = datos[context[0].dataIndex]; return formatearFechaDashboard(item.label); },
+                            label: function(context) { const item = datos[context.dataIndex]; const total = Number(item.total ?? 0); 
+                                return `${ui.labels?.total ?? ''}: ${moneda(total)}`; }
                         }
 
                     }
@@ -248,9 +211,6 @@ export default function initDashboard() {
     }
 
     function Render_Grafica_2(datos = [], ui = {}) {
-
-        Datos_Grafica_2 = datos;
-        UI_Grafica_2 = ui;
 
         const labels = datos.map(item => String(item.label));
         const valores = datos.map(item => Number(item.cantidad ?? 0));
@@ -346,9 +306,13 @@ export default function initDashboard() {
                         callbacks: {
 
                             label: function(context) {
-                                const item = Datos_Grafica_2[context.dataIndex];
+
+                                const item = datos[context.dataIndex];
+
                                 const cantidad = Number(item.cantidad ?? 0);
-                                return `${UI_Grafica_2.labels?.cantidad ?? ''}: ${cantidad.toLocaleString('es-NI')}`;
+
+                                return `${ui.labels?.cantidad ?? ''}: ${cantidad.toLocaleString('es-NI')}`;
+
                             }
 
                         }
@@ -367,13 +331,11 @@ export default function initDashboard() {
 
     function Render_Grafica_3(datos = [], ui = {}) {
 
-        Datos_Grafica_3 = datos;
-        UI_Grafica_3 = ui;
-
-        const labels = datos.map(item => Formato12Horas(item.label));
+        const labels = datos.map(item => String(item.label));
         const valores = datos.map(item => Number(item.cantidad ?? 0));
 
         if (ActualizarGraficaAnimada( Chart_Grafica_3, labels, valores, {dataset: ui.dataset ?? '', titulo: ui.titulo ?? ''} )) { return; }
+
 
         Chart_Grafica_3 = new Chart(ctx_Grafica_3, {
 
@@ -386,8 +348,11 @@ export default function initDashboard() {
                 datasets: [
                     {
                         label: ui.dataset ?? '',
+
                         data: datos.map(item => Number(item.cantidad ?? 0)),
+
                         backgroundColor: Colores.colores_2,
+
                         borderWidth: 1
                     }
                 ]
@@ -433,11 +398,14 @@ export default function initDashboard() {
                         callbacks: {
 
                             label(context) {
-                                const item = Datos_Grafica_3[context.dataIndex];
+
+                                const item = datos[context.dataIndex];
+
                                 return [
-                                    `${UI_Grafica_3.labels?.cantidad ?? ''}: ${Number(item.cantidad ?? 0).toLocaleString('es-NI')}`,
-                                    `${UI_Grafica_3.labels?.total ?? ''}: ${moneda(Number(item.total ?? 0))}`
+                                    `${ui.labels?.cantidad ?? ''}: ${Number(item.cantidad ?? 0).toLocaleString('es-NI')}`,
+                                    `${ui.labels?.total ?? ''}: ${moneda(Number(item.total ?? 0))}`
                                 ];
+
                             }
 
                         }
@@ -465,89 +433,63 @@ export default function initDashboard() {
 
         datos = datos.map(item => ({ label: item.label, cantidad: Number(item.cantidad ?? 0), total: Number(item.total ?? 0) }));
         document.querySelector('.Tabla_1 .Titulo-Tabla').textContent = ui.titulo ?? '';
-        if (ActualizarTablaAnimada(Chart_Tabla_1, datos, ui)) { return; }
+        if (ActualizarTablaAnimada(Chart_Tabla_1, datos)) { return; }
 
         Chart_Tabla_1 = jQuery('#Tabla_1').DataTable({
 
             data: datos,
 
-
             columns: [
-
-                {
-                    title: '#',
-                    data: null,
-                    className: 'text-center',
-
-                    render: (data, type, row, meta) => meta.row + 1
-                },
-
-
-                {
-                    title: ui.columnas?.label ?? '',
-                    data: 'label'
-                },
-
-
-                {
-                    title: ui.columnas?.cantidad ?? '',
-                    data: 'cantidad',
-                    className: 'text-center'
-                },
-
-
-                {
-                    title: ui.columnas?.total ?? '',
-                    data: 'total',
-                    className: 'text-end',
-
-                    render: data => moneda(Number(data ?? 0))
-                }
-
-            ],
-
-
-            paging: false,
-
-            searching: false,
-
-            info: false,
-
-            ordering: false,
-
-            responsive: true,
-
-
-            language: {
-
-                emptyTable: ui.vacio ?? ''
-
-            }
+                { title: '#', data: null, className: 'text-center', render: (data, type, row, meta) => meta.row + 1 },
+                { title: ui.columnas?.label ?? '', data: 'label' },
+                { title: ui.columnas?.cantidad ?? '', data: 'cantidad', className: 'text-center' },
+                { title: ui.columnas?.total ?? '', data: 'total', className: 'text-end', render: data => moneda(Number(data ?? 0)) }
+            ], 
+            
+            paging: false, searching: false, info: false, ordering: false, responsive: true, language: { emptyTable: ui.vacio ?? '' }
 
         });
 
     }
-
     /* ═══════════════════════ [EVENTOS] ═══════════════════════ */
 
-    document.querySelectorAll('input[name="Radio_Filtro"]').forEach(radio => { radio.addEventListener('change', ObtenerDatossinkpis); });
+    document.querySelectorAll('input[name="Radio_Filtro"]').forEach(radio => {
+        radio.addEventListener('change', ObtenerDatos);
+    });
 
-    Fecha_Ini.addEventListener('change', ValidarFechas);
+    //SIRVE PARA PONER LA FECHA DE FIN EN EL DIA DE HOY Y FIN HACE 3 MESES
+    function InicializarFechasGraficas() {
+        const hoy = new Date();
+        const fechaFin = hoy.toISOString().split('T')[0];
+        const fechaInicio = new Date();
+        fechaInicio.setMonth(fechaInicio.getMonth() - 3);
+        const fechaInicioFormato = fechaInicio.toISOString().split('T')[0];
+        Fecha_Inicio.value = fechaInicioFormato;
+        Fecha_Fin.value = fechaFin;
+        // ObtenerDatos();
+    }
+
+    function ValidarFechas() { if (!Fecha_Inicio.value || !Fecha_Fin.value) { return; } ObtenerDatos(); }
+    Fecha_Inicio.addEventListener('change', ValidarFechas);
     Fecha_Fin.addEventListener('change', ValidarFechas);
 
     Btn_Limpiar_Filtros.addEventListener('click', () => {
         document.getElementById('Mes').checked = true;
-        ResetearInputs(Fecha_Ini, Fecha_Fin); 
-        Fecha_Ini._flatpickr?.clear();
+        ResetearInputs(Fecha_Inicio, Fecha_Fin); 
+        Fecha_Inicio._flatpickr?.clear();
         Fecha_Fin._flatpickr?.clear();
         ObtenerDatos();
     });
 
     /* ═══════════════════════ [INICIO] ═══════════════════════ */
 
-    InicializarFechasGraficas();
     ObtenerDatos();
-    FlatPickr(Fecha_Ini);
+    FlatPickr(Fecha_Inicio);
     FlatPickr(Fecha_Fin);
+    InicializarFechasGraficas();
+
+    Chart.register(PluginSinDatos);document.addEventListener("turbo:before-fetch-response", (e) => {
+    // console.log("SERVER RESPONSE URL:", e.detail.fetchResponse.response.url);
+    });
 
 };

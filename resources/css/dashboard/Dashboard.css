@@ -4,7 +4,7 @@
     height:100%;
     min-height:0;
     overflow:hidden;
-    border:1px solid transparent;
+    border: 1px solid transparent;
 }
 
 
@@ -82,6 +82,7 @@
     display:flex;
     flex-direction:row;
     overflow:hidden;
+    gap: 10px;
 }
 
 /* ================= GRAFICA GRANDE ================= */
@@ -93,6 +94,7 @@
     display:flex;
     flex-direction:column;
     overflow:hidden;
+    gap: 10px;
 }
 
 .Contenedor_graficas_2{
@@ -112,27 +114,28 @@
     display:flex;
     flex-direction:row;
     gap: 12px;
-    padding: 0 10px;
+    /* padding: 0 10px; */
     flex-shrink:0;
 }
 
-.Contenedor_kpis .kpis{
+.Contenedor_kpis .Card_Kpis{
     flex:1;
     min-width:0;
     display:flex;
-    gap: 8px;
-    padding: 10px;
+    gap: 4px;
+    padding: 6px 6px;
     border:1px solid var(--border);
     border-radius:var(--radius);
     box-shadow:0 2px 8px rgba(17,24,39,.05);
     cursor:pointer;
     background-color:var(--blanco);
+    /* border: 1px solid black; */
 }
 
-.kpis i{ font-size:var(--fs); margin-top:4px; color:var(--text-soft); }
-.kpis-info{ display:flex; flex-direction:column; }
-.kpis .kpis-info label{ margin:0; font-size:var(--fs-sm); color:var(--text-soft); cursor: pointer; }
-.kpis .kpis-info strong{ font-size:var(--fs-sm); color:var(--text); }
+.Card_Kpis i{ font-size:var(--fs); margin-top: 4px; color:var(--text-soft); }
+.kpis-info{ display:flex; flex-direction:column;  }
+.Card_Kpis .kpis-info label{ margin:0; font-weight: bold; font-size:var(--fs-sm); color:var(--text-soft); cursor: pointer; }
+.Card_Kpis .kpis-info strong{ font-size:var(--fs-sm); color:var(--text); }
 
 /* TOAST DE LOS FILTROS GRAFICAS */
 
@@ -155,28 +158,26 @@
     flex:1;
     min-width:0;
     min-height:0;
-    padding:10px;
+    /* padding:10px; */
     display:flex;
     flex-direction:column;
     overflow:hidden;
     gap: 10px;
 }
 
-.Filtros_Graficas{
-    display:flex;
-    gap: 10px;
-}
+.Filtros_Graficas{ display:flex; gap: 10px; }
 
+/* BOTON DE LIMPIAR FILTRO */
 
 .btn-limpiar-filtro { white-space: nowrap; }
-
-
-
+.btn-limpiar-filtro { color: var(--rojo); padding: 0 2px 0 0; border: transparent; background: transparent; }
+.btn-limpiar-filtro i{ font-size: 25px; padding: 0; transition: all 0.15s ease; }
+.btn-limpiar-filtro:hover i { transform: scale(1.2); color: var(--rojo-hover); }
+.btn-limpiar-filtro:active i { transform: scale(0.90); color: var(--rojo-hover); }
 
 /* ================= CHART ================= */
 
-.dashboard-chart,
-.cantidad{
+.Chart_1, .Chart_2, .Chart_3/*, .Tabla_1*/{
     flex:1;
     width:100%;
     height:100%;
@@ -187,15 +188,21 @@
     display:flex;
 }
 
-.dashboard-chart canvas,
-.cantidad canvas{
-    width:100% !important;
-    height:100% !important;
+.Chart_1 canvas, .Chart_2 canvas, .Chart_2 canvas{ width:100% !important; height:100% !important; }
+
+.Tabla_1 { display: flex; flex-direction: column; max-height: 36vh; }
+.Tabla_1 .Titulo-Tabla { font-weight: bold; color: #666; text-align: center; font-size: var(--fs-sm); }
+
+.Tabla_1 .table thead th, .Tabla_1 .table td{
+    padding: 0 !important;
+    font-size: var(--fs-sm);
+    height: 26px;
 }
 
-
-
-
+.Tabla_1 { padding: 0; }
+.Tabla_1 span { margin: 5px;}
+.Tabla_1 table{ margin: 0 !important; }
+.dataTables_scrollBody{ scrollbar-width:none; }
 
 /* ================= CHART.JS ================= */
 

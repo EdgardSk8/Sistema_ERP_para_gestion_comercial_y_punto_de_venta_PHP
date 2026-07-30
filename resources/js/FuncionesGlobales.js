@@ -434,6 +434,13 @@ window.FechaSimple = function(fechaSQL) {
     return `${dia} de ${mesCapitalizado} del ${año}`;
 }
 
+window.Formato12Horas = function(hora24) {
+    let hora = Number(hora24.split(':')[0]);
+    const periodo = hora >= 12 ? 'PM' : 'AM';
+    hora = hora % 12 || 12;
+    return `${hora}${periodo}`;
+}
+
 /* -------------------------------------------------------------------------------- */
 
 window.configurarToggleColumnas = function (idTabla) {
@@ -633,98 +640,55 @@ window.formatearFechaDashboard = function(fechaSQL) {
 window.ConfigurarFiltrosDataTable = function(tabla, config = {}) {
 
     let columnasSelect = config.columnasSelect || [];
-
     let columnasIgnorar = config.columnasIgnorar || [];
 
     tabla.api().columns().every(function () {
 
         let column = this;
-
         let index = column.index();
-
         let footer = $(column.footer());
-
         footer.empty();
 
-        // Ignorar columnas
-        if(columnasIgnorar.includes(index)){
-            return;
-        }
+        // IGNORAR COLUMNAS
+        if(columnasIgnorar.includes(index)){ return; }
 
-        // =========================
         // SELECT
-        // =========================
-
         if(columnasSelect.includes(index)){
 
-            let select = $(`
-                <select class="form-select form-select-sm filtro-columna">
-                    <option value="">Todos</option>
-                </select>
-            `)
-            .appendTo(footer)
-            .on('change', function () {
+            let select = $(` <select class="form-select form-select-sm filtro-columna"> <option value="">Todos</option> </select> `)
 
+            .appendTo(footer).on('change', function () {
                 let val = $.fn.dataTable.util.escapeRegex($(this).val());
-
-                column
-                    .search(val ? '^' + val + '$' : '', true, false)
-                    .draw();
-
+                column.search(val ? '^' + val + '$' : '', true, false).draw();
             });
 
             let valores = [];
-
-            column.data().each(function (d) {
-
-                // Limpiar HTML
-                d = $('<div>').html(d).text().trim();
-
-                if(d && !valores.includes(d)){
-                    valores.push(d);
-                }
-
-            });
+            column.data().each(function (d) { d = $('<div>').html(d).text().trim(); if(d && !valores.includes(d)){ valores.push(d); } });
 
             valores.sort();
+            valores.forEach(function (d) { select.append(`<option value="${d}">${d}</option>`); });
 
-            valores.forEach(function (d) {
+        } else{ //INPUT
 
-                select.append(
-                    `<option value="${d}">${d}</option>`
-                );
+            $(`<input type="text" class="form-control form-control-sm filtro-columna" placeholder="Buscar"> `)
+            .appendTo(footer).on('keyup change clear', function () {
 
-            });
+                let valor = $(this).val().trim();
+                let match = valor.match(/^(\d{2})\/(\d{2})\/(\d{2}|\d{4})$/);
 
-        }
+                if (match) { let dia  = match[1]; let mes  = match[2]; let anio = match[3];
 
-        // =========================
-        // INPUT
-        // =========================
+                    let regex = '^' +
+                        (dia === '00' ? '\\d{2}' : dia) + '\\/' + (mes === '00' ? '\\d{2}' : mes) + '\\/' + (anio === '00' ? '\\d{4}' : anio) +
+                        '(\\s+.*)?$';
 
-        else{
+                    column.search(regex, true, false).draw();
 
-            $(`
-                <input 
-                    type="text" 
-                    class="form-control form-control-sm filtro-columna" 
-                    placeholder="Buscar"
-                >
-            `)
-            .appendTo(footer)
-            .on('keyup change clear', function () {
-
-                if(column.search() !== this.value){
-
-                    column
-                        .search(this.value)
-                        .draw();
-
-                }
+                } else { column.search(valor).draw(); }
 
             });
 
-        }
+        } // FIN DE ELSE
 
     });
 
@@ -759,10 +723,17 @@ window.ResetearInputs = function (...elementos) {
 
 window.Colores = {
 
-    colores_1: ['#6199f5','#3b82f6','#0ea5e9','#06b6d4','#2dd4bf','#22c55e','#10b981','#84cc16','#f59e0b','#eab308'],
-    bordes_1: ['#2563eb','#1d4ed8','#0284c7','#0891b2','#0f766e','#16a34a','#059669','#65a30d','#d97706','#ca8a04'],
-    colores_2: ['#fde047','#f97316','#ef4444','#f43f5e','#ec4899','#fb7185','#c084fc','#a855f7','#8b5cf6'],
-    bordes_2: ['#a16207','#ea580c','#dc2626','#e11d48','#be185d','#fb7185','#9333ea','#7c3aed','#6d28d9']
+    // colores_1: ['#6199f5','#3b82f6','#0ea5e9','#06b6d4','#2dd4bf','#22c55e','#10b981','#84cc16','#f59e0b','#eab308'],
+    // bordes_1: ['#2563eb','#1d4ed8','#0284c7','#0891b2','#0f766e','#16a34a','#059669','#65a30d','#d97706','#ca8a04'],
+    // colores_2: ['#fde047','#f97316','#ef4444','#f43f5e','#ec4899','#fb7185','#c084fc','#a855f7','#8b5cf6'],
+    // bordes_2: ['#a16207','#ea580c','#dc2626','#e11d48','#be185d','#fb7185','#9333ea','#7c3aed','#6d28d9']
+
+    // colores_2: ['#FC9F5B','#FBD1A2','#dc3545','#33CA76','#7DCFB6'],
+    colores_2: ['#22C55E', '#369157', '#365E45', '#27332C', '#2A332E'],
+
+    // bordes_1: ['#0a58ca','#146c43','#cc9a06','#b02a37','#59359a','#ca6510','#1aa179','#0aa2c0','#565e64','#ab296a','#520dc2','#146c43'],
+    // colores_2: ['#3b82f6','#22c55e','#facc15','#ef4444','#8b5cf6','#f97316','#14b8a6','#06b6d4','#64748b','#ec4899','#6366f1','#84cc16'],
+    // bordes_2: ['#2563eb','#15803d','#ca8a04','#dc2626','#7c3aed','#ea580c','#0f766e','#0891b2','#475569','#be185d','#4f46e5','#65a30d']
 
 };
 

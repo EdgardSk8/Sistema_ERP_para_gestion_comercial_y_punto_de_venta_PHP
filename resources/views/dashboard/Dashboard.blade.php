@@ -25,14 +25,14 @@
                         Ganancias
                     </label>
 
-                    <input type="radio" id="rendimiento" name="dashboard" value="rendimiento">
-                    <label for="rendimiento" class="BotonGrupo">
-                        Rendimiento de Usuarios
+                    <input type="radio" id="Movimiento_inventario" name="dashboard" value="Movimiento_inventario">
+                    <label for="Movimiento_inventario" class="BotonGrupo">
+                        Movimiento Inventario
                     </label>
 
                 </div>
                 
-            </div>
+            </div> <!-- CONTENEDOR RADIO BOTONES -->
 
         </div>
 
@@ -42,55 +42,14 @@
 
                 <div class="Contenedor_kpis">
 
-                    <div class="kpis">
-                        <i class="fas fa-cash-register"></i>
-                        <div id="kpi-total-ventas" class="kpis-info">
-                            <label></label>
-                            <strong></strong>
-                        </div>
-                    </div>
+                    <div class="Card_Kpis"> <i></i> <div id="kpis_1" class="kpis-info"> <label></label> <strong></strong> </div> </div>
+                    <div class="Card_Kpis"> <i></i> <div id="kpis_2" class="kpis-info"> <label></label> <strong></strong> </div> </div>
+                    <div class="Card_Kpis"> <i></i> <div id="kpis_3" class="kpis-info"> <label></label> <strong></strong> </div> </div>
+                    <div class="Card_Kpis"> <i></i> <div id="kpis_4" class="kpis-info"> <label></label> <strong></strong> </div> </div>
+                    <!-- <div class="Card_Kpis"> <i></i> <div id="kpis_5" class="kpis-info"> <label></label> <strong></strong> </div> </div> -->
+                    <!-- <div class="Card_Kpis"> <i></i> <div id="kpis_6" class="kpis-info"> <label></label> <strong></strong> </div> </div> -->
 
-                    <div class="kpis">
-                        <i class="fas fa-dollar-sign"></i>
-                        <div id="kpi-ingresos" class="kpis-info">
-                            <label></label>
-                            <strong></strong>
-                        </div>
-                    </div>
-
-                    <div class="kpis">
-                        <i class="fas fa-boxes"></i>
-                        <div id="kpi-unidades-vendidas" class="kpis-info">
-                            <label></label>
-                            <strong></strong>
-                        </div>
-                    </div>
-
-                    <div class="kpis">
-                        <i class="fas fa-shopping-cart"></i>
-                        <div id="kpi-promedio-venta" class="kpis-info">
-                            <label></label>
-                            <strong></strong>
-                        </div>
-                    </div>
-
-                    <div class="kpis">
-                        <i class="fas fa-chart-line"></i>
-                        <div id="kpi-venta-maxima" class="kpis-info">
-                            <label></label>
-                            <strong></strong>
-                        </div>
-                    </div>
-
-                    <div class="kpis">
-                        <i class="fas fa-percent"></i>
-                        <div id="kpi-impuestos" class="kpis-info">
-                            <label></label>
-                            <strong></strong>
-                        </div>
-                    </div>
-
-                </div>
+                </div> <!-- CONTENEDOR DE KPIS -->
 
                 <div class="Contenedor_Grafica">
 
@@ -99,57 +58,42 @@
 
                         <div class="btn-group btn-group-sm" role="group" aria-label="Filtro de ventas">
 
-                            <input type="radio" class="btn-check" name="Filtro-Ventas" id="ventas-dia" value="dia">
-                            <label class="btn btn-outline-secondary" for="ventas-dia">
-                                Día
-                            </label>
+                            <input type="radio" class="btn-check" name="Radio_Filtro" id="Dia" value="dia">
+                            <label class="btn btn-outline-success" for="Dia"> Día </label>
 
-                            <input type="radio" class="btn-check" name="Filtro-Ventas" id="ventas-mes" value="mes" checked>
-                            <label class="btn btn-outline-secondary" for="ventas-mes">
-                                Mes
-                            </label>
+                            <input type="radio" class="btn-check" name="Radio_Filtro" id="Mes" value="mes" checked>
+                            <label class="btn btn-outline-success" for="Mes"> Mes </label>
 
-                            <input type="radio" class="btn-check" name="Filtro-Ventas" id="ventas-anio" value="anio">
-                            <label class="btn btn-outline-secondary" for="ventas-anio">
-                                Año
-                            </label>
+                            <input type="radio" class="btn-check" name="Radio_Filtro" id="Anio" value="anio">
+                            <label class="btn btn-outline-success" for="Anio"> Año </label>
 
                         </div>
 
-                        <input type="date" class="form-control form-control-sm" id="Fecha-Inicio-Ventas" placeholder="Fecha inicio" autocomplete="off" >
-                        <input  type="date" class="form-control form-control-sm" id="Fecha-Fin-Ventas" placeholder="Fecha fin" autocomplete="off" >
-                        <button type="button" class="btn btn-sm-modal btn-limpiar-filtro" id="BTN-Limpiar-Ventas"> Limpiar filtros </button>
+                        <input type="date" class="form-control form-control-sm" id="Fecha_Inicio" placeholder="Fecha inicio" autocomplete="off" >
+                        <input  type="date" class="form-control form-control-sm" id="Fecha_Fin" placeholder="Fecha fin" autocomplete="off" >
+                        <button type="button" class="btn btn-limpiar-filtro" id="Btn_Limpiar_Filtros"> <i class="fa-solid fa-trash-can"></i> </button>
 
                     </div>
 
-                    <div class="dashboard-chart card-responsive"> <canvas id="chartVentas"></canvas> </div>
-                    
-                    <div class="card-responsive"> <canvas id="chartHoras"></canvas>
+                    <div class="card-responsive Chart_1"> <canvas id="Chart_1"></canvas> </div>
+                    <div class="card-responsive"> <canvas id="Chart_3"></canvas>
 
                 </div>
 
-                </div>
+                </div> <!-- CONTENEDOR IZQUIERDO -->
 
             </div>
 
             <div class="Contenedor_graficas_2">
                 
-                <div class="card-responsive cantidad">
-                    <canvas id="chartCantidadVentas"></canvas>
-                </div>
+                <div class="card-responsive Chart_2"> <canvas id="Chart_2"></canvas> </div>
+                <div class="card-responsive Tabla_1"> <span class="Titulo-Tabla"></span> <table id="Tabla_1" class="table table-striped table-bordered"></table> </div>
 
-                <div class="card-responsive"><table id="DashboardProductos" class="table table-bordered"></table> </div>
+            </div> <!-- CONTENEDOR DERECHO -->
 
-            </div>
-
-
-
-        </div>
-
-
+        </div> <!-- CONTENEDOR CG -->
         
-
-    </div>
+    </div> <!-- CONTENEDOR GENERAL DE GRAFICAS -->
 
 
 
