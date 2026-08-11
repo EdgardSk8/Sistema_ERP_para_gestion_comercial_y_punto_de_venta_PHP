@@ -24,7 +24,7 @@
 
                 <div class="card-responsive">
 
-                    <form id="formEditarProducto" class="row g-3">
+                    <form id="formEditarProducto" class="row g-2">
 
                         <!-- ID -->
                         <input type="hidden" id="editar_id_producto">
@@ -163,9 +163,45 @@
                               readonly>
                         </div>
 
+                        <div class="col-md-2">
+                            <label class="form-label">Ajuste</label>
+                            <input type="number"
+                              id="ajustar_stock_actual"
+                              class="form-control form-control-sm text-center fw-bold">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Motivo</label>
+
+                            <select id="editar_stock_motivo"
+                                    class="form-select form-select-sm"
+                                    required
+                                    disabled>
+
+                                <!-- 🔴 DISMINUCIONES -->
+                                <optgroup label="Disminución de inventario">
+                                    <option value="Producto dañado">Producto dañado</option>
+                                    <option value="Producto vencido">Producto vencido</option>
+                                    <option value="Pérdida / Extraviado">Pérdida / Extraviado</option>
+                                    <option value="Consumo interno">Consumo interno</option>
+                                    <option value="Error de inventario">Error de inventario</option>
+                                    <option value="Robo">Robo</option>
+                                </optgroup>
+
+                                <!-- 🟢 AUMENTOS -->
+                                <optgroup label="Aumento de inventario">
+                                    <option value="Producto encontrado">Producto encontrado</option>
+                                    <option value="Sobrante de inventario">Sobrante de inventario</option>
+                                    <option value="Devolución no registrada">Devolución no registrada</option>
+                                    <option value="Ingreso no registrado">Ingreso no registrado</option>
+                                </optgroup>
+
+                            </select>
+                        </div>
+
                         <!-- ================= IMAGEN ================= -->
 
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <label class="form-label">Imagen del Producto</label>
                             <input type="file" id="editar_imagen_producto" class="form-control form-control-sm" accept="image/*">
                         </div>

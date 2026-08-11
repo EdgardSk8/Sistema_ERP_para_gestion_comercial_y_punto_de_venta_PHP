@@ -223,6 +223,7 @@ export default function initMostrarProductos() {
         const stock = $('#editar_stock_actual').val();
         const imagen = $('#editar_imagen_producto')[0].files[0]; // archivo seleccionado
         const id_medida = $('#editar_medida_producto').val();
+        const motivo = $('#editar_stock_motivo').val();
 
         // Validaciones básicas
         if(nombre === ''){ mostrarToast('El nombre del producto es obligatorio', 'danger'); return; }
@@ -239,6 +240,7 @@ export default function initMostrarProductos() {
         formData.append('stock_actual', stock);
         formData.append('id_medida', id_medida);
         if(imagen) formData.append('imagen_producto', imagen);
+        formData.append('motivo_movimiento',$('#editar_stock_motivo').val());
 
         // Spoofing PUT para Laravel
         formData.append('_method', 'PUT');
@@ -258,6 +260,10 @@ export default function initMostrarProductos() {
                 const modalElement = document.getElementById("modalEditarProducto");
                 const modalInstance = bootstrap.Modal.getInstance(modalElement);
                 modalInstance.hide();
+
+                const stockResultante = $('#editar_stock_actual').val();const motivo = $('#editar_stock_motivo').val();
+                console.log('Stock resultante:', stockResultante);console.log('Motivo seleccionado:', motivo);
+
             },
             error: function(err){
                 console.error(err);
@@ -328,6 +334,7 @@ export default function initMostrarProductos() {
 /* ════════════════════════════════════════════════════════════════════════════════════════════════════════════════ */
 
 /* ════════════════ ABRIR MODAL Y CARGAR DATOS ════════════════ */
+    let StockOriginal = 0;
 
     function abrirModalEditar(id) {
 
@@ -341,21 +348,26 @@ export default function initMostrarProductos() {
             const selectUbic = $('#editar_id_ubicacion');
             const selectImp = $('#editar_id_impuesto');
             const selectMed = $('#editar_medida_producto');
+            const selectMot = $('#editar_stock_motivo');
+
+            $('#editar_stock_motivo').prop('selectedIndex', 0).prop('disabled', true).trigger('change');
+            $('#ajustar_stock_actual').val('0').css('color', '#198754');
 
             /* ══════════════════════════════════════════ */
 
-            [selectCat, selectUbic, selectImp, selectMed].forEach(select => {
-                if (select.hasClass('select2-hidden-accessible')) {
-                    select.select2('destroy');
-                }
+            [selectCat, selectUbic, selectImp, selectMed, selectMot].forEach(select => {
+                if (select.hasClass('select2-hidden-accessible')) { select.select2('destroy'); }
             });
 
-            [selectCat, selectUbic, selectImp, selectMed].forEach(select => {
+            // ajustar_stock_actual
+
+            [selectCat, selectUbic, selectImp, selectMed, selectMot].forEach(select => {
                 select.select2({
                     width: '100%',
                     dropdownParent: $('#modalEditarProducto'),
                     placeholder: 'Seleccione',
-                    allowClear: false
+                    allowClear: false,
+                    minimumResultsForSearch: Infinity //SIN BUSCADOR
                 });
             });
 
@@ -403,13 +415,18 @@ export default function initMostrarProductos() {
             $.get(`/productos/${id}/editar`, function(resProducto){
                 const producto = resProducto.producto;
 
+                StockOriginal = Number(producto.stock_actual);
+
+                $('#editar_stock_actual').val(StockOriginal);
+                $('#ajustar_stock_actual').val('0').css('color', '#198754');
+
                 // Campos de texto
                 $('#editar_id_producto').val(producto.id_producto);
                 $('#editar_nombre_producto').val(producto.nombre_producto);
                 $('#editar_descripcion_producto').val(producto.descripcion_producto);
                 $('#editar_precio_compra').val(producto.precio_compra);
                 $('#editar_precio_venta').val(producto.precio_venta);
-                $('#editar_stock_actual').val(producto.stock_actual);
+                // $('#editar_stock_actual').val(producto.stock_actual);
                 $('#editar_ganancia_producto').val( (producto.precio_venta - producto.precio_compra).toFixed(2) );
 
                 // Seleccionar los valores correctos en los selects
@@ -437,6 +454,77 @@ export default function initMostrarProductos() {
         }).fail(function(){ mostrarToast('Error al cargar datos del formulario', 'danger'); });
 
     } // FIN DE FUNCION ABRIR MODAL
+
+    //EVENTO DE AJUSTAR STOCK
+    $(document).off('input', '#ajustar_stock_actual').on('input', '#ajustar_stock_actual', function () {
+
+        let valor = $(this).val();
+
+        // Permitir solo números y signos
+        valor = valor.replace(/[^\d+-]/g, '');
+
+        // Solo permitir un signo al inicio
+        valor = valor.replace(/(?!^)[+-]/g, '');
+
+        // Evitar múltiples signos al inicio
+        valor = valor.replace(/^([+-]{2,})/, valor.charAt(0));
+
+        $(this).val(valor);
+
+        const motivo = $('#editar_stock_motivo');
+        const mensaje = $('#mensaje_ajuste_stock');
+        const stockActual = $('#editar_stock_actual');
+
+        // Vacío o solo signo
+        if (valor === '' || valor === '+' || valor === '-') {
+
+            $(this).css('color', '');
+
+            stockActual.val(StockOriginal);
+
+            motivo
+                .val(motivo.find('option:first').val())
+                .prop('disabled', true)
+                .trigger('change');
+
+            mensaje.addClass('d-none');
+
+            return;
+        }
+
+        const numero = Number(valor);
+
+        // Ajuste inválido: 0
+        if (numero === 0) {
+
+            motivo
+                .val(motivo.find('option:first').val())
+                .prop('disabled', true)
+                .trigger('change');
+
+            mensaje
+                .text('Seleccione un valor de ajuste correcto')
+                .removeClass('d-none');
+
+        } else {
+
+            motivo
+                .prop('disabled', false)
+                .trigger('change');
+
+            mensaje.addClass('d-none');
+        }
+
+        // Color del ajuste
+        $(this).css(
+            'color',
+            numero > 0 ? '#198754' : '#dc3545'
+        );
+
+        // Stock resultante
+        stockActual.val(StockOriginal + numero);
+
+    });
 
 /* ════════════════════════════════════════════════════════════════════════════════════════════════════════════════ */
 
@@ -589,77 +677,77 @@ export default function initMostrarProductos() {
 
 /* BAJAR PRODUCTOS */
 
-document.addEventListener("click", async function(e) {
+    document.addEventListener("click", async function(e) {
 
-    if (e.target.classList.contains("bajaProducto")) {
+        if (e.target.classList.contains("bajaProducto")) {
 
-        const id = e.target.dataset.id;
-        let modalElement = document.getElementById("modalConfirmarEstadoProducto");
+            const id = e.target.dataset.id;
+            let modalElement = document.getElementById("modalConfirmarEstadoProducto");
 
-        // Crear modal si no existe
-        if (!modalElement) {
-            const modalHTML = `
-            <div class="modal fade" id="modalConfirmarEstadoProducto" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
+            // Crear modal si no existe
+            if (!modalElement) {
+                const modalHTML = `
+                <div class="modal fade" id="modalConfirmarEstadoProducto" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
 
-                        <div class="modal-header">
-                            <h5 class="modal-title">Confirmar acción</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            <div class="modal-header">
+                                <h5 class="modal-title">Confirmar acción</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body p-2">
+                                ¿Deseas cambiar el estado de este producto?
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                <button class="btn btn-success" id="confirmarCambioEstadoProducto">Confirmar</button>
+                            </div>
+
                         </div>
-
-                        <div class="modal-body p-2">
-                            ¿Deseas cambiar el estado de este producto?
-                        </div>
-
-                        <div class="modal-footer">
-                            <button class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                            <button class="btn btn-success" id="confirmarCambioEstadoProducto">Confirmar</button>
-                        </div>
-
                     </div>
-                </div>
-            </div>`;
-            
-            document.body.insertAdjacentHTML("beforeend", modalHTML);
-            modalElement = document.getElementById("modalConfirmarEstadoProducto");
-        }
-
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
-
-        const botonConfirmar = modalElement.querySelector("#confirmarCambioEstadoProducto");
-
-        botonConfirmar.onclick = async function () {
-
-            try {
-                const response = await fetch(`/productos/cambiar-estado/${id}`, {
-                    method: "POST",
-                    headers: {
-                        "X-CSRF-TOKEN": document
-                            .querySelector('meta[name="csrf-token"]')
-                            .getAttribute("content")
-                    }
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    mostrarToast("Estado del producto actualizado", "success");
-                    $('#TablaMostrarProductos').DataTable().ajax.reload(null, false);
-                } else {
-                    mostrarToast("Error al cambiar estado", "danger");
-                }
-
-            } catch (error) {
-                mostrarToast("Error de conexión", "danger");
-                console.error(error);
+                </div>`;
+                
+                document.body.insertAdjacentHTML("beforeend", modalHTML);
+                modalElement = document.getElementById("modalConfirmarEstadoProducto");
             }
 
-            modal.hide();
-        };
-    }
-});
+            const modal = new bootstrap.Modal(modalElement);
+            modal.show();
+
+            const botonConfirmar = modalElement.querySelector("#confirmarCambioEstadoProducto");
+
+            botonConfirmar.onclick = async function () {
+
+                try {
+                    const response = await fetch(`/productos/cambiar-estado/${id}`, {
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": document
+                                .querySelector('meta[name="csrf-token"]')
+                                .getAttribute("content")
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        mostrarToast("Estado del producto actualizado", "success");
+                        $('#TablaMostrarProductos').DataTable().ajax.reload(null, false);
+                    } else {
+                        mostrarToast("Error al cambiar estado", "danger");
+                    }
+
+                } catch (error) {
+                    mostrarToast("Error de conexión", "danger");
+                    console.error(error);
+                }
+
+                modal.hide();
+            };
+        }
+    });
 
 
 

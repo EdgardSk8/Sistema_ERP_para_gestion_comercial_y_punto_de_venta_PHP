@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use App\Models\Producto;
 use Intervention\Image\Facades\Image;
+use App\Models\MovimientoInventario;
+use Illuminate\Support\Facades\DB;
 
 
 class ProductoController extends Controller
@@ -157,10 +159,21 @@ class ProductoController extends Controller
 
     public function ActualizarProducto(Request $request, $id)
     {
+        DB::beginTransaction();
+
         try {
 
             $producto = Producto::find($id);
-            if (!$producto) { return response()->json([ 'success' => false, 'mensaje' => 'Producto no encontrado' ], 404); }
+
+            if (!$producto) {
+                return response()->json([
+                    'success' => false,
+                    'mensaje' => 'Producto no encontrado'
+                ], 404);
+            }
+
+            // STOCK ANTERIOR
+            $stockAnterior = $producto->stock_actual;
 
             $validator = Validator::make(
                 [
@@ -191,36 +204,62 @@ class ProductoController extends Controller
                 ]
             );
 
-            if ($validator->fails()) { return response()->json([ 'success' => false, 'errors' => $validator->errors()], 422); }
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | IMAGEN
+            |--------------------------------------------------------------------------
+            */
 
             if ($request->hasFile('imagen_producto')) {
 
                 $ruta = public_path('Imagenes/Productos');
 
-                // CREAR CARPETA SI NO EXISTE
-                if (!file_exists($ruta)) { mkdir($ruta, 0777, true); }
+                if (!file_exists($ruta)) {
+                    mkdir($ruta, 0777, true);
+                }
 
-                // ELIMINAR IMAGEN ANTERIOR SI EXISTE
-                if ( $producto->imagen_producto && file_exists($ruta . '/' . $producto->imagen_producto) ) 
-                { unlink($ruta . '/' . $producto->imagen_producto); }
+                if (
+                    $producto->imagen_producto &&
+                    file_exists($ruta . '/' . $producto->imagen_producto)
+                ) {
+                    unlink($ruta . '/' . $producto->imagen_producto);
+                }
 
                 $archivo = $request->file('imagen_producto');
 
-                // Generar nombre secuencial SIEMPRE PNG
                 $contador = 1;
+
                 do {
+
                     $nombreImagen = 'ImagenProducto' . $contador . '.png';
                     $rutaCompleta = $ruta . '/' . $nombreImagen;
+
                     $contador++;
+
                 } while (file_exists($rutaCompleta));
 
-                // Convertir a PNG y guardar
                 $imagen = Image::make($archivo)->encode('png', 100);
+
                 $imagen->save($rutaCompleta);
+
                 $producto->imagen_producto = $nombreImagen;
             }
 
-            /* ACTUALIZAR DATOS */
+
+            /*
+            |--------------------------------------------------------------------------
+            | DATOS DEL PRODUCTO
+            |--------------------------------------------------------------------------
+            */
+
             $producto->nombre_producto = $request->nombre_producto;
             $producto->descripcion_producto = $request->descripcion_producto;
             $producto->id_categoria = $request->id_categoria;
@@ -233,10 +272,62 @@ class ProductoController extends Controller
 
             $producto->save();
 
-            return response()->json([ 'success' => true, 'mensaje' => 'Producto actualizado correctamente'], 200);
+
+            /*
+            |--------------------------------------------------------------------------
+            | MOVIMIENTO DE INVENTARIO
+            |--------------------------------------------------------------------------
+            */
+
+            $stockNuevo = $producto->stock_actual;
+
+            // Diferencia entre stock anterior y nuevo
+            $diferencia = $stockNuevo - $stockAnterior;
+
+            // Solo registrar movimiento si realmente cambió el stock
+            if ($diferencia != 0) {
+
+                MovimientoInventario::create([
+                    'id_producto' => $producto->id_producto,
+                    'tipo_movimiento' => 'AJUSTE',
+                    'cantidad_movimiento' => abs($diferencia),
+                    'stock_resultante' => $stockNuevo,
+                    'motivo_movimiento' => $request->motivo_movimiento,
+                    'id_referencia' => null,
+                    'tipo_referencia' => 'AJUSTE',
+                    'precio_unitario' => $producto->precio_compra,
+                    'fecha_movimiento' => now(),
+                    'id_usuario' => session('usuario.id'),
+                ]);
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | CONFIRMAR TODO
+            |--------------------------------------------------------------------------
+            */
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'mensaje' => 'Producto actualizado correctamente',
+                'stock_anterior' => $stockAnterior,
+                'stock_resultante' => $stockNuevo,
+                'cantidad_ajuste' => abs($diferencia),
+            ], 200);
+
 
         } catch (\Exception $e) {
-            return response()->json([ 'error' => true, 'mensaje' => 'Error al actualizar producto', 'detalle' => $e->getMessage() ], 500);
+
+            DB::rollBack();
+
+            return response()->json([
+                'error' => true,
+                'mensaje' => 'Error al actualizar producto',
+                'detalle' => $e->getMessage()
+            ], 500);
         }
     }
 

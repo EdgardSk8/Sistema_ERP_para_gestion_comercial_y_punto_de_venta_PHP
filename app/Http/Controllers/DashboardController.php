@@ -920,6 +920,416 @@ class DashboardController extends Controller
         return response()->json($respuesta);
     }
 
+    public function Cajas(Request $request)
+    {
+        $tipo = $request->get('tipo', 'dia');
+        $inicio = $request->inicio;
+        $fin = $request->fin;
+
+        $query = Venta::query()->where('estado_venta', 1);
+
+        // FILTRO FECHAS
+        if ($inicio && $fin) {
+            $query->whereBetween('fecha_venta', [
+                $inicio . ' 00:00:00',
+                $fin . ' 23:59:59'
+            ]);
+        }
+
+        // ============================
+        // GRAFICA 1 (INGRESOS POR CAJA)
+        // ============================
+
+        switch ($tipo) {
+
+            case 'dia':
+
+                $aperturas = (clone $query)
+
+                    ->join('cajas', 'ventas.id_caja', '=', 'cajas.id_caja')
+
+                    ->selectRaw('DAYOFWEEK(cajas.fecha_apertura) as orden')
+                    ->selectRaw('COUNT(DISTINCT cajas.id_caja) as cantidad')
+                    ->selectRaw('SUM(ventas.total_venta) as total')
+
+                    ->groupBy('orden')
+                    ->get()
+                    ->keyBy('orden');
+
+                $dias = [
+                    2 => 'Lunes',
+                    3 => 'Martes',
+                    4 => 'Miércoles',
+                    5 => 'Jueves',
+                    6 => 'Viernes',
+                    7 => 'Sábado',
+                    1 => 'Domingo',
+                ];
+
+                $grafica = collect();
+
+                foreach ($dias as $orden => $nombre) {
+
+                    $dato = $aperturas->get($orden);
+
+                    $grafica->push([
+                        'label'     => $nombre,
+                        'cantidad'  => (int) ($dato->cantidad ?? 0),
+                        'total'     => round((float) ($dato->total ?? 0), 2),
+                    ]);
+                }
+
+                break;
+
+            case 'mes':
+
+                $aperturas = (clone $query)
+
+                    ->join('cajas', 'ventas.id_caja', '=', 'cajas.id_caja')
+
+                    ->selectRaw('MONTH(cajas.fecha_apertura) as mes')
+                    ->selectRaw('COUNT(DISTINCT cajas.id_caja) as cantidad')
+                    ->selectRaw('SUM(ventas.total_venta) as total')
+
+                    ->groupBy('mes')
+                    ->get()
+                    ->keyBy('mes');
+
+                $meses = [
+                    1 => 'Enero',
+                    2 => 'Febrero',
+                    3 => 'Marzo',
+                    4 => 'Abril',
+                    5 => 'Mayo',
+                    6 => 'Junio',
+                    7 => 'Julio',
+                    8 => 'Agosto',
+                    9 => 'Septiembre',
+                    10 => 'Octubre',
+                    11 => 'Noviembre',
+                    12 => 'Diciembre',
+                ];
+
+                $grafica = collect();
+
+                foreach ($meses as $mes => $nombre) {
+
+                    $dato = $aperturas->get($mes);
+
+                    $grafica->push([
+                        'label'     => $nombre,
+                        'cantidad'  => (int) ($dato->cantidad ?? 0),
+                        'total'     => round((float) ($dato->total ?? 0), 2),
+                    ]);
+                }
+
+                break;
+
+            case 'anio':
+
+                $grafica = (clone $query)
+
+                    ->join('cajas', 'ventas.id_caja', '=', 'cajas.id_caja')
+
+                    ->selectRaw('YEAR(cajas.fecha_apertura) as label')
+                    ->selectRaw('COUNT(DISTINCT cajas.id_caja) as cantidad')
+                    ->selectRaw('SUM(ventas.total_venta) as total')
+
+                    ->groupBy(DB::raw('YEAR(cajas.fecha_apertura)'))
+                    ->orderBy('label')
+
+                    ->get()
+
+                    ->map(function ($item) {
+
+                        return [
+                            'label'     => $item->label,
+                            'cantidad'  => (int) $item->cantidad,
+                            'total'     => round((float) $item->total, 2),
+                        ];
+
+                    });
+
+                break;
+        }
+
+        $respuesta = [];
+
+        $respuesta['grafica_1'] = $grafica;
+
+        // ==================================
+        // GRAFICA 2 (USUARIO VS INGRESOS)
+        // ==================================
+
+        $respuesta['grafica_2'] = (clone $query)
+
+            ->join('usuarios', 'ventas.id_usuario', '=', 'usuarios.id_usuario')
+
+            ->selectRaw('usuarios.nombre_completo_usuario as label')
+            ->selectRaw('COUNT(ventas.id_venta) as cantidad')
+            ->selectRaw('SUM(ventas.total_venta) as total')
+
+            ->groupBy(
+                'usuarios.id_usuario',
+                'usuarios.nombre_completo_usuario'
+            )
+
+            ->orderByDesc('total')
+
+            ->get()
+
+            ->map(function ($item) {
+
+                return [
+
+                    'label' => $item->label,
+                    'cantidad' => (int)$item->cantidad,
+                    'total' => round((float)$item->total,2),
+
+                ];
+
+            });
+
+        // ==================================
+        // GRAFICA 3 (METODOS DE PAGO)
+        // ==================================
+
+        $respuesta['grafica_3'] = (clone $query)
+
+            ->join('metodos_pago', 'ventas.id_metodo_pago', '=', 'metodos_pago.id_metodo_pago')
+
+            ->selectRaw('metodos_pago.nombre_metodo_pago as label')
+            ->selectRaw('COUNT(ventas.id_venta) as cantidad')
+            ->selectRaw('SUM(ventas.total_venta) as total')
+
+            ->groupBy(
+                'metodos_pago.id_metodo_pago',
+                'metodos_pago.nombre_metodo_pago'
+            )
+
+            ->orderByDesc('total')
+
+            ->get()
+
+            ->map(function ($item) {
+
+                return [
+
+                    'label' => $item->label,
+                    'cantidad' => (int)$item->cantidad,
+                    'total' => round((float)$item->total,2),
+
+                ];
+
+            });
+
+        // ==================================
+        // TABLA 1
+        // ==================================
+
+        $respuesta['tabla_1'] = (clone $query)
+
+            ->join('metodos_pago', 'ventas.id_metodo_pago', '=', 'metodos_pago.id_metodo_pago')
+
+            ->selectRaw('metodos_pago.nombre_metodo_pago as label')
+            ->selectRaw('COUNT(ventas.id_venta) as cantidad')
+            ->selectRaw('SUM(ventas.total_venta) as total')
+
+            ->groupBy(
+                'metodos_pago.id_metodo_pago',
+                'metodos_pago.nombre_metodo_pago'
+            )
+
+            ->orderByDesc('total')
+
+            ->get()
+
+            ->map(function ($item) {
+
+                return [
+
+                    'label' => $item->label,
+                    'cantidad' => (int)$item->cantidad,
+                    'total' => round((float)$item->total,2),
+
+                ];
+
+            });
+
+        // ==================================
+        // KPIS
+        // ==================================
+
+        $respuesta['kpis'] = [
+
+            'ingresos' => [
+
+                'titulo' => 'INGRESOS EN CAJA',
+
+                'valor' => 'C$ ' . number_format(
+                    round((float)((clone $query)->sum('total_venta') ?? 0),2),
+                    2,
+                    ',',
+                    '.'
+                ),
+
+                'tooltip' => 'Dinero vendido en el periodo',
+
+                'icono' => 'fas fa-cash-register',
+
+            ],
+
+            'cajas' => [
+
+                'titulo' => 'CAJAS UTILIZADAS',
+
+                'valor' => number_format(
+                    (clone $query)
+                        ->distinct('id_caja')
+                        ->count('id_caja'),
+                    0,
+                    ',',
+                    '.'
+                ),
+
+                'tooltip' => 'Cantidad de cajas con ventas',
+
+                'icono' => 'fas fa-cash-register',
+
+            ],
+
+            'ventas' => [
+
+                'titulo' => 'VENTAS REALIZADAS',
+
+                'valor' => number_format(
+                    (clone $query)->count(),
+                    0,
+                    ',',
+                    '.'
+                ),
+
+                'tooltip' => 'Ventas registradas',
+
+                'icono' => 'fas fa-shopping-cart',
+
+            ],
+
+            'mejor_caja' => [
+
+                'titulo' => 'CAJA MÁS PRODUCTIVA',
+
+                'valor' => (function () use ($query) {
+
+                    $caja = (clone $query)
+
+                        ->selectRaw('id_caja')
+                        ->selectRaw('SUM(total_venta) as total')
+
+                        ->groupBy('id_caja')
+
+                        ->orderByDesc('total')
+
+                        ->first();
+
+                    if (!$caja) {
+                        return 'Sin datos';
+                    }
+
+                    return 'Caja #' . $caja->id_caja .
+                        ' (C$ ' .
+                        number_format($caja->total,2,',','.') .
+                        ')';
+
+                })(),
+
+                'tooltip' => 'Caja con mayores ingresos',
+
+                'icono' => 'fas fa-trophy',
+
+            ],
+
+        ];
+
+        // ==================================
+        // UI
+        // ==================================
+
+        $respuesta['ui'] = [
+
+            'grafica_1' => [
+
+                'titulo' => 'Aperturas de Caja',
+                'dataset' => 'Cajas abiertas',
+
+                'labels' => [
+
+                    'cantidad' => 'Cajas abiertas',
+                    'total' => 'Ingresos',
+
+                ],
+
+            ],
+
+            'grafica_2' => [
+
+                'titulo' => 'Rendimiento por Usuario',
+                'dataset' => 'Ingresos',
+
+                'labels' => [
+
+                    'cantidad' => ' Ventas',
+                    'total' => ' Ingresos',
+
+                ],
+
+            ],
+
+            'grafica_3' => [
+
+                'titulo' => 'Métodos de Pago',
+                'dataset' => 'Ingresos',
+
+                'labels' => [
+
+                    'cantidad' => ' Ventas',
+                    'total' => ' Ingresos',
+
+                ],
+
+            ],
+
+            'tabla_1' => [
+
+                'titulo' => 'Resumen por Método de Pago',
+                'vacio' => 'Sin ventas registradas',
+
+                'columnas' => [
+
+                    'label' => 'Método',
+                    'cantidad' => 'Ventas',
+                    'total' => 'Ingresos',
+
+                ],
+
+            ],
+
+        ];
+
+        return response()->json($respuesta);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
     public function Movimientoinventario(Request $request)
     {
         $tipo  = $request->get('tipo', 'dia');

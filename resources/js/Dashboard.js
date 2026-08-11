@@ -24,11 +24,13 @@ export default function initDashboard() {
     let UI_Grafica_3 = {};
 
     let moduloActual = 'ventas';
+    let filtroBackend = null;
 
     const rutasDashboard = {
         ventas: '/dashboard/ventas',
         compras: '/dashboard/compras',
         ganancias: '/dashboard/ganancias',
+        cajas: '/dashboard/cajas',
         Movimiento_inventario: '/dashboard/movimiento-inventario'
     };
     
@@ -47,17 +49,28 @@ export default function initDashboard() {
 
     /* ══════════════════ [FUNCIONES] ══════════════════ */
 
-    function Obtener_Filtros() { return document.querySelector('input[name="Radio_Filtro"]:checked').value; }
+    // function Obtener_Filtros() { return document.querySelector('input[name="Radio_Filtro"]:checked').value; }
+    function Obtener_Filtros() { 
+    return filtroBackend ?? document.querySelector('input[name="Radio_Filtro"]:checked').value;
+}
 
     //SIRVE PARA PONER LA FECHA DE FIN EN EL DIA DE HOY Y FIN HACE 3 MESES
     function InicializarFechasGraficas() {
         const hoy = new Date();
         const fechaFin = hoy.toISOString().split('T')[0];
         const fechaInicio = new Date();
-        fechaInicio.setMonth(fechaInicio.getMonth() - 3);
+        fechaInicio.setMonth(fechaInicio.getMonth() - 1);
         const fechaInicioFormato = fechaInicio.toISOString().split('T')[0];
         Fecha_Ini.value = fechaInicioFormato;
         Fecha_Fin.value = fechaFin;
+    }
+
+    function AplicarFiltroSemana() {
+        const hoy = new Date(); const fechaFin = hoy.toISOString().split('T')[0]; const fechaInicio = new Date();
+        fechaInicio.setDate(hoy.getDate() - 6);
+        const inicio = fechaInicio.toISOString().split('T')[0];
+        if (Fecha_Ini._flatpickr) { Fecha_Ini._flatpickr.setDate(inicio); } else { Fecha_Ini.value = inicio; }
+        if (Fecha_Fin._flatpickr) { Fecha_Fin._flatpickr.setDate(fechaFin); } else { Fecha_Fin.value = fechaFin; }
     }
 
     // PARA APLICAR EL FILTRO DEBEN DE TENER DATOS LOS INPUT DE FECHA
@@ -65,6 +78,9 @@ export default function initDashboard() {
 
     // FUNCION PARA OBTENER DATOS
     async function ObtenerDatos() {
+        
+        let tipo = document.querySelector('input[name="Radio_Filtro"]:checked').value;
+        if (tipo === 'semana') { tipo = 'dia'; }
 
         const params = new URLSearchParams({ tipo: Obtener_Filtros(), inicio: Fecha_Ini.value, fin: Fecha_Fin.value });
         const response = await fetch(`${rutasDashboard[moduloActual]}?${params}`);
@@ -232,7 +248,10 @@ export default function initDashboard() {
 
                             label(context) {
                                 const item = Datos_Grafica_1[context.dataIndex]; const total = Number(item.total ?? 0);
-                                return `${UI_Grafica_1.labels?.total ?? ''}: ${moneda(total)}`;
+                                return [
+                                `${UI_Grafica_1.labels?.total ?? ''}: ${moneda(total)}`,
+                                `${UI_Grafica_1.labels?.cantidad ?? ''}: ${Number(item.cantidad ?? 0).toLocaleString('es-NI')}`,
+                                ];
                             }
 
                         }
@@ -365,12 +384,13 @@ export default function initDashboard() {
 
     }
 
-    function Render_Grafica_3(datos = [], ui = {}) {
+    function Render_Grafica_3(datos = [], ui = {}) {2
 
-        Datos_Grafica_3 = datos;
-        UI_Grafica_3 = ui;
+        Datos_Grafica_3 = datos; UI_Grafica_3 = ui;
 
-        const labels = datos.map(item => Formato12Horas(item.label));
+        // const labels = datos.map(item => Formato12Horas(item.label));
+
+        const labels = datos.map(item => { const label = String(item.label); return /^\d{2}:\d{2}$/.test(label) ? Formato12Horas(label) : label; });
         const valores = datos.map(item => Number(item.cantidad ?? 0));
 
         if (ActualizarGraficaAnimada( Chart_Grafica_3, labels, valores, {dataset: ui.dataset ?? '', titulo: ui.titulo ?? ''} )) { return; }
@@ -379,9 +399,10 @@ export default function initDashboard() {
 
             type: 'bar',
 
-            data: {
-
-                labels: datos.map(item => Formato12Horas(item.label)),
+            data: { // labels: datos.map(item => Formato12Horas(item.label)),
+                
+                labels: datos.map(item => {
+                const label = String(item.label); return /^\d{2}:\d{2}$/.test(label) ? Formato12Horas(label) : label; }),
 
                 datasets: [
                     {
@@ -394,39 +415,14 @@ export default function initDashboard() {
 
             },
 
-
             options: {
 
-                responsive: true,
-
-                maintainAspectRatio: false,
-
+                responsive: true, maintainAspectRatio: false,
 
                 plugins: {
 
-                    title: {
-
-                        display: true,
-
-                        text: ui.titulo ?? '',
-
-                        font: {
-                            size: 12,
-                            weight: 'bold'
-                        },
-
-                        padding: {
-                            top: 0,
-                            bottom: 5
-                        }
-
-                    },
-
-
-                    legend: {
-                        display: false
-                    },
-
+                    title: { display: true, text: ui.titulo ?? '', font: { size: 12, weight: 'bold' },padding: { top: 0, bottom: 5 } },
+                    legend: { display: false },
 
                     tooltip: {
 
@@ -446,15 +442,7 @@ export default function initDashboard() {
 
                 },
 
-
-                scales: {
-
-                    y: {
-                        beginAtZero: true
-                    }
-
-                }
-
+                scales: { y: { beginAtZero: true } }
             }
 
         });
@@ -530,7 +518,28 @@ export default function initDashboard() {
 
     /* ═══════════════════════ [EVENTOS] ═══════════════════════ */
 
-    document.querySelectorAll('input[name="Radio_Filtro"]').forEach(radio => { radio.addEventListener('change', ObtenerDatossinkpis); });
+    // document.querySelectorAll('input[name="Radio_Filtro"]').forEach(radio => { radio.addEventListener('change', ObtenerDatossinkpis); });
+
+document.querySelectorAll('input[name="Radio_Filtro"]').forEach(radio => {
+
+    radio.addEventListener('change', () => {
+
+        filtroBackend = null;
+
+        if (radio.value === 'semana') {
+
+            AplicarFiltroSemana();
+
+            // Solo cambia lo que recibe Laravel
+            filtroBackend = 'dia';
+
+        }
+
+        ObtenerDatossinkpis();
+
+    });
+
+});
 
     Fecha_Ini.addEventListener('change', ValidarFechas);
     Fecha_Fin.addEventListener('change', ValidarFechas);

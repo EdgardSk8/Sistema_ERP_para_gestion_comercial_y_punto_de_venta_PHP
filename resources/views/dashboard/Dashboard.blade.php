@@ -25,10 +25,15 @@
                         Ganancias
                     </label>
 
-                    <input type="radio" id="Movimiento_inventario" name="dashboard" value="Movimiento_inventario">
+                    <input type="radio" id="cajas" name="dashboard" value="cajas">
+                    <label for="cajas" class="BotonGrupo">
+                        Cajas
+                    </label>
+
+                    <!-- <input type="radio" id="Movimiento_inventario" name="dashboard" value="Movimiento_inventario">
                     <label for="Movimiento_inventario" class="BotonGrupo">
                         Movimiento Inventario
-                    </label>
+                    </label> -->
 
                 </div>
                 
@@ -66,6 +71,9 @@
 
                             <input type="radio" class="btn-check" name="Radio_Filtro" id="Anio" value="anio">
                             <label class="btn btn-outline-success" for="Anio"> Año </label>
+
+                            <input type="radio" class="btn-check" name="Radio_Filtro" id="Semana" value="semana">
+                            <label class="btn btn-outline-success" for="Semana"> Ultima Semana</label>
 
                         </div>
 
