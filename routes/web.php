@@ -100,8 +100,8 @@ Route::view('/error', 'errors.sin_permiso')->name('error');
 Route::get('/dashboard/ventas', [DashboardController::class, 'Ventas'])->middleware('permiso:mostrar_dashboard_ventas');
 Route::get('/dashboard/movimiento-inventario', [DashboardController::class, 'movimientoinventario'])->middleware('permiso:mostrar_dashboard_movimiento_inventario');
 Route::get('/dashboard/ganancias', [DashboardController::class, 'Ganancias'])->middleware('permiso:mostrar_dashboard_ganancias');
-Route::get('/dashboard/compras', [DashboardController::class, 'Compras']);
-Route::get('/dashboard/cajas', [DashboardController::class, 'Cajas']);
+Route::get('/dashboard/compras', [DashboardController::class, 'Compras'])->middleware('permiso:mostrar_dashboard_compras');
+Route::get('/dashboard/cajas', [DashboardController::class, 'Cajas'])->middleware('permiso:mostrar_dashboard_cajas');
 
 /*  ╔════════════ Endpoint Empresa ══════════════╗ 
     ╚════════════════════════════════════════════╝ */
@@ -339,20 +339,20 @@ Route::get('/reportes/cajas', [ReporteController::class, 'ReporteCajas'])->middl
 /*  ╔════════ Endpoint Tipos de Medidas ═════════╗ 
     ╚════════════════════════════════════════════╝ */
 
-Route::get('/tipos-medidas/mostrar', [TiposMedidasController::class, 'MostrarTiposMedidas']);
-Route::post('/tipos-medidas/crear', [TiposMedidasController::class, 'CrearTipoMedida']);
-Route::get('/tipos-medidas/editar/{id}', [TiposMedidasController::class, 'EditarTipoMedida']);
-Route::put('/tipos-medidas/actualizar/{id}', [TiposMedidasController::class, 'ActualizarTipoMedida']);
-Route::put('/tipos-medidas/cambiar-estado/{id}', [TiposMedidasController::class, 'CambiarEstadoTipoMedida']);
+Route::get('/tipos-medidas/mostrar', [TiposMedidasController::class, 'MostrarTiposMedidas'])->middleware('permiso:mostrar_tipos_medidas');
+Route::post('/tipos-medidas/crear', [TiposMedidasController::class, 'CrearTipoMedida'])->middleware('permiso:crear_tipos_medidas');
+Route::get('/tipos-medidas/editar/{id}', [TiposMedidasController::class, 'EditarTipoMedida']);//->middleware('permiso:editar_medidas');
+Route::put('/tipos-medidas/actualizar/{id}', [TiposMedidasController::class, 'ActualizarTipoMedida'])->middleware('permiso:actualizar_tipos_medidas');
+Route::put('/tipos-medidas/cambiar-estado/{id}', [TiposMedidasController::class, 'CambiarEstadoTipoMedida'])->middleware('permiso:cambiar_estado_tipos_medidas');
 
 /*  ╔════════════ Endpoint de Medida ════════════╗ 
     ╚════════════════════════════════════════════╝ */
 
-Route::get('/medidas/mostrar', [MedidasController::class, 'MostrarMedidas']);
-Route::post('/medidas/crear', [MedidasController::class, 'CrearMedida']);
+Route::get('/medidas/mostrar', [MedidasController::class, 'MostrarMedidas'])->middleware('permiso:mostrar_medidas');
+Route::post('/medidas/crear', [MedidasController::class, 'CrearMedida'])->middleware('permiso:crear_medidas');
 Route::get('/medidas/editar/{id}', [MedidasController::class, 'EditarMedida']);
-Route::put('/medidas/actualizar/{id}', [MedidasController::class, 'ActualizarMedida']);
-Route::put('/medidas/cambiar-estado/{id}', [MedidasController::class, 'CambiarEstadoMedida']);
+Route::put('/medidas/actualizar/{id}', [MedidasController::class, 'ActualizarMedida'])->middleware('permiso:actualizar_medidas');
+Route::put('/medidas/cambiar-estado/{id}', [MedidasController::class, 'CambiarEstadoMedida'])->middleware('permiso:cambiar_estado_medidas');
 Route::get('/medidas/tipos-medidas/mostrar',[MedidasController::class, 'MostrarTiposMedidas']);
 
 

@@ -687,7 +687,8 @@ export default function initMostrarProductos() {
             // Crear modal si no existe
             if (!modalElement) {
                 const modalHTML = `
-                <div class="modal fade" id="modalConfirmarEstadoProducto" tabindex="-1">
+                
+                <div class="modal fade" id="modalConfirmarEstadoProducto" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
 
@@ -696,13 +697,15 @@ export default function initMostrarProductos() {
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
 
-                            <div class="modal-body p-2">
-                                ¿Deseas cambiar el estado de este producto?
+                            <div class="modal-body">
+                                <div class="card-responsive">
+                                    ¿Deseas cambiar el estado de este producto?
+                                </div>
                             </div>
 
                             <div class="modal-footer">
-                                <button class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button class="btn btn-success" id="confirmarCambioEstadoProducto">Confirmar</button>
+                                <button class="btn cancelar btn-sm-modal" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn actualizar btn-sm-modal" id="confirmarCambioEstadoProducto">Confirmar</button>
                             </div>
 
                         </div>

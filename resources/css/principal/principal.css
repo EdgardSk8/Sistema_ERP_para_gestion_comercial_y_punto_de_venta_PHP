@@ -280,7 +280,7 @@ table.dataTable thead th::before, table.dataTable thead th::after{ display: none
 .card{
     padding: var(--space-2);
     min-height: 0;
-    height: 100vh;
+    height: 100vh; background-color: var(--bg) ;
 }
 
 div.dataTables_processing{ background: transparent; border: none; }

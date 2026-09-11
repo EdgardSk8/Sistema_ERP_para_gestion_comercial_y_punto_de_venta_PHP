@@ -346,8 +346,10 @@ export default function initMostrarVentas() {
     function crearModalAnularVenta() {
 
         const modalHTML = `
-        <div class="modal fade" id="modalAnularVenta" tabindex="-1">
+        <div class="modal fade" id="modalAnularVenta" tabindex="-1" aria-hidden="true">
+
             <div class="modal-dialog modal-dialog-centered">
+
                 <div class="modal-content">
 
                     <div class="modal-header">
@@ -355,25 +357,31 @@ export default function initMostrarVentas() {
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
-                    <div class="modal-body p-2">
-                        ¿Seguro que deseas anular esta factura?
+                    <div class="modal-body">
+
+                        <div class="card-responsive">
+                            ¿Seguro que deseas anular esta factura?
+                        </div>
+
                     </div>
 
                     <div class="modal-footer">
-                        <button class="btn btn-danger" data-bs-dismiss="modal">
+                        <button class="btn cancelar btn-sm-modal" data-bs-dismiss="modal">
                             Cancelar
                         </button>
-                        <button class="btn btn-success" id="btnConfirmarAnulacion">
+
+                        <button type="button" class="btn actualizar btn-sm-modal" id="btnConfirmarAnulacion">
                             Anular
                         </button>
                     </div>
 
                 </div>
+
             </div>
+
         </div>`;
 
         document.body.insertAdjacentHTML("beforeend", modalHTML);
-
         modalAnularVenta = document.getElementById("modalAnularVenta");
     }
 

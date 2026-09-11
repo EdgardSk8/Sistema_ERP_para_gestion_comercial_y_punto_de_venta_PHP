@@ -17,6 +17,9 @@ class permisosSeeder extends Seeder
             ['nombre_permiso' => 'mostrar_dashboard_movimiento_inventario','descripcion_permiso' => 'Ver movimientos inventario dashboard','modulo_permiso' => 'dashboard'],
             ['nombre_permiso' => 'mostrar_dashboard_ganancias','descripcion_permiso' => 'Ver datos ganancias dashboard','modulo_permiso' => 'dashboard'],
 
+            ['nombre_permiso' => 'mostrar_dashboard_compras','descripcion_permiso' => 'Ver datos compras dashboard','modulo_permiso' => 'dashboard'],
+            ['nombre_permiso' => 'mostrar_dashboard_cajas','descripcion_permiso' => 'Ver datos cajas dashboard','modulo_permiso' => 'dashboard'],
+
             /* ═════════════ USUARIOS ═════════════ */
             ['nombre_permiso'=>'vista_usuarios','descripcion_permiso'=>'Ver vista usuarios','modulo_permiso'=>'usuarios'],
             ['nombre_permiso'=>'mostrar_usuarios','descripcion_permiso'=>'Listar usuarios','modulo_permiso'=>'usuarios'],
@@ -190,10 +193,19 @@ class permisosSeeder extends Seeder
             /* ═════════════ TIPOS MEDIDAS ═════════════ */
 
             ['nombre_permiso' => 'vista_tipos_medidas','descripcion_permiso' => 'Ver Tipos de Medidas','modulo_permiso' => 'tipos_medidas'],
+            ['nombre_permiso' => 'mostrar_tipos_medidas','descripcion_permiso' => 'Mostrar Tipos de Medidas','modulo_permiso' => 'tipos_medidas'],
+            ['nombre_permiso' => 'crear_tipos_medidas','descripcion_permiso' => 'Crear Tipos de Medidas','modulo_permiso' => 'tipos_medidas'],
+            ['nombre_permiso' => 'actualizar_tipos_medidas','descripcion_permiso' => 'Actualizar Tipos de Medidas','modulo_permiso' => 'tipos_medidas'],
+            ['nombre_permiso' => 'cambiar_estado_tipos_medidas','descripcion_permiso' => 'Cambiar estado Tipos de Medidas','modulo_permiso' => 'tipos_medidas'],
 
             /* ═════════════ MEDIDAS ═════════════ */
 
             ['nombre_permiso' => 'vista_medidas','descripcion_permiso' => 'Ver Medidas','modulo_permiso' => 'medidas'],
+            ['nombre_permiso' => 'mostrar_medidas','descripcion_permiso' => 'Mostrar Medidas','modulo_permiso' => 'medidas'],
+            ['nombre_permiso' => 'crear_medidas','descripcion_permiso' => 'Crear Medidas','modulo_permiso' => 'medidas'],
+            ['nombre_permiso' => 'actualizar_medidas','descripcion_permiso' => 'Actualizar Medidas','modulo_permiso' => 'medidas'],
+            ['nombre_permiso' => 'cambiar_estado_medidas','descripcion_permiso' => 'Cambiar estado Medidas','modulo_permiso' => 'medidas'],
+
 
         ]);
     }

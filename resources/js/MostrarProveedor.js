@@ -312,27 +312,40 @@ export default function initMostrarProveedores() {
             // Crear modal si no existe
             if (!modalElement) {
                 const modalHTML = `
-                <div class="modal fade" id="modalConfirmarEstadoProveedor" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
+            <div class="modal fade" id="modalConfirmarEstadoProveedor" tabindex="-1" aria-hidden="true">
 
-                            <div class="modal-header">
-                                <h5 class="modal-title">Confirmar acción</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
+                <div class="modal-dialog modal-dialog-centered">
 
-                            <div class="modal-body p-2">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirmar acción</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <div class="card-responsive">
                                 ¿Deseas cambiar el estado de este proveedor?
                             </div>
 
-                            <div class="modal-footer">
-                                <button class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                <button class="btn btn-success" id="confirmarCambioEstadoProveedor">Confirmar</button>
-                            </div>
-
                         </div>
+
+                        <div class="modal-footer">
+                            <button class="btn cancelar btn-sm-modal" data-bs-dismiss="modal">
+                                Cancelar
+                            </button>
+
+                            <button type="button" class="btn actualizar btn-sm-modal" id="confirmarCambioEstadoProveedor">
+                                Confirmar
+                            </button>
+                        </div>
+
                     </div>
-                </div>`;
+
+                </div>
+
+            </div>`;
                 
                 document.body.insertAdjacentHTML("beforeend", modalHTML);
                 modalElement = document.getElementById("modalConfirmarEstadoProveedor");

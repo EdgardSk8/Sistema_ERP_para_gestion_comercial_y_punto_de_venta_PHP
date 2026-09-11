@@ -52,12 +52,55 @@
 
 /* MODO OSCURO */
 [data-theme="dark"]{
-    --bg:#0F1412;
-    --surface:#151A17;
-    --text:#F3F4F6;
-    --text-soft:#9CA3AF;
-    --border:#243029;
-    --verde:#093d1c;
-    --verde-soft:#1A2B20;
-    --shadow:none;
+
+    /* Fondos */
+    --bg: #0F1412;
+    --surface: #171D1A;
+
+    /* Textos */
+    --text: #F3F4F6;
+    --text-white: #FFFFFF;
+    --text-soft: #9CA3AF;
+
+    /* Bordes */
+    --border: #2A3530;
+
+    /* Verde */
+    --verde: #22C55E;
+    --verde-light: #4ADE80;
+    --verde-hover: #16A34A;
+    --verde-soft: #16291D;
+
+    /* Amarillo */
+    --amarillo: #FBBF24;
+    --amarillo-light: #FCD34D;
+    --amarillo-hover: #F59E0B;
+    --amarillo-soft: #2A2413;
+
+    /* Celeste */
+    --celeste: #93C5FD;
+    --celeste-soft: #172438;
+    --celeste-soft-border: #29405E;
+
+    /* Gris */
+    --gris: #64748B;
+    --gris-hover: #94A3B8;
+    --gris-soft: #252B28;
+
+    /* Rojo */
+    --rojo: #F87171;
+    --rojo-hover: #EF4444;
+    --rojo-soft: #321B1B;
+
+    /* Azul */
+    --azul: #60A5FA;
+    --azul-hover: #3B82F6;
+    --azul-soft: #17263D;
+
+    /* Warning */
+    --warning: #F87171;
+    --warning-hover: #EF4444;
+
+    /* Sombra */
+    --shadow: 0 1px 3px rgba(0, 0, 0, .35);
 }
