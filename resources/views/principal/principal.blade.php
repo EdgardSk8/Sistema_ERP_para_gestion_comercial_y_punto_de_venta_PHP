@@ -393,7 +393,24 @@
                 <p id="modos"></p>
             </div>
 
+            <!-- ------------------------------------------------ -->
+
+            <a href="{{ route('producto-variaciones') }}"
+                class="sidebar-link"
+                data-turbo-frame="contenido-dinamico">
+                    <i class="ph ph-squares-four text-success"></i>
+                    Variaciones de Productos
+            </a>
+
+            <a href="{{ route('producto-variaciones-detalles') }}"
+                class="sidebar-link"
+                data-turbo-frame="contenido-dinamico">
+                    <i class="ph ph-list-dashes text-primary"></i>
+                    Detalle de Variación
+            </a>
+
            
+            <!-- ------------------------------------------------ -->
 
            
 

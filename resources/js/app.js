@@ -177,6 +177,7 @@ import initRespaldo from './Respaldo'
 
 import initMostrarTiposMedidas from './MostrarTiposMedidas'
 import initMostrarMedidas from './MostrarMedidas'
+import initMostrarProductoVariaciones from './MostrarProductoVariacion'
 
 /*
 |--------------------------------------------------------------------------
@@ -213,7 +214,9 @@ const modulos = [
     ['#nombre_empresa', initCredenciales],
     ['#btnExportarSistema', initRespaldo],
     ['#tablaTiposMedidas', initMostrarTiposMedidas],
-    ['#tablaMedidas', initMostrarMedidas]
+    ['#tablaMedidas', initMostrarMedidas],
+
+    ['#tablaProductoVariaciones', initMostrarProductoVariaciones]
 
 
 
@@ -312,8 +315,13 @@ const rutas = {
     vista_movimientos_cuentas: '/cuentas/movimientos',
 
     vista_respaldo: '/respaldo',
+    vista_reportes: '/reportes',
 
-    vista_reportes: '/reportes'
+    vista_producto_variacion: '/producto-variaciones'
+
+
+
+
 };
 
 function cargarInicial(primero) {
@@ -323,7 +331,7 @@ function cargarInicial(primero) {
     if (!url) {console.warn("No hay ruta para:", primero); return; }
 
     // document.getElementById('contenido-dinamico').setAttribute('src', url);
-    document.getElementById('contenido-dinamico').setAttribute('src', '/productos');
+    document.getElementById('contenido-dinamico').setAttribute('src', '/producto-variaciones');
 }
 
 fetch('/cargar-permisos').then(r => r.json())

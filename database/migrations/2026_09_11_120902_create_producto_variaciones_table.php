@@ -6,20 +6,28 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('producto_variaciones', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+
+            $table->increments('id_variacion');
+
+            $table->unsignedInteger('id_producto');
+
+            $table->string('color', 50);
+
+            $table->boolean('estado_variacion')->default(true);
+
+            $table->foreign('id_producto')
+                ->references('id_producto')
+                ->on('productos')
+                ->onDelete('cascade');
+
+            $table->unique(['id_producto', 'color']);
+
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('producto_variaciones');

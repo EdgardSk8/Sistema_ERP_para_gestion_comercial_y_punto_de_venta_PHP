@@ -41,6 +41,10 @@ use App\Http\Controllers\CargaVistaController;
 use App\Http\Controllers\MetodoPagoCuentaController;
 use App\Http\Controllers\TiposMedidasController;
 use App\Http\Controllers\MedidasController;
+use App\Http\Controllers\TallaController;
+use App\Http\Controllers\ProductoVariacionController;
+use App\Http\Controllers\VariacionImagenController;
+use App\Http\Controllers\VariacionTallaController;
 
 /*  ╔════════════ LOGIN ═════════════╗ 
     ╚════════════════════════════════╝ */
@@ -88,6 +92,9 @@ Route::view('/respaldo', 'respaldo.Respaldo')->middleware('permiso:vista_respald
 Route::view('/reportes', 'reportes.Reportes')->middleware('permiso:vista_reportes')->name('reportes');
 Route::view('/tipos-medidas', 'tipos_medidas.TiposMedidas')->middleware('permiso:vista_tipos_medidas')->name('tipos.medidas');
 Route::view('/medidas', 'medidas.Medidas')->middleware('permiso:vista_medidas')->name('medidas');
+
+Route::view('/producto-variaciones', 'productosvariacion.ProductoVariaciones')->name('producto-variaciones');
+Route::view('/producto-variaciones-detalles', 'productosvariaciondetalles.ProductoVariacionDetalle')->name('producto-variaciones-detalles');
 
 
 
@@ -354,6 +361,54 @@ Route::get('/medidas/editar/{id}', [MedidasController::class, 'EditarMedida']);
 Route::put('/medidas/actualizar/{id}', [MedidasController::class, 'ActualizarMedida'])->middleware('permiso:actualizar_medidas');
 Route::put('/medidas/cambiar-estado/{id}', [MedidasController::class, 'CambiarEstadoMedida'])->middleware('permiso:cambiar_estado_medidas');
 Route::get('/medidas/tipos-medidas/mostrar',[MedidasController::class, 'MostrarTiposMedidas']);
+
+/* ╔════════════ Endpoint de Talla ════════════╗
+   ╚═══════════════════════════════════════════╝ */
+
+Route::get('/tallas/mostrar', [TallaController::class, 'MostrarTalla']);
+Route::post('/tallas/crear', [TallaController::class, 'CrearTalla']);
+Route::get('/tallas/editar/{id}', [TallaController::class, 'EditarTalla']);
+Route::put('/tallas/actualizar/{id}', [TallaController::class, 'ActualizarTalla']);
+Route::put('/tallas/cambiar-estado/{id}', [TallaController::class, 'CambiarEstadoTalla']);
+Route::delete('/tallas/eliminar/{id}', [TallaController::class, 'EliminarTalla']);
+
+/* ╔════════ Endpoint de Producto Variación ════════╗
+   ╚════════════════════════════════════════════════╝ */
+
+Route::get('/producto-variaciones/mostrar', [ProductoVariacionController::class, 'MostrarProductoVariacion']);
+Route::post('/producto-variaciones/crear', [ProductoVariacionController::class, 'CrearProductoVariacion']);
+Route::get('/producto-variaciones/editar/{id}', [ProductoVariacionController::class, 'EditarProductoVariacion']);
+Route::put('/producto-variaciones/actualizar/{id}', [ProductoVariacionController::class, 'ActualizarProductoVariacion']);
+Route::put('/producto-variaciones/cambiar-estado/{id}', [ProductoVariacionController::class, 'CambiarEstadoProductoVariacion']);
+Route::delete('/producto-variaciones/eliminar/{id}', [ProductoVariacionController::class, 'EliminarProductoVariacion']);
+
+/* ╔════════ Endpoint de Variación Imagen ════════╗
+   ╚══════════════════════════════════════════════╝ */
+
+Route::get('/variacion-imagenes/mostrar', [VariacionImagenController::class, 'MostrarVariacionImagen']);
+Route::post('/variacion-imagenes/crear', [VariacionImagenController::class, 'CrearVariacionImagen']);
+Route::get('/variacion-imagenes/editar/{id}', [VariacionImagenController::class, 'EditarVariacionImagen']);
+Route::put('/variacion-imagenes/actualizar/{id}', [VariacionImagenController::class, 'ActualizarVariacionImagen']);
+Route::put('/variacion-imagenes/cambiar-orden/{id}', [VariacionImagenController::class, 'CambiarOrdenVariacionImagen']);
+Route::delete('/variacion-imagenes/eliminar/{id}', [VariacionImagenController::class, 'EliminarVariacionImagen']);
+
+/* ╔════════ Endpoint de Variación Talla ═════════╗
+   ╚══════════════════════════════════════════════╝ */
+
+Route::get('/variacion-tallas/mostrar', [VariacionTallaController::class, 'MostrarVariacionTalla']);
+Route::post('/variacion-tallas/crear', [VariacionTallaController::class, 'CrearVariacionTalla']);
+Route::get('/variacion-tallas/editar/{id}', [VariacionTallaController::class, 'EditarVariacionTalla']);
+Route::put('/variacion-tallas/actualizar/{id}', [VariacionTallaController::class, 'ActualizarVariacionTalla']);
+Route::delete('/variacion-tallas/eliminar/{id}', [VariacionTallaController::class, 'EliminarVariacionTalla']);
+
+
+
+
+
+
+
+
+
 
 
 
